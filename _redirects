@@ -1,0 +1,8 @@
+# Page routes
+/football-tactics-board    /index.html    200
+/screenshot-to-board       /screenshot-to-board.html    200
+/screenshot-annotator      /screenshot-annotator.html   200
+/video-analysis            /video-analysis.html         200
+
+# Assets
+/assets/*    /assets/:splat    200

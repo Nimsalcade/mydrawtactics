@@ -1,0 +1,3751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KS3K11NY77"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-KS3K11NY77');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DrawTactics - Video Analysis</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310B981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='4' width='20' height='16' rx='2' ry='2'></rect><line x1='12' y1='4' x2='12' y2='20'></line><circle cx='12' cy='12' r='3'></circle></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E8F5E9 100%);
+            color: #1E293B;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .header-tagline {
+            font-size: 12px;
+            color: #64748B;
+            font-weight: 500;
+        }
+
+        .version-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .nav-tabs a {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #64748B;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-tabs a.active {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar-right {
+            width: 260px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            border-left: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.04);
+        }
+
+
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .section h2 {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #10B981;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 9px;
+            margin-bottom: 6px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(100, 116, 139, 0.1);
+            color: #475569;
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #DC2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .mode-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid transparent;
+        }
+
+        .mode-option input[type="radio"] {
+            cursor: pointer;
+            accent-color: #10B981;
+            width: 16px;
+            height: 16px;
+        }
+
+        .mode-option label {
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #334155;
+            flex: 1;
+        }
+
+        .mode-option:has(input:checked) {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10B981;
+        }
+
+        .mode-option:has(input:checked) label {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .control-group {
+            margin-bottom: 8px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.2), #10B981);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #10B981;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #10B981;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            background: white;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            background: white;
+            color: #334155;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #10B981;
+        }
+
+        .slider-value {
+            font-size: 12px;
+            color: #64748B;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Sidebar styles matching football-tactics-board */
+        .section-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            margin-top: 4px;
+        }
+
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .color-row label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #334155;
+            min-width: 60px;
+        }
+
+        .color-row input[type="color"] {
+            width: 32px;
+            height: 24px;
+            border: 2px solid #E8ECEF;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .color-row input[type="color"]:hover {
+            border-color: #10B981;
+        }
+
+        .color-row input[type="range"] {
+            flex: 1;
+            min-width: 0;
+            height: 6px;
+        }
+
+        .color-row select {
+            flex: 1;
+            min-width: 0;
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.2) 50%, transparent 100%);
+            margin: 10px 0;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .button-row .btn {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 4px;
+            font-size: 12px;
+            height: 32px;
+            margin-bottom: 0;
+        }
+
+        .tool-btn {
+            width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .tool-btn.active {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-text {
+            font-size: 11px;
+            color: #94A3B8;
+            font-style: italic;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .video-container {
+            flex: 1 1 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1E293B;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+            max-height: calc(100vh - 160px);
+        }
+
+        #videoPlayer {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+            object-fit: contain;
+        }
+
+        #annotationCanvas {
+            position: absolute;
+            pointer-events: none;
+            display: none;
+            touch-action: none;
+        }
+
+        #annotationCanvas.active {
+            pointer-events: auto;
+            cursor: crosshair;
+        }
+
+        #annotationCanvas.cursor-default {
+            cursor: default;
+        }
+
+        .placeholder {
+            text-align: center;
+            color: #94A3B8;
+            padding: 40px;
+        }
+
+        .placeholder-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .placeholder-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #64748B;
+            margin-bottom: 8px;
+        }
+
+        .placeholder-subtext {
+            font-size: 14px;
+            color: #94A3B8;
+        }
+
+        .video-controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .annotation-controls {
+            background: rgba(245, 158, 11, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .annotation-controls-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .annotation-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .annotation-control-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #D97706;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .annotation-slider-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .annotation-slider-wrap input[type="range"] {
+            width: 120px;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, rgba(245, 158, 11, 0.2), #F59E0B);
+        }
+
+        .annotation-slider-wrap input[type="range"]::-webkit-slider-thumb {
+            background: #F59E0B;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+        }
+
+        .annotation-slider-wrap input[type="range"]::-moz-range-thumb {
+            background: #F59E0B;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+        }
+
+        .annotation-slider-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #D97706;
+            min-width: 28px;
+        }
+
+        .annotation-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .control-btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #DC2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .control-btn-success {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .annotation-tip {
+            font-size: 11px;
+            color: #94A3B8;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(245, 158, 11, 0.15);
+            line-height: 1.5;
+        }
+
+        .timeline-container {
+            position: relative;
+            height: 30px;
+            margin-bottom: 10px;
+            touch-action: none;
+        }
+
+        .timeline {
+            width: 100%;
+            height: 6px;
+            background: #E8ECEF;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            margin-top: 12px;
+        }
+
+        .timeline-progress {
+            height: 100%;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            top: -6px;
+            width: 6px;
+            height: 18px;
+            background: #F59E0B;
+            border-radius: 2px;
+            cursor: pointer;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .playhead {
+            position: absolute;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            background: #10B981;
+            border-radius: 50%;
+            cursor: grab;
+            transform: translateX(-50%);
+            z-index: 20;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+        }
+
+        .playhead:active {
+            cursor: grabbing;
+        }
+
+        .controls-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn {
+            padding: 7px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .control-btn-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+
+        .control-btn-secondary {
+            background: #E8ECEF;
+            color: #475569;
+        }
+
+        .control-btn-warning {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .time-display {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1E293B;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            min-width: 90px;
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        .freeze-frames-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .freeze-frame-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .freeze-frame-item.active {
+            background: rgba(245, 158, 11, 0.2);
+            border-color: #F59E0B;
+        }
+
+        .freeze-frame-time {
+            font-weight: 600;
+            color: #D97706;
+            font-size: 14px;
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
+
+        .freeze-frame-duration {
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        .freeze-frame-annotations {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        .freeze-frame-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 6px;
+        }
+
+        .freeze-frame-actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            min-height: 32px;
+        }
+
+        .edit-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #DC2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 14px;
+            color: #94A3B8;
+            font-size: 12px;
+        }
+
+        .upload-zone {
+            border: 2px dashed rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 18px 16px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-zone.dragover {
+            border-color: #10B981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .upload-zone-icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        .upload-zone-text {
+            font-size: 13px;
+            color: #64748B;
+            margin-bottom: 4px;
+        }
+
+        .upload-zone-subtext {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        #videoInput {
+            display: none;
+        }
+
+        .upload-notice {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.03) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .upload-notice-title {
+            font-weight: 600;
+            color: #D97706;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .upload-notice p {
+            margin-bottom: 8px;
+        }
+
+        .upload-notice p:last-child {
+            margin-bottom: 0;
+        }
+
+        .video-info {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        .video-info-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 12px;
+        }
+
+        .modal-text {
+            font-size: 14px;
+            color: #64748B;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #E8ECEF;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #64748B;
+            margin-bottom: 8px;
+        }
+
+        .progress-step {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        .freeze-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(245, 158, 11, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            z-index: 100;
+        }
+
+        .freeze-indicator.show {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        .toast-error {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        footer a {
+            color: #10B981;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .sidebar::-webkit-scrollbar,
+        .freeze-frames-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track,
+        .freeze-frames-list::-webkit-scrollbar-track {
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb,
+        .freeze-frames-list::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 3px;
+        }
+
+        .mobile-warning {
+            display: none;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: #D97706;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+
+            .sidebar-right {
+                width: 240px;
+            }
+
+            .freeze-frames-list {
+                max-height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-warning {
+                display: block;
+            }
+
+            .main-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 40vh;
+                border-right: none;
+                border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+            }
+
+            .sidebar-right {
+                width: 100%;
+                max-height: 40vh;
+                border-left: none;
+                border-top: 1px solid rgba(16, 185, 129, 0.1);
+            }
+        }
+
+        /* Only apply hover effects on devices that support hover */
+        @media (hover: hover) {
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            }
+
+            .btn-secondary:hover {
+                background: rgba(100, 116, 139, 0.15);
+                border-color: #64748B;
+            }
+
+            .btn-danger:hover {
+                background: rgba(239, 68, 68, 0.15);
+                border-color: #EF4444;
+            }
+
+            .control-btn-primary:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            }
+
+            .control-btn-secondary:hover {
+                background: #D1D5DB;
+            }
+
+            .control-btn-warning:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            }
+
+            .control-btn-danger:hover {
+                background: rgba(239, 68, 68, 0.15);
+                border-color: #EF4444;
+            }
+
+            .control-btn-success:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            }
+
+            .mode-option:hover {
+                background: rgba(16, 185, 129, 0.05);
+                border-color: rgba(16, 185, 129, 0.2);
+            }
+
+            .freeze-frame-item:hover {
+                background: rgba(245, 158, 11, 0.15);
+                border-color: rgba(245, 158, 11, 0.3);
+            }
+
+            .edit-btn:hover {
+                background: rgba(16, 185, 129, 0.2);
+            }
+
+            .delete-btn:hover {
+                background: rgba(239, 68, 68, 0.2);
+            }
+
+            .section:hover {
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+                border-color: rgba(16, 185, 129, 0.2);
+            }
+
+            .upload-zone:hover {
+                border-color: #10B981;
+                background: rgba(16, 185, 129, 0.05);
+            }
+
+            .timeline-marker:hover {
+                background: #D97706;
+                transform: translateX(-50%) scaleY(1.1);
+            }
+
+            .nav-tabs a:hover:not(.active) {
+                background: rgba(16, 185, 129, 0.1);
+                color: #059669;
+            }
+
+            input[type="color"]:hover {
+                border-color: #10B981;
+            }
+        }
+
+        /* Larger touch targets and spacing for coarse pointers (touchscreen) */
+        @media (pointer: coarse) {
+            .playhead {
+                width: 28px;
+                height: 28px;
+                top: 4px;
+            }
+
+            .timeline-marker {
+                width: 12px;
+                height: 28px;
+            }
+
+            .timeline {
+                height: 12px;
+            }
+
+            .freeze-frame-actions button {
+                padding: 10px 16px;
+                font-size: 14px;
+                min-height: 44px;
+            }
+
+            .freeze-frame-actions {
+                gap: 10px;
+            }
+
+            .control-btn {
+                padding: 12px 20px;
+                min-height: 44px;
+            }
+
+            .mode-option {
+                padding: 14px 16px;
+            }
+
+            .mode-option input[type="radio"] {
+                width: 22px;
+                height: 22px;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                width: 24px;
+                height: 24px;
+            }
+
+            input[type="range"]::-moz-range-thumb {
+                width: 24px;
+                height: 24px;
+            }
+
+            .btn {
+                padding: 14px;
+                min-height: 48px;
+            }
+
+            .nav-tabs a {
+                padding: 10px 20px;
+            }
+
+            .annotation-controls-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .annotation-actions {
+                margin-left: 0;
+                justify-content: stretch;
+            }
+
+            .annotation-actions .control-btn {
+                flex: 1;
+            }
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 100%; height: 100%; color: #10B981;"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line><circle cx="12" cy="12" r="3"></circle></svg>
+            </div>
+            <div>
+                <h1 class="header-title">DrawTactics</h1>
+            </div>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 16px;">
+            <div class="nav-tabs">
+
+                <a href='index.html'>Tactics Board</a>
+                <a href='screenshot-annotator.html'>Screenshot Annotator</a>
+                <a class='active' href='video-analysis.html'>Video Analysis</a>
+            </div>
+            <div class="version-badge">v1.5</div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="sidebar">
+            <div class="mobile-warning">⚠️ Mobile devices may take 3-5 minutes to process. Desktop recommended.</div>
+
+            <details class="section" id="uploadSection" open>
+                <summary
+                    style="cursor: pointer; font-weight: 600; font-size: 14px; color: #1E293B; margin-bottom: 12px; list-style: none; display: flex; align-items: center; justify-content: space-between;">
+                    Upload Video <span style="font-size: 10px; opacity: 0.5;">▶</span></summary>
+                <div class="upload-zone" id="uploadZone" onclick="document.getElementById('videoInput').click()">
+                    <div class="upload-zone-icon">📹</div>
+                    <div class="upload-zone-text">Drop video here or click to upload</div>
+                    <div class="upload-zone-subtext">MP4, MOV, AVI • Max 2 minutes</div>
+                </div>
+                <input type="file" id="videoInput"
+                    accept="video/mp4,video/quicktime,video/avi,video/x-msvideo,.mp4,.mov,.avi">
+                <div class="video-info" id="videoInfo" style="display: none;">
+                    <div class="video-info-item">📏 <span id="videoDuration">0:00</span></div>
+                    <div class="video-info-item">📐 <span id="videoResolution">0x0</span></div>
+                    <div class="video-info-item">📦 <span id="videoSize">0 MB</span></div>
+                </div>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(16, 185, 129, 0.1);">
+                    <button class="btn btn-secondary" onclick="document.getElementById('projectInput').click()">📂 Load
+                        Project</button>
+                    <input type="file" id="projectInput" accept=".dtproj,.dtproj-full" style="display: none;">
+                    <div style="font-size: 11px; color: #94A3B8; margin-top: 4px;">Load a .dtproj or .dtproj-full file
+                    </div>
+                </div>
+            </details>
+
+            <div class="upload-notice" id="uploadNotice">
+                <div class="upload-notice-title">Notice</div>
+                <p>Export quality and smoothness depends on your browser and device performance.</p>
+                <p><strong>This is the first iteration</strong> of the Video Analysis tool. We're working on a new
+                    export method that guarantees smooth output regardless of device.</p>
+                <p><strong>Coming soon:</strong> animated telestrations, dynamic player tracking</p>
+            </div>
+
+            <div class="section" id="toolSection" style="display: none;">
+                <!-- CIRCLE (PLAYER) -->
+                <div class="section-title">Player Marker</div>
+                <div class="color-row">
+                    <label>Color:</label>
+                    <input type="color" id="colorPicker" value="#ffffff">
+                </div>
+                <div class="color-row">
+                    <label>Opacity:</label>
+                    <input type="range" id="opacitySlider" min="0" max="100" value="20">
+                    <div class="slider-value"><span id="opacityValue">20</span>%</div>
+                </div>
+                <div class="color-row">
+                    <label>Size:</label>
+                    <input type="range" id="sizeSlider" min="1" max="30" value="15">
+                    <div class="slider-value"><span id="sizeValue">15</span>px</div>
+                </div>
+                <div class="color-row">
+                    <label>Connect:</label>
+                    <select id="connectionMode">
+                        <option value="chain">Chain (1→2→3)</option>
+                        <option value="all">Mesh (all-to-all)</option>
+                        <option value="none">Circles only</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary tool-btn" id="btn-circle" onclick="toggleTool('circle')">+
+                    Markers</button>
+                <button class="btn btn-secondary" onclick="breakChain()">Break Chain</button>
+                <div class="info-text">Break Chain: stop connecting to previous markers</div>
+
+                <div class="divider"></div>
+
+                <!-- TEXT BOX -->
+                <div class="section-title">Text Box</div>
+                <button class="btn btn-primary tool-btn" id="btn-text" onclick="setTool('text')">+ Text Box</button>
+
+                <div class="divider"></div>
+
+                <!-- ARROWS -->
+                <div class="section-title">Arrows</div>
+                <div class="color-row">
+                    <input type="color" id="arrowColorPicker" value="#ffffff"
+                        style="width: 32px; height: 24px; flex-shrink: 0;">
+                    <select id="arrowStyle" style="flex: 1; min-width: 0;">
+                        <option value="solid">Solid</option>
+                        <option value="dashed">Dashed</option>
+                        <option value="dotted">Dotted</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary tool-btn" id="btn-arrow" onclick="setTool('arrow')">+ Arrow</button>
+                <div class="info-text">Drag to draw • Double-click to curve</div>
+
+                <div class="divider"></div>
+
+                <!-- SHAPES -->
+                <div class="section-title">Shapes</div>
+                <div class="color-row">
+                    <label>Color:</label>
+                    <input type="color" id="shapeColorPicker" value="#ffffff">
+                </div>
+                <div class="color-row">
+                    <label>Opacity:</label>
+                    <input type="range" id="shapeOpacitySlider" min="0" max="100" value="20">
+                    <div class="slider-value"><span id="shapeOpacityValue">20</span>%</div>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-primary" id="btn-rectangle" onclick="setTool('rectangle')">+
+                        Rectangle</button>
+                    <button class="btn btn-primary" id="btn-circle-zone" onclick="setTool('circle-zone')">+
+                        Circle</button>
+                </div>
+                <div class="info-text">Drag to create shape</div>
+            </div>
+
+        </div>
+
+        <div class="content-area">
+            <div class="video-container" id="videoContainer">
+                <div class="placeholder" id="placeholder">
+                    <div class="placeholder-icon">🎬</div>
+                    <div class="placeholder-text">Upload a video to get started</div>
+                    <div class="placeholder-subtext">Max 2 minutes • MP4, MOV, or AVI</div>
+                </div>
+                <video id="videoPlayer"></video>
+                <canvas id="annotationCanvas"></canvas>
+                <div class="freeze-indicator" id="freezeIndicator">✏️ Annotation Mode - Draw on the canvas</div>
+                <div id="textOverlayContainer" style="display:none; position:absolute; z-index:200;">
+                    <div id="textOverlayToolbar"
+                        style="display:flex; align-items:center; gap:6px; padding:3px 6px; background:#1E293B; border:1px solid #10B981; border-bottom:none; border-radius:4px 4px 0 0; font-size:11px; color:#CBD5E1;">
+                        <select id="textOverlaySize"
+                            style="background:#0F172A; color:#CBD5E1; border:1px solid #334155; border-radius:3px; padding:1px 2px; font-size:11px; cursor:pointer;">
+                            <option value="10">10px</option>
+                            <option value="12">12px</option>
+                            <option value="14">14px</option>
+                            <option value="16">16px</option>
+                            <option value="18">18px</option>
+                            <option value="20">20px</option>
+                            <option value="24">24px</option>
+                            <option value="28">28px</option>
+                            <option value="32">32px</option>
+                            <option value="36">36px</option>
+                        </select>
+                        <input type="color" id="textOverlayColor" value="#ffffff"
+                            style="width:22px; height:22px; border:1px solid #334155; border-radius:3px; padding:0; cursor:pointer; background:none;">
+                        <button id="textOverlayConfirm"
+                            style="background:#10B981; color:white; border:none; border-radius:3px; padding:2px 8px; font-size:11px; font-weight:600; cursor:pointer; margin-left:auto;">OK</button>
+                    </div>
+                    <textarea id="textOverlay"
+                        style="display:block; background:rgba(0,0,0,0.5); color:#fff; border:2px solid #10B981; border-top:1px solid #10B981; border-radius:0 0 4px 4px; padding:4px 6px; font-family:sans-serif; font-weight:bold; resize:none; outline:none; overflow:hidden; line-height:1.3; box-sizing:border-box; width:100%;"></textarea>
+                </div>
+            </div>
+
+            <div class="video-controls" id="videoControls" style="display: none;">
+                <div class="timeline-container">
+                    <div class="timeline" id="timeline">
+                        <div class="timeline-progress" id="timelineProgress"></div>
+                    </div>
+                    <div class="playhead" id="playhead" style="left: 0%;"></div>
+                </div>
+                <div class="controls-row">
+                    <button class="control-btn control-btn-secondary" id="playPauseBtn"
+                        onclick="togglePlayPause()">Play</button>
+                    <button class="control-btn control-btn-warning" id="freezeBtn" onclick="freezeFrame()">Add
+                        Annotation</button>
+                    <div class="time-display"><span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="annotation-controls" id="annotationControls" style="display: none;">
+                <div class="annotation-controls-row">
+                    <div class="annotation-control-group">
+                        <label class="annotation-control-label">Display Duration</label>
+                        <div class="annotation-slider-wrap">
+                            <input type="range" id="durationSlider" min="1" max="5" value="3" step="0.5">
+                            <span class="annotation-slider-value"><span id="durationValue">3</span>s</span>
+                        </div>
+                    </div>
+                    <div class="annotation-actions">
+                        <button class="control-btn control-btn-secondary" onclick="undo()">↩️ Undo</button>
+                        <button class="control-btn control-btn-danger" onclick="clearCurrentAnnotations()">🗑️
+                            Clear</button>
+                        <button class="control-btn control-btn-success" onclick="saveAndResume()">✅ Save &
+                            Resume</button>
+                    </div>
+                </div>
+                <div class="annotation-tip">
+                    💡 <strong>Tip:</strong> Click to select, drag to move, use handles to resize. Delete/Backspace
+                    removes selected.
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-right">
+            <div class="section" id="howToUseSection">
+                <h2>How to Use</h2>
+                <div style="font-size: 12px; color: #475569; line-height: 1.7;">
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                        <span
+                            style="background: rgba(16, 185, 129, 0.1); color: #059669; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;">1</span>
+                        <span>Upload a video clip (max 2 minutes)</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                        <span
+                            style="background: rgba(16, 185, 129, 0.1); color: #059669; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;">2</span>
+                        <span>Pause at key moments and click <strong>Add Annotation</strong></span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                        <span
+                            style="background: rgba(16, 185, 129, 0.1); color: #059669; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;">3</span>
+                        <span>Add annotations (circles, arrows, shapes, text)</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                        <span
+                            style="background: rgba(16, 185, 129, 0.1); color: #059669; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;">4</span>
+                        <span>Click <strong>Save & Resume</strong> to continue</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                        <span
+                            style="background: rgba(16, 185, 129, 0.1); color: #059669; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;">5</span>
+                        <span>Use <strong>Preview</strong> to review your work</span>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 8px;">
+                        <span
+                            style="background: rgba(16, 185, 129, 0.1); color: #059669; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;">6</span>
+                        <span><strong>Export</strong> to download the final video</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="freezeFramesSection" style="display: none;">
+                <h2>Annotations</h2>
+                <div class="freeze-frames-list" id="freezeFramesList">
+                    <div class="empty-state">No annotations yet. Click "Add Annotation" to add one.</div>
+                </div>
+            </div>
+
+            <div class="section" id="exportSection" style="display: none;">
+                <h2>Export</h2>
+                <button class="btn btn-secondary" onclick="previewVideo()">Preview</button>
+                <button class="btn btn-primary" onclick="exportVideo()" style="margin-top: 8px;">Export Video</button>
+                <div style="margin-top: 12px; margin-bottom: 8px;">
+                    <div class="mode-option" onclick="document.getElementById('exportResolution720').checked = true">
+                        <input type="radio" name="exportResolution" id="exportResolution720" value="720" checked>
+                        <label>720p HD</label>
+                    </div>
+                    <div class="mode-option" onclick="document.getElementById('exportResolution1080').checked = true">
+                        <input type="radio" name="exportResolution" id="exportResolution1080" value="1080">
+                        <label>1080p Full HD</label>
+                    </div>
+                </div>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(16, 185, 129, 0.1);">
+                    <h2>Save Project</h2>
+                    <button class="btn btn-secondary" onclick="saveProject()">Save Project</button>
+                    <div style="font-size: 11px; color: #94A3B8; margin-top: 4px;">
+                        Lightweight: small file, re-select video on load
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal">
+            <div class="modal-icon" id="modalIcon">⏳</div>
+            <div class="modal-title" id="modalTitle">Processing Video</div>
+            <div class="modal-text" id="modalText">Please wait while we process your video...</div>
+            <div class="progress-bar" id="progressBarContainer">
+                <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+            <div class="progress-step" id="progressStep">Initializing...</div>
+            <button class="btn btn-secondary" id="modalCloseBtn" style="display: none; margin-top: 16px;"
+                onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <footer>
+        <p>© 2026 DrawTactics by JMftbl · <a href='contact.html'>Contact</a></p>
+    </footer>
+
+    <script>
+        // ===== STATE =====
+        let videoFile = null;
+        let videoDuration = 0;
+        let videoWidth = 0;
+        let videoHeight = 0;
+        let isPlaying = false;
+        let isFreezeMode = false;
+        let isPreviewMode = false;
+        let currentFreezeFrameIndex = -1;
+        let freezeFrames = [];
+        let currentAnnotations = [];
+        let selectedAnnotation = null;
+        let undoStack = [];
+        let isDrawing = false;
+        let drawStartX = 0;
+        let drawStartY = 0;
+        let isDragging = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        let draggingPoint = null; // 'start', 'end', 'control', 'whole', 'edge', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'
+        let currentTool = 'select'; // 'select', 'circle', 'text', 'arrow', 'rectangle', 'circle-zone'
+        let currentChainGroup = 1; // Incremented when user breaks chain
+
+        // Display settings
+        let showOutlines = true;
+
+        // DOM elements
+        const videoPlayer = document.getElementById('videoPlayer');
+        const annotationCanvas = document.getElementById('annotationCanvas');
+        const ctx = annotationCanvas.getContext('2d');
+        const videoInput = document.getElementById('videoInput');
+        const uploadZone = document.getElementById('uploadZone');
+        const placeholder = document.getElementById('placeholder');
+        const videoControls = document.getElementById('videoControls');
+        const timeline = document.getElementById('timeline');
+        const timelineProgress = document.getElementById('timelineProgress');
+        const playhead = document.getElementById('playhead');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const freezeBtn = document.getElementById('freezeBtn');
+        const freezeIndicator = document.getElementById('freezeIndicator');
+
+        // ===== INITIALIZATION =====
+        function init() {
+            setupEventListeners();
+            setupDragAndDrop();
+            setupSliders();
+            setupToolSelection();
+        }
+
+        function setupEventListeners() {
+            videoInput.addEventListener('change', handleVideoUpload);
+            document.getElementById('projectInput').addEventListener('change', loadProject);
+            videoPlayer.addEventListener('loadedmetadata', handleVideoLoaded);
+            videoPlayer.addEventListener('timeupdate', handleTimeUpdate);
+            videoPlayer.addEventListener('ended', handleVideoEnded);
+            timeline.addEventListener('click', seekToPosition);
+            timeline.addEventListener('touchend', (e) => {
+                if (isFreezeMode) return;
+                e.preventDefault();
+                const touch = e.changedTouches[0];
+                const rect = timeline.getBoundingClientRect();
+                videoPlayer.currentTime = ((touch.clientX - rect.left) / rect.width) * videoDuration;
+            }, { passive: false });
+            setupPlayheadDrag();
+            annotationCanvas.addEventListener('mousedown', handleCanvasMouseDown);
+            annotationCanvas.addEventListener('mousemove', handleCanvasMouseMove);
+            annotationCanvas.addEventListener('mouseup', handleCanvasMouseUp);
+            annotationCanvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+            annotationCanvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+            annotationCanvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+            annotationCanvas.addEventListener('touchcancel', handleTouchCancel, { passive: false });
+            const textOverlay = document.getElementById('textOverlay');
+            const textOverlayContainer = document.getElementById('textOverlayContainer');
+            const textOverlaySize = document.getElementById('textOverlaySize');
+
+            // Handle font size change
+            textOverlaySize.addEventListener('change', (e) => {
+                if (!pendingTextBox) return;
+                const sz = parseInt(e.target.value);
+                pendingTextBox.fontSize = sz;
+                textOverlay.style.fontSize = sz + 'px';
+                textOverlay.focus();
+            });
+
+            // Handle clicking on select - stop propagation to prevent canvas click
+            textOverlaySize.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // Confirm button handler
+            document.getElementById('textOverlayConfirm').addEventListener('click', (e) => {
+                e.stopPropagation();
+                commitTextOverlay();
+            });
+            document.getElementById('textOverlayColor').addEventListener('input', (e) => {
+                if (!pendingTextBox) return;
+                pendingTextBox.color = e.target.value;
+                textOverlay.style.color = e.target.value;
+                textOverlay.focus();
+            });
+            textOverlay.addEventListener('keydown', (e) => {
+                e.stopPropagation();
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    // Enter confirms the text box
+                    e.preventDefault();
+                    commitTextOverlay();
+                } else if (e.key === 'Escape') {
+                    // Escape cancels
+                    pendingTextBox = null;
+                    textOverlayContainer.style.display = 'none';
+                    textOverlay.value = '';
+                    redrawAnnotations();
+                    setTool('select');
+                }
+            });
+            document.addEventListener('keydown', handleKeyboard);
+            annotationCanvas.addEventListener('dblclick', handleCanvasDblClick);
+            window.addEventListener('resize', () => { if (videoWidth > 0) setupCanvas(); });
+
+            // Monitor video container size changes
+            const resizeObserver = new ResizeObserver(() => {
+                if (videoWidth > 0) {
+                    console.log('[ResizeObserver] Container resized, updating canvas');
+                    setupCanvas();
+                }
+            });
+            resizeObserver.observe(document.getElementById('videoContainer'));
+
+            window.addEventListener('beforeunload', (e) => {
+                if (freezeFrames.length > 0 || currentAnnotations.length > 0) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        }
+
+        function setupDragAndDrop() {
+            uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) handleVideoFile(e.dataTransfer.files[0]);
+            });
+        }
+
+        function setupSliders() {
+            document.getElementById('opacitySlider').addEventListener('input', (e) => document.getElementById('opacityValue').textContent = e.target.value);
+            document.getElementById('sizeSlider').addEventListener('input', (e) => document.getElementById('sizeValue').textContent = e.target.value);
+            document.getElementById('shapeOpacitySlider').addEventListener('input', (e) => document.getElementById('shapeOpacityValue').textContent = e.target.value);
+            document.getElementById('durationSlider').addEventListener('input', (e) => {
+                document.getElementById('durationValue').textContent = e.target.value;
+                if (currentFreezeFrameIndex >= 0) {
+                    freezeFrames[currentFreezeFrameIndex].duration = parseFloat(e.target.value);
+                    updateFreezeFramesList();
+                }
+            });
+
+        }
+
+        function setupToolSelection() {
+            // Tool selection is now handled by setTool() function with buttons
+            // This function is kept for backward compatibility but is no longer needed
+        }
+
+        // ===== VIDEO UPLOAD =====
+        function handleVideoUpload(e) {
+            if (e.target.files[0]) handleVideoFile(e.target.files[0]);
+        }
+
+        function handleVideoFile(file) {
+            const validTypes = ['video/mp4', 'video/quicktime', 'video/avi', 'video/x-msvideo'];
+            if (!validTypes.includes(file.type) && !file.name.match(/\.(mp4|mov|avi)$/i)) {
+                showToast('Unsupported format. Use MP4, MOV, or AVI.', 'error');
+                return;
+            }
+            videoFile = file;
+            videoPlayer.src = URL.createObjectURL(file);
+            placeholder.innerHTML = '<div class="placeholder-icon">⏳</div><div class="placeholder-text">Loading video...</div>';
+        }
+
+        function handleVideoLoaded() {
+            videoDuration = videoPlayer.duration;
+            videoWidth = videoPlayer.videoWidth;
+            videoHeight = videoPlayer.videoHeight;
+
+            if (videoDuration > 120) {
+                showToast(`Video too long (${formatTime(videoDuration)}). Max 2 minutes.`, 'error');
+                resetVideo();
+                return;
+            }
+
+            placeholder.style.display = 'none';
+            document.getElementById('uploadNotice').style.display = 'none';
+            videoPlayer.style.display = 'block';
+            videoControls.style.display = 'block';
+
+            // Delay canvas setup slightly to ensure video has rendered at correct size
+            setTimeout(() => {
+                setupCanvas();
+                console.log('[handleVideoLoaded] Canvas setup complete');
+            }, 100);
+
+            document.getElementById('videoInfo').style.display = 'flex';
+            document.getElementById('videoDuration').textContent = formatTime(videoDuration);
+            document.getElementById('videoResolution').textContent = `${videoWidth}x${videoHeight}`;
+            document.getElementById('videoSize').textContent = `${(videoFile.size / 1024 / 1024).toFixed(1)} MB`;
+            document.getElementById('totalTime').textContent = formatTime(videoDuration);
+            document.getElementById('freezeFramesSection').style.display = 'block';
+            document.getElementById('exportSection').style.display = 'block';
+            document.getElementById('uploadSection').removeAttribute('open');
+            document.getElementById('howToUseSection').style.display = 'none';
+
+            showToast('Video loaded successfully!', 'success');
+        }
+
+        function setupCanvas() {
+            const oldWidth = annotationCanvas.width;
+            const oldHeight = annotationCanvas.height;
+
+            const container = document.getElementById('videoContainer');
+            const containerRect = container.getBoundingClientRect();
+            const videoAspect = videoWidth / videoHeight;
+            const containerAspect = containerRect.width / containerRect.height;
+
+            let displayWidth, displayHeight;
+            if (videoAspect > containerAspect) {
+                displayWidth = containerRect.width;
+                displayHeight = containerRect.width / videoAspect;
+            } else {
+                displayHeight = containerRect.height;
+                displayWidth = containerRect.height * videoAspect;
+            }
+
+            // Use the video element's actual rendered size if available (more accurate)
+            const videoRect = videoPlayer.getBoundingClientRect();
+            if (videoRect.width > 0 && videoRect.height > 0) {
+                displayWidth = videoRect.width;
+                displayHeight = videoRect.height;
+            }
+
+            annotationCanvas.width = displayWidth;
+            annotationCanvas.height = displayHeight;
+            annotationCanvas.style.width = displayWidth + 'px';
+            annotationCanvas.style.height = displayHeight + 'px';
+
+            // Position canvas to exactly match video position within container
+            const offsetX = videoRect.left - containerRect.left;
+            const offsetY = videoRect.top - containerRect.top;
+
+            annotationCanvas.style.left = offsetX + 'px';
+            annotationCanvas.style.top = offsetY + 'px';
+            annotationCanvas.style.display = 'block';
+            annotationCanvas.scaleX = displayWidth / videoWidth;
+            annotationCanvas.scaleY = displayHeight / videoHeight;
+
+            console.log('[setupCanvas] Canvas:', displayWidth, 'x', displayHeight, 'Position:', offsetX, offsetY, 'Container:', containerRect.width, 'x', containerRect.height);
+
+            // Remap annotation coordinates when canvas size changes
+            if (oldWidth > 0 && oldHeight > 0 && (oldWidth !== displayWidth || oldHeight !== displayHeight)) {
+                const sx = displayWidth / oldWidth;
+                const sy = displayHeight / oldHeight;
+                remapAnnotations(currentAnnotations, sx, sy);
+                freezeFrames.forEach(ff => remapAnnotations(ff.annotations, sx, sy));
+            }
+
+            // Redraw if in freeze mode (canvas clear happens on resize)
+            if (isFreezeMode) redrawAnnotations();
+        }
+
+        function remapAnnotations(annotations, sx, sy) {
+            for (const ann of annotations) {
+                if (ann.type === 'circle' || ann.type === 'circle-zone') {
+                    ann.x *= sx;
+                    ann.y *= sy;
+                    ann.radius *= Math.min(sx, sy);
+                    if (ann.radiusX) ann.radiusX *= sx;
+                    if (ann.radiusY) ann.radiusY *= sy;
+                } else if (ann.type === 'arrow') {
+                    ann.x1 *= sx; ann.y1 *= sy;
+                    ann.x2 *= sx; ann.y2 *= sy;
+                    if (ann.cx !== undefined) { ann.cx *= sx; ann.cy *= sy; }
+                } else if (ann.type === 'rectangle') {
+                    ann.x1 *= sx; ann.y1 *= sy;
+                    ann.x2 *= sx; ann.y2 *= sy;
+                    if (ann.freeCorners) {
+                        ann.freeCorners.forEach(c => { c.x *= sx; c.y *= sy; });
+                    }
+                } else if (ann.type === 'text') {
+                    if (ann.x1 !== undefined) {
+                        ann.x1 *= sx; ann.y1 *= sy;
+                        ann.x2 *= sx; ann.y2 *= sy;
+                    } else {
+                        ann.x *= sx; ann.y *= sy;
+                    }
+                    ann.fontSize *= Math.min(sx, sy);
+                }
+            }
+        }
+
+        // ===== TOOL SELECTION =====
+        function setTool(tool) {
+            currentTool = tool;
+
+            // Update button states
+            document.querySelectorAll('.tool-btn, .button-row .btn').forEach(btn => btn.classList.remove('active'));
+            const btn = document.getElementById('btn-' + tool);
+            if (btn) btn.classList.add('active');
+
+            // Update cursor
+            annotationCanvas.classList.remove('cursor-default', 'cursor-crosshair');
+            if (tool === 'select') {
+                annotationCanvas.classList.add('cursor-default');
+            } else {
+                annotationCanvas.classList.add('cursor-crosshair');
+            }
+
+            // Deselect any selected annotation when switching tools
+            if (tool !== 'select') {
+                selectedAnnotation = null;
+                redrawAnnotations();
+            }
+        }
+
+        function toggleTool(tool) {
+            // If already using this tool, switch back to select
+            if (currentTool === tool) {
+                setTool('select');
+            } else {
+                setTool(tool);
+            }
+        }
+
+        function breakChain() {
+            currentChainGroup++;
+            showToast('Chain broken - next marker starts new chain', 'success');
+        }
+
+        // ===== PLAYBACK =====
+        function togglePlayPause() {
+            if (isFreezeMode) return;
+            if (isPlaying) {
+                videoPlayer.pause();
+                playPauseBtn.innerHTML = 'Play';
+            } else {
+                videoPlayer.play();
+                playPauseBtn.innerHTML = 'Pause';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function handleTimeUpdate() {
+            if (!isFreezeMode) {
+                const progress = (videoPlayer.currentTime / videoDuration) * 100;
+                timelineProgress.style.width = progress + '%';
+                playhead.style.left = progress + '%';
+                document.getElementById('currentTime').textContent = formatTime(videoPlayer.currentTime);
+                if (isPreviewMode) renderPreviewAnnotations();
+            }
+        }
+
+        function handleVideoEnded() {
+            isPlaying = false;
+            playPauseBtn.innerHTML = 'Play';
+            if (isPreviewMode) exitPreviewMode();
+        }
+
+        function seekToPosition(e) {
+            if (isFreezeMode) return;
+            const rect = timeline.getBoundingClientRect();
+            videoPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * videoDuration;
+        }
+
+        function setupPlayheadDrag() {
+            let dragging = false;
+            function onDragStart(clientX, e) {
+                if (!isFreezeMode) { dragging = true; if (e) e.preventDefault(); }
+            }
+            function onDragMove(clientX) {
+                if (!dragging) return;
+                const rect = timeline.getBoundingClientRect();
+                let pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+                videoPlayer.currentTime = pos * videoDuration;
+            }
+            function onDragEnd() { dragging = false; }
+            // Mouse events
+            playhead.addEventListener('mousedown', (e) => onDragStart(e.clientX, e));
+            document.addEventListener('mousemove', (e) => onDragMove(e.clientX));
+            document.addEventListener('mouseup', onDragEnd);
+            // Touch events
+            playhead.addEventListener('touchstart', (e) => { onDragStart(e.touches[0].clientX, e); }, { passive: false });
+            document.addEventListener('touchmove', (e) => { if (dragging) { e.preventDefault(); onDragMove(e.touches[0].clientX); } }, { passive: false });
+            document.addEventListener('touchend', onDragEnd);
+            document.addEventListener('touchcancel', onDragEnd);
+        }
+
+        function resetVideo() {
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+            videoPlayer.src = '';
+            videoPlayer.style.display = 'none';
+            annotationCanvas.style.display = 'none';
+            videoControls.style.display = 'none';
+            placeholder.style.display = 'block';
+            document.getElementById('uploadNotice').style.display = 'block';
+            placeholder.innerHTML = '<div class="placeholder-icon">🎬</div><div class="placeholder-text">Upload a video to get started</div><div class="placeholder-subtext">Max 2 minutes • MP4, MOV, or AVI</div>';
+            document.getElementById('videoInfo').style.display = 'none';
+            document.getElementById('freezeFramesSection').style.display = 'none';
+            document.getElementById('exportSection').style.display = 'none';
+            document.getElementById('uploadSection').setAttribute('open', '');
+            document.getElementById('howToUseSection').style.display = 'block';
+            videoFile = null;
+            freezeFrames = [];
+            currentAnnotations = [];
+            exitFreezeMode();
+            updateFreezeFramesList();
+        }
+
+        // ===== FREEZE FRAME =====
+        function freezeFrame() {
+            if (isFreezeMode) return;
+            if (isPreviewMode || isInPreviewFreeze || previewFreezeTimer) {
+                // Prevent preview timers from resuming playback while editing.
+                exitPreviewMode({ hideCanvas: false, clearIndicator: false });
+            }
+            videoPlayer.pause();
+            isPlaying = false;
+            playPauseBtn.innerHTML = 'Play';
+
+            const timestamp = videoPlayer.currentTime;
+            const existingIndex = freezeFrames.findIndex(ff => Math.abs(ff.timestamp - timestamp) < 0.1);
+
+            if (existingIndex >= 0) {
+                currentFreezeFrameIndex = existingIndex;
+                currentAnnotations = JSON.parse(JSON.stringify(freezeFrames[existingIndex].annotations));
+                document.getElementById('durationSlider').value = freezeFrames[existingIndex].duration;
+                document.getElementById('durationValue').textContent = freezeFrames[existingIndex].duration;
+            } else {
+                const newFF = { timestamp, duration: parseFloat(document.getElementById('durationSlider').value) || 3, annotations: [] };
+                freezeFrames.push(newFF);
+                freezeFrames.sort((a, b) => a.timestamp - b.timestamp);
+                currentFreezeFrameIndex = freezeFrames.findIndex(ff => ff.timestamp === timestamp);
+                currentAnnotations = [];
+            }
+
+            enterFreezeMode();
+            redrawAnnotations();
+            updateFreezeFramesList();
+            updateTimelineMarkers();
+        }
+
+        function enterFreezeMode() {
+            isFreezeMode = true;
+            freezeIndicator.textContent = '✏️ Annotation Mode - Draw on the canvas';
+            freezeIndicator.classList.add('show');
+            freezeBtn.disabled = true;
+            freezeBtn.innerHTML = 'Annotating...';
+            document.getElementById('toolSection').style.display = 'block';
+            document.getElementById('annotationControls').style.display = 'block';
+            annotationCanvas.classList.add('active');
+            // Default to select tool when entering freeze mode (no button pressed)
+            setTool('select');
+        }
+
+        function exitFreezeMode() {
+            isFreezeMode = false;
+            freezeIndicator.classList.remove('show');
+            freezeBtn.disabled = false;
+            freezeBtn.innerHTML = 'Add Annotation';
+            document.getElementById('toolSection').style.display = 'none';
+            document.getElementById('annotationControls').style.display = 'none';
+            annotationCanvas.classList.remove('active');
+            commitTextOverlay();
+            currentFreezeFrameIndex = -1;
+            currentAnnotations = [];
+            selectedAnnotation = null;
+            ctx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+        }
+
+        function saveAndResume() {
+            // Commit any pending text overlay BEFORE saving annotations
+            commitTextOverlay();
+            if (currentFreezeFrameIndex >= 0) {
+                freezeFrames[currentFreezeFrameIndex].annotations = JSON.parse(JSON.stringify(currentAnnotations));
+                showToast(`Annotation saved at ${formatTime(freezeFrames[currentFreezeFrameIndex].timestamp)}`, 'success');
+            }
+            exitFreezeMode();
+            isPlaying = false;
+            playPauseBtn.innerHTML = 'Play';
+            updateFreezeFramesList();
+        }
+
+        // ===== DRAWING =====
+        function redrawAnnotations() {
+            ctx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+            // Draw marker chain lines first (behind markers)
+            drawMarkerChainLines(ctx, currentAnnotations, 1, 1);
+            // Draw annotations without animation during editing
+            currentAnnotations.forEach(ann => drawAnnotationFromList(ann, currentAnnotations));
+
+            // Draw control points for selected arrow
+            if (selectedAnnotation !== null && currentAnnotations[selectedAnnotation]) {
+                const ann = currentAnnotations[selectedAnnotation];
+                if (ann.type === 'arrow') {
+                    // Curve control point (blue)
+                    if (ann.cx !== undefined && ann.cy !== undefined) {
+                        ctx.fillStyle = '#0099ff';
+                        ctx.beginPath();
+                        ctx.arc(ann.cx, ann.cy, 7, 0, 2 * Math.PI);
+                        ctx.fill();
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+                    // Start/end point controls (orange)
+                    ctx.fillStyle = '#ff6600';
+                    ctx.beginPath();
+                    ctx.arc(ann.x1, ann.y1, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(ann.x2, ann.y2, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+                drawSelectionHighlight(ann);
+            }
+        }
+
+        function drawAnnotationFromList(ann, annotationList) {
+            switch (ann.type) {
+                case 'circle': drawCircle(ann.x, ann.y, ann.radius, ann.color, ann.opacity); break;
+                case 'arrow': drawArrow(ann.x1, ann.y1, ann.x2, ann.y2, ann.color, ann.cx, ann.cy, ann.style); break;
+                case 'rectangle': drawRectangle(ann.x1, ann.y1, ann.x2, ann.y2, ann.color, ann.opacity, ann.freeCorners); break;
+                case 'circle-zone': drawCircleZone(ann.x, ann.y, ann.radius, ann.color, ann.opacity, ann.radiusX, ann.radiusY); break;
+                case 'text':
+                    if (ann.x1 !== undefined) drawTextBox(ann.x1, ann.y1, ann.x2, ann.y2, ann.text, ann.color, ann.fontSize);
+                    else drawText(ann.x, ann.y, ann.text, ann.color, ann.fontSize);
+                    break;
+            }
+        }
+
+
+        function darkenColor(color, percent = 30) {
+            const rgb = hexToRgb(color);
+            return `rgb(${Math.floor(rgb.r * (1 - percent / 100))}, ${Math.floor(rgb.g * (1 - percent / 100))}, ${Math.floor(rgb.b * (1 - percent / 100))})`;
+        }
+
+        function drawDashedOutline(ctx, pathFn, color, lineWidth, dashLength = 14, gapLength = 10) {
+            if (!showOutlines) return;
+            const darkColor = darkenColor(color, 25);
+
+            ctx.save();
+
+            // Outer glow (thickest, most blur)
+            ctx.shadowColor = darkColor;
+            ctx.shadowBlur = lineWidth * 3;
+            ctx.strokeStyle = darkColor;
+            ctx.lineWidth = lineWidth * 1.5;
+            ctx.setLineDash([dashLength, gapLength]);
+            pathFn();
+            ctx.stroke();
+
+            // Middle glow layer
+            ctx.shadowBlur = lineWidth * 1.5;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            pathFn();
+            ctx.stroke();
+
+            // Bright center
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = lineWidth * 0.4;
+            ctx.globalAlpha = 0.8;
+            pathFn();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawCircle(x, y, radius, color, opacity) {
+            const radiusX = radius * 1.4, radiusY = radius * 0.5;
+            const rgb = hexToRgb(color);
+
+            // Fill gradient (top to bottom)
+            const fillGradient = ctx.createLinearGradient(x, y - radiusY, x, y + radiusY);
+            fillGradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity * 0.5 / 100})`);
+            fillGradient.addColorStop(1, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity / 100})`);
+            ctx.fillStyle = fillGradient;
+            ctx.beginPath();
+            ctx.ellipse(x, y, radiusX, radiusY, 0, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Outline with gradient (matches fill gradient)
+            if (showOutlines) {
+                ctx.save();
+                // Stronger gradient on outline - no outline at top, fades in middle, full at bottom
+                // Opacity does NOT affect outline - always uses full opacity
+                const outlineGradient = ctx.createLinearGradient(x, y - radiusY, x, y + radiusY);
+                outlineGradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)`);
+                outlineGradient.addColorStop(0.5, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)`);
+                outlineGradient.addColorStop(0.7, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.4)`);
+                outlineGradient.addColorStop(1, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1.0)`);
+                ctx.strokeStyle = outlineGradient;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.ellipse(x, y, radiusX, radiusY, 0, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        function drawLineBetweenEllipses(drawCtx, x1, y1, x2, y2, radius1, radius2, color, sx, sy) {
+            const r1x = radius1 * 1.4 * sx, r1y = radius1 * 0.5 * sy;
+            const r2x = radius2 * 1.4 * sx, r2y = radius2 * 0.5 * sy;
+            const dx = x2 - x1, dy = y2 - y1;
+            const angle = Math.atan2(dy, dx);
+            const startX = x1 + r1x * Math.cos(angle);
+            const startY = y1 + r1y * Math.sin(angle);
+            const endX = x2 - r2x * Math.cos(angle);
+            const endY = y2 - r2y * Math.sin(angle);
+            drawCtx.globalAlpha = 0.6;
+            drawCtx.strokeStyle = color;
+            drawCtx.lineWidth = 2 * Math.min(sx, sy);
+            drawCtx.beginPath();
+            drawCtx.moveTo(startX, startY);
+            drawCtx.lineTo(endX, endY);
+            drawCtx.stroke();
+            drawCtx.globalAlpha = 1.0;
+        }
+
+        function drawMarkerChainLines(drawCtx, annotations, scaleX, scaleY) {
+            // Group circle markers by chainGroup and linkMode
+            const groups = {};
+            annotations.forEach(ann => {
+                if (ann.type !== 'circle' || !ann.linkMode || ann.linkMode === 'none') return;
+                const key = `${ann.chainGroup}-${ann.linkMode}`;
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(ann);
+            });
+            for (const key in groups) {
+                const markers = groups[key];
+                if (markers.length < 2) continue;
+                const mode = markers[0].linkMode;
+                if (mode === 'chain') {
+                    for (let i = 0; i < markers.length - 1; i++) {
+                        drawLineBetweenEllipses(drawCtx,
+                            markers[i].x * scaleX, markers[i].y * scaleY,
+                            markers[i + 1].x * scaleX, markers[i + 1].y * scaleY,
+                            markers[i].radius, markers[i + 1].radius,
+                            markers[i].color, scaleX, scaleY);
+                    }
+                } else if (mode === 'all') {
+                    for (let i = 0; i < markers.length; i++) {
+                        for (let j = i + 1; j < markers.length; j++) {
+                            drawLineBetweenEllipses(drawCtx,
+                                markers[i].x * scaleX, markers[i].y * scaleY,
+                                markers[j].x * scaleX, markers[j].y * scaleY,
+                                markers[i].radius, markers[j].radius,
+                                markers[i].color, scaleX, scaleY);
+                        }
+                    }
+                }
+            }
+        }
+
+        function drawArrow(x1, y1, x2, y2, color, cx, cy, style) {
+            const headLength = 15;
+            let angle = cx !== undefined ? Math.atan2(y2 - cy, x2 - cx) : Math.atan2(y2 - y1, x2 - x1);
+            let endX = x2 - headLength * 0.7 * Math.cos(angle), endY = y2 - headLength * 0.7 * Math.sin(angle);
+
+            ctx.lineWidth = 3;
+            ctx.setLineDash(style === 'dashed' ? [10, 5] : style === 'dotted' ? [2, 5] : []);
+
+            // Draw gradient fade at the start (first 25% of arrow)
+            const gradStartLength = Math.hypot(endX - x1, endY - y1) * 0.25;
+            const rgb = hexToRgb(color);
+
+            if (cx !== undefined) {
+                // Curved arrow - approximate gradient along curve
+                const dx = endX - x1, dy = endY - y1;
+                const len = Math.hypot(dx, dy);
+                const gradLen = len * 0.25;
+                const gradEndX = x1 + (dx / len) * gradLen;
+                const gradEndY = y1 + (dy / len) * gradLen;
+                const gradient = ctx.createLinearGradient(x1, y1, gradEndX, gradEndY);
+                gradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`);
+                gradient.addColorStop(1, color);
+                ctx.strokeStyle = gradient;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.quadraticCurveTo(cx, cy, endX, endY);
+                ctx.stroke();
+            } else {
+                // Straight arrow - gradient section then solid
+                const dx = endX - x1, dy = endY - y1;
+                const len = Math.hypot(dx, dy);
+                const gradLen = Math.min(gradStartLength, len * 0.25);
+                const gradEndX = x1 + (dx / len) * gradLen;
+                const gradEndY = y1 + (dy / len) * gradLen;
+
+                // Gradient fade section
+                const gradient = ctx.createLinearGradient(x1, y1, gradEndX, gradEndY);
+                gradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`);
+                gradient.addColorStop(1, color);
+                ctx.strokeStyle = gradient;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(gradEndX, gradEndY);
+                ctx.stroke();
+
+                // Solid section
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(gradEndX, gradEndY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+
+            ctx.setLineDash([]);
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headLength * Math.cos(angle - Math.PI / 6), y2 - headLength * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headLength * Math.cos(angle + Math.PI / 6), y2 - headLength * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawRectangle(x1, y1, x2, y2, color, opacity, freeCorners) {
+            ctx.globalAlpha = opacity / 100;
+            ctx.fillStyle = color;
+            if (freeCorners) {
+                ctx.beginPath();
+                ctx.moveTo(freeCorners[0].x, freeCorners[0].y);
+                for (let i = 1; i < freeCorners.length; i++) ctx.lineTo(freeCorners[i].x, freeCorners[i].y);
+                ctx.closePath();
+                ctx.fill();
+            } else {
+                ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+            }
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawCircleZone(x, y, radius, color, opacity, radiusX, radiusY) {
+            const rx = radiusX || radius;
+            const ry = radiusY || radius;
+            ctx.globalAlpha = opacity / 100;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.ellipse(x, y, rx, ry, 0, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawText(x, y, text, color, fontSize) {
+            // Legacy single-point text (backward compat)
+            ctx.globalAlpha = 1.0;
+            ctx.fillStyle = color;
+            ctx.font = `bold ${fontSize}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, x, y);
+        }
+
+        function drawTextBox(x1, y1, x2, y2, text, color, fontSize) {
+            const left = Math.min(x1, x2), top = Math.min(y1, y2);
+            const w = Math.abs(x2 - x1), h = Math.abs(y2 - y1);
+            ctx.globalAlpha = 1.0;
+            ctx.fillStyle = color;
+            ctx.font = `bold ${fontSize}px sans-serif`;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            const lineHeight = fontSize * 1.3;
+            const lines = wrapText(ctx, text, w - 8);
+            const padding = 4;
+            lines.forEach((line, i) => {
+                const ly = top + padding + i * lineHeight;
+                if (ly + lineHeight <= top + h + lineHeight) {
+                    ctx.fillText(line, left + padding, ly);
+                }
+            });
+        }
+
+        function wrapText(context, text, maxWidth) {
+            const result = [];
+            const paragraphs = text.split('\n');
+            for (const para of paragraphs) {
+                if (para === '') { result.push(''); continue; }
+                const words = para.split(' ');
+                let line = '';
+                for (const word of words) {
+                    const test = line ? line + ' ' + word : word;
+                    if (context.measureText(test).width > maxWidth && line) {
+                        result.push(line);
+                        line = word;
+                    } else {
+                        line = test;
+                    }
+                }
+                result.push(line);
+            }
+            return result;
+        }
+
+        function drawSelectionHighlight(ann) {
+            ctx.strokeStyle = '#00ff00';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 5]);
+
+            if (ann.type === 'circle') {
+                ctx.beginPath();
+                ctx.ellipse(ann.x, ann.y, ann.radius * 1.4 + 5, ann.radius * 0.5 + 5, 0, 0, 2 * Math.PI);
+                ctx.stroke();
+                // Draw resize handle at edge
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#ff6600';
+                ctx.beginPath();
+                ctx.arc(ann.x + ann.radius * 1.4, ann.y, 6, 0, 2 * Math.PI);
+                ctx.fill();
+            } else if (ann.type === 'arrow') {
+                // Arrow handles drawn in redrawAnnotations
+            } else if (ann.type === 'rectangle') {
+                if (ann.freeCorners) {
+                    ctx.beginPath();
+                    ctx.moveTo(ann.freeCorners[0].x, ann.freeCorners[0].y);
+                    for (let i = 1; i < ann.freeCorners.length; i++) ctx.lineTo(ann.freeCorners[i].x, ann.freeCorners[i].y);
+                    ctx.closePath();
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = '#ff6600';
+                    ann.freeCorners.forEach(c => { ctx.fillRect(c.x - 5, c.y - 5, 10, 10); });
+                } else {
+                    ctx.strokeRect(ann.x1 - 3, ann.y1 - 3, ann.x2 - ann.x1 + 6, ann.y2 - ann.y1 + 6);
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = '#ff6600';
+                    [{ x: ann.x1, y: ann.y1 }, { x: ann.x2, y: ann.y1 }, { x: ann.x1, y: ann.y2 }, { x: ann.x2, y: ann.y2 }].forEach(corner => {
+                        ctx.fillRect(corner.x - 5, corner.y - 5, 10, 10);
+                    });
+                }
+            } else if (ann.type === 'circle-zone') {
+                const rx = ann.radiusX || ann.radius;
+                const ry = ann.radiusY || ann.radius;
+                ctx.beginPath();
+                ctx.ellipse(ann.x, ann.y, rx + 3, ry + 3, 0, 0, 2 * Math.PI);
+                ctx.stroke();
+                // Draw 4 control point handles
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#ff6600';
+                const handles = [
+                    { x: ann.x + rx, y: ann.y },       // right
+                    { x: ann.x - rx, y: ann.y },       // left
+                    { x: ann.x, y: ann.y - ry },       // top
+                    { x: ann.x, y: ann.y + ry }        // bottom
+                ];
+                handles.forEach(h => { ctx.beginPath(); ctx.arc(h.x, h.y, 6, 0, 2 * Math.PI); ctx.fill(); });
+            } else if (ann.type === 'text') {
+                if (ann.x1 !== undefined) {
+                    ctx.strokeRect(ann.x1 - 3, ann.y1 - 3, ann.x2 - ann.x1 + 6, ann.y2 - ann.y1 + 6);
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = '#ff6600';
+                    [{ x: ann.x1, y: ann.y1 }, { x: ann.x2, y: ann.y1 }, { x: ann.x1, y: ann.y2 }, { x: ann.x2, y: ann.y2 }].forEach(c => {
+                        ctx.fillRect(c.x - 5, c.y - 5, 10, 10);
+                    });
+                } else {
+                    ctx.font = `bold ${ann.fontSize}px sans-serif`;
+                    const w = ctx.measureText(ann.text).width;
+                    ctx.strokeRect(ann.x - w / 2 - 5, ann.y - ann.fontSize / 2 - 5, w + 10, ann.fontSize + 10);
+                }
+            }
+            ctx.setLineDash([]);
+        }
+
+        // ===== CANVAS EVENTS =====
+        function getCanvasCoords(e) {
+            const rect = annotationCanvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (annotationCanvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (annotationCanvas.height / rect.height);
+
+            // Debug logging for edge cases
+            if (x < 0 || x > annotationCanvas.width || y < 0 || y > annotationCanvas.height) {
+                console.log('[getCanvasCoords] Out of bounds:', x, y, 'Canvas:', annotationCanvas.width, annotationCanvas.height, 'Rect:', rect.left, rect.top, rect.width, rect.height);
+            }
+
+            return { x, y };
+        }
+
+        function handleCanvasMouseDown(e) {
+            if (!isFreezeMode) return;
+            const coords = getCanvasCoords(e);
+            const tool = currentTool;
+            const color = document.getElementById('colorPicker').value;
+            const opacity = parseInt(document.getElementById('opacitySlider').value);
+            const size = parseInt(document.getElementById('sizeSlider').value);
+
+            if (tool === 'select') {
+                // Check if clicking on control points of selected arrow
+                if (selectedAnnotation !== null && currentAnnotations[selectedAnnotation] && currentAnnotations[selectedAnnotation].type === 'arrow') {
+                    const arrow = currentAnnotations[selectedAnnotation];
+
+                    // Check start point
+                    let dist = Math.hypot(coords.x - arrow.x1, coords.y - arrow.y1);
+                    if (dist < 12) {
+                        saveUndoState();
+                        isDragging = true;
+                        draggingPoint = 'start';
+                        dragOffsetX = coords.x - arrow.x1;
+                        dragOffsetY = coords.y - arrow.y1;
+                        return;
+                    }
+
+                    // Check end point
+                    dist = Math.hypot(coords.x - arrow.x2, coords.y - arrow.y2);
+                    if (dist < 12) {
+                        saveUndoState();
+                        isDragging = true;
+                        draggingPoint = 'end';
+                        dragOffsetX = coords.x - arrow.x2;
+                        dragOffsetY = coords.y - arrow.y2;
+                        return;
+                    }
+
+                    // Check curve control point
+                    if (arrow.cx !== undefined && arrow.cy !== undefined) {
+                        dist = Math.hypot(coords.x - arrow.cx, coords.y - arrow.cy);
+                        if (dist < 12) {
+                            saveUndoState();
+                            isDragging = true;
+                            draggingPoint = 'control';
+                            dragOffsetX = coords.x - arrow.cx;
+                            dragOffsetY = coords.y - arrow.cy;
+                            return;
+                        }
+                    }
+                }
+
+                // Check if clicking on resize handles of selected shape
+                if (selectedAnnotation !== null && currentAnnotations[selectedAnnotation]) {
+                    const ann = currentAnnotations[selectedAnnotation];
+                    let clickedOnHandle = false;
+
+                    if (ann.type === 'circle') {
+                        // Check resize handle at edge
+                        const handleX = ann.x + ann.radius * 1.4;
+                        const handleY = ann.y;
+                        if (Math.hypot(coords.x - handleX, coords.y - handleY) < 10) {
+                            saveUndoState();
+                            isDragging = true;
+                            draggingPoint = 'edge';
+                            clickedOnHandle = true;
+                        }
+                    } else if (ann.type === 'rectangle') {
+                        if (ann.freeCorners) {
+                            for (let ci = 0; ci < ann.freeCorners.length; ci++) {
+                                const c = ann.freeCorners[ci];
+                                if (Math.hypot(coords.x - c.x, coords.y - c.y) < 10) {
+                                    saveUndoState();
+                                    isDragging = true;
+                                    draggingPoint = 'freeCorner' + ci;
+                                    dragOffsetX = coords.x - c.x;
+                                    dragOffsetY = coords.y - c.y;
+                                    clickedOnHandle = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            const corners = [
+                                { x: ann.x1, y: ann.y1, name: 'topLeft' },
+                                { x: ann.x2, y: ann.y1, name: 'topRight' },
+                                { x: ann.x1, y: ann.y2, name: 'bottomLeft' },
+                                { x: ann.x2, y: ann.y2, name: 'bottomRight' }
+                            ];
+                            for (const corner of corners) {
+                                if (Math.hypot(coords.x - corner.x, coords.y - corner.y) < 10) {
+                                    saveUndoState();
+                                    isDragging = true;
+                                    draggingPoint = corner.name;
+                                    dragOffsetX = coords.x - corner.x;
+                                    dragOffsetY = coords.y - corner.y;
+                                    clickedOnHandle = true;
+                                    break;
+                                }
+                            }
+                        }
+                    } else if (ann.type === 'text' && ann.x1 !== undefined) {
+                        const corners = [
+                            { x: ann.x1, y: ann.y1, name: 'topLeft' },
+                            { x: ann.x2, y: ann.y1, name: 'topRight' },
+                            { x: ann.x1, y: ann.y2, name: 'bottomLeft' },
+                            { x: ann.x2, y: ann.y2, name: 'bottomRight' }
+                        ];
+                        for (const corner of corners) {
+                            if (Math.hypot(coords.x - corner.x, coords.y - corner.y) < 10) {
+                                saveUndoState();
+                                isDragging = true;
+                                draggingPoint = corner.name;
+                                dragOffsetX = coords.x - corner.x;
+                                dragOffsetY = coords.y - corner.y;
+                                clickedOnHandle = true;
+                                break;
+                            }
+                        }
+                    } else if (ann.type === 'circle-zone') {
+                        const rx = ann.radiusX || ann.radius;
+                        const ry = ann.radiusY || ann.radius;
+                        const czHandles = [
+                            { x: ann.x + rx, y: ann.y, name: 'right' },
+                            { x: ann.x - rx, y: ann.y, name: 'left' },
+                            { x: ann.x, y: ann.y - ry, name: 'top' },
+                            { x: ann.x, y: ann.y + ry, name: 'bottom' }
+                        ];
+                        for (const h of czHandles) {
+                            if (Math.hypot(coords.x - h.x, coords.y - h.y) < 10) {
+                                saveUndoState();
+                                isDragging = true;
+                                draggingPoint = h.name;
+                                clickedOnHandle = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (clickedOnHandle) return;
+
+                    // Check if clicking inside selected annotation to drag it
+                    const idx = findAnnotationAt(coords.x, coords.y);
+                    if (idx === selectedAnnotation) {
+                        saveUndoState();
+                        isDragging = true;
+                        draggingPoint = 'whole';
+                        if (ann.x !== undefined) {
+                            dragOffsetX = coords.x - ann.x;
+                            dragOffsetY = coords.y - ann.y;
+                        } else {
+                            dragOffsetX = coords.x - ann.x1;
+                            dragOffsetY = coords.y - ann.y1;
+                        }
+                        return;
+                    }
+                }
+
+                // Try to select new annotation
+                const newSelection = findAnnotationAt(coords.x, coords.y);
+                if (newSelection !== null && newSelection !== selectedAnnotation) {
+                    selectedAnnotation = newSelection;
+                    // If selecting an arrow, add control point if it doesn't exist
+                    const ann = currentAnnotations[selectedAnnotation];
+                    if (ann.type === 'arrow' && ann.cx === undefined) {
+                        ann.cx = (ann.x1 + ann.x2) / 2;
+                        ann.cy = (ann.y1 + ann.y2) / 2;
+                    }
+                } else if (newSelection === null) {
+                    selectedAnnotation = null;
+                }
+                redrawAnnotations();
+
+            } else if (tool === 'circle') {
+                saveUndoState();
+                const linkMode = document.getElementById('connectionMode').value;
+                currentAnnotations.push({ type: 'circle', x: coords.x, y: coords.y, radius: size, color, opacity, linkMode, chainGroup: currentChainGroup });
+                redrawAnnotations();
+                // Stay in circle mode to allow placing multiple markers consecutively
+            } else if (tool === 'text') {
+                commitTextOverlay();
+                isDrawing = true;
+                drawStartX = coords.x;
+                drawStartY = coords.y;
+            } else {
+                isDrawing = true;
+                drawStartX = coords.x;
+                drawStartY = coords.y;
+            }
+        }
+
+        function handleCanvasMouseMove(e) {
+            if (!isFreezeMode) return;
+            const coords = getCanvasCoords(e);
+            const tool = currentTool;
+
+            if (tool === 'select' && isDragging && selectedAnnotation !== null) {
+                const ann = currentAnnotations[selectedAnnotation];
+
+                // Handle arrow control points
+                if (ann.type === 'arrow') {
+                    if (draggingPoint === 'start') {
+                        ann.x1 = coords.x - dragOffsetX;
+                        ann.y1 = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'end') {
+                        ann.x2 = coords.x - dragOffsetX;
+                        ann.y2 = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'control') {
+                        ann.cx = coords.x - dragOffsetX;
+                        ann.cy = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'whole') {
+                        const dx = coords.x - dragOffsetX - ann.x1;
+                        const dy = coords.y - dragOffsetY - ann.y1;
+                        ann.x1 += dx; ann.y1 += dy;
+                        ann.x2 += dx; ann.y2 += dy;
+                        if (ann.cx !== undefined) { ann.cx += dx; ann.cy += dy; }
+                        dragOffsetX = coords.x - ann.x1;
+                        dragOffsetY = coords.y - ann.y1;
+                    }
+                    redrawAnnotations();
+                    return;
+                }
+
+                // Handle circle (player marker)
+                if (ann.type === 'circle') {
+                    if (draggingPoint === 'edge') {
+                        // Resize - calculate new radius based on distance from center
+                        const dx = coords.x - ann.x;
+                        ann.radius = Math.abs(dx) / 1.4; // Divide by 1.4 since radiusX = radius * 1.4
+                    } else {
+                        ann.x = coords.x - dragOffsetX;
+                        ann.y = coords.y - dragOffsetY;
+                    }
+                    redrawAnnotations();
+                    return;
+                }
+
+                // Handle rectangle
+                if (ann.type === 'rectangle') {
+                    if (draggingPoint.startsWith('freeCorner') && ann.freeCorners) {
+                        const ci = parseInt(draggingPoint.replace('freeCorner', ''));
+                        ann.freeCorners[ci].x = coords.x - dragOffsetX;
+                        ann.freeCorners[ci].y = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'topLeft') {
+                        ann.x1 = coords.x - dragOffsetX;
+                        ann.y1 = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'topRight') {
+                        ann.x2 = coords.x - dragOffsetX;
+                        ann.y1 = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'bottomLeft') {
+                        ann.x1 = coords.x - dragOffsetX;
+                        ann.y2 = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'bottomRight') {
+                        ann.x2 = coords.x - dragOffsetX;
+                        ann.y2 = coords.y - dragOffsetY;
+                    } else if (draggingPoint === 'whole') {
+                        if (ann.freeCorners) {
+                            const dx = coords.x - dragOffsetX - ann.freeCorners[0].x;
+                            const dy = coords.y - dragOffsetY - ann.freeCorners[0].y;
+                            ann.freeCorners.forEach(c => { c.x += dx; c.y += dy; });
+                            ann.x1 += dx; ann.y1 += dy;
+                            ann.x2 += dx; ann.y2 += dy;
+                            dragOffsetX = coords.x - ann.freeCorners[0].x;
+                            dragOffsetY = coords.y - ann.freeCorners[0].y;
+                        } else {
+                            const dx = coords.x - dragOffsetX - ann.x1;
+                            const dy = coords.y - dragOffsetY - ann.y1;
+                            ann.x1 += dx; ann.y1 += dy;
+                            ann.x2 += dx; ann.y2 += dy;
+                            dragOffsetX = coords.x - ann.x1;
+                            dragOffsetY = coords.y - ann.y1;
+                        }
+                    }
+                    redrawAnnotations();
+                    return;
+                }
+
+                // Handle circle-zone
+                if (ann.type === 'circle-zone') {
+                    if (draggingPoint === 'right') {
+                        ann.radiusX = Math.abs(coords.x - ann.x);
+                        ann.radius = Math.max(ann.radiusX, ann.radiusY || ann.radius);
+                    } else if (draggingPoint === 'left') {
+                        ann.radiusX = Math.abs(ann.x - coords.x);
+                        ann.radius = Math.max(ann.radiusX, ann.radiusY || ann.radius);
+                    } else if (draggingPoint === 'top') {
+                        ann.radiusY = Math.abs(ann.y - coords.y);
+                        ann.radius = Math.max(ann.radiusX || ann.radius, ann.radiusY);
+                    } else if (draggingPoint === 'bottom') {
+                        ann.radiusY = Math.abs(coords.y - ann.y);
+                        ann.radius = Math.max(ann.radiusX || ann.radius, ann.radiusY);
+                    } else {
+                        ann.x = coords.x - dragOffsetX;
+                        ann.y = coords.y - dragOffsetY;
+                    }
+                    redrawAnnotations();
+                    return;
+                }
+
+                // Handle text
+                if (ann.type === 'text') {
+                    if (ann.x1 !== undefined) {
+                        if (draggingPoint === 'topLeft') {
+                            ann.x1 = coords.x - dragOffsetX;
+                            ann.y1 = coords.y - dragOffsetY;
+                        } else if (draggingPoint === 'topRight') {
+                            ann.x2 = coords.x - dragOffsetX;
+                            ann.y1 = coords.y - dragOffsetY;
+                        } else if (draggingPoint === 'bottomLeft') {
+                            ann.x1 = coords.x - dragOffsetX;
+                            ann.y2 = coords.y - dragOffsetY;
+                        } else if (draggingPoint === 'bottomRight') {
+                            ann.x2 = coords.x - dragOffsetX;
+                            ann.y2 = coords.y - dragOffsetY;
+                        } else if (draggingPoint === 'whole') {
+                            const dx = coords.x - dragOffsetX - ann.x1;
+                            const dy = coords.y - dragOffsetY - ann.y1;
+                            ann.x1 += dx; ann.y1 += dy;
+                            ann.x2 += dx; ann.y2 += dy;
+                            dragOffsetX = coords.x - ann.x1;
+                            dragOffsetY = coords.y - ann.y1;
+                        }
+                    } else {
+                        ann.x = coords.x - dragOffsetX;
+                        ann.y = coords.y - dragOffsetY;
+                    }
+                    redrawAnnotations();
+                    return;
+                }
+            }
+
+            if (isDrawing) {
+                redrawAnnotations();
+                const color = document.getElementById('colorPicker').value;
+                const opacity = parseInt(document.getElementById('opacitySlider').value);
+                if (tool === 'arrow') drawArrow(drawStartX, drawStartY, coords.x, coords.y, color, undefined, undefined, document.getElementById('arrowStyle').value);
+                else if (tool === 'rectangle') drawRectangle(drawStartX, drawStartY, coords.x, coords.y, color, opacity);
+                else if (tool === 'circle-zone') drawCircleZone(drawStartX, drawStartY, Math.hypot(coords.x - drawStartX, coords.y - drawStartY), color, opacity);
+                else if (tool === 'text') {
+                    ctx.strokeStyle = '#10B981';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.strokeRect(drawStartX, drawStartY, coords.x - drawStartX, coords.y - drawStartY);
+                    ctx.setLineDash([]);
+                }
+            }
+        }
+
+        function handleCanvasMouseUp(e) {
+            if (!isFreezeMode) return;
+            const coords = getCanvasCoords(e);
+            const tool = currentTool;
+
+            if (tool === 'select') {
+                isDragging = false;
+                draggingPoint = null;
+                return;
+            }
+
+            if (isDrawing) {
+                saveUndoState();
+                if (tool === 'arrow') {
+                    const color = document.getElementById('arrowColorPicker').value;
+                    currentAnnotations.push({ type: 'arrow', x1: drawStartX, y1: drawStartY, x2: coords.x, y2: coords.y, color, style: document.getElementById('arrowStyle').value });
+                }
+                else if (tool === 'rectangle') {
+                    const color = document.getElementById('shapeColorPicker').value;
+                    const opacity = parseInt(document.getElementById('shapeOpacitySlider').value);
+                    currentAnnotations.push({ type: 'rectangle', x1: drawStartX, y1: drawStartY, x2: coords.x, y2: coords.y, color, opacity });
+                }
+                else if (tool === 'circle-zone') {
+                    const color = document.getElementById('shapeColorPicker').value;
+                    const opacity = parseInt(document.getElementById('shapeOpacitySlider').value);
+                    const r = Math.hypot(coords.x - drawStartX, coords.y - drawStartY);
+                    currentAnnotations.push({ type: 'circle-zone', x: drawStartX, y: drawStartY, radius: r, radiusX: r, radiusY: r, color, opacity });
+                }
+                else if (tool === 'text') {
+                    const color = document.getElementById('colorPicker').value;
+                    showTextOverlay(drawStartX, drawStartY, coords.x, coords.y, color);
+                }
+                isDrawing = false;
+                if (tool !== 'text') redrawAnnotations();
+
+                // Auto-switch back to select tool after drawing
+                if (tool !== 'text') {
+                    setTool('select');
+                }
+            }
+        }
+
+        function handleTouchStart(e) { e.preventDefault(); handleCanvasMouseDown({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }); }
+        function handleTouchMove(e) { e.preventDefault(); handleCanvasMouseMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }); }
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            handleCanvasMouseUp({ clientX: touch.clientX, clientY: touch.clientY });
+        }
+        function handleTouchCancel(e) {
+            e.preventDefault();
+            isDrawing = false;
+            isDragging = false;
+            draggingPoint = null;
+            redrawAnnotations();
+        }
+
+        function handleCanvasDblClick(e) {
+            if (!isFreezeMode) return;
+            const coords = getCanvasCoords(e);
+            const idx = findAnnotationAt(coords.x, coords.y);
+            if (idx === null) return;
+            const ann = currentAnnotations[idx];
+
+            // Double-click rectangle to toggle free corner mode
+            if (ann.type === 'rectangle') {
+                if (!ann.freeCorners) {
+                    saveUndoState();
+                    const left = Math.min(ann.x1, ann.x2), right = Math.max(ann.x1, ann.x2);
+                    const top = Math.min(ann.y1, ann.y2), bottom = Math.max(ann.y1, ann.y2);
+                    ann.freeCorners = [
+                        { x: left, y: top },
+                        { x: right, y: top },
+                        { x: right, y: bottom },
+                        { x: left, y: bottom }
+                    ];
+                    selectedAnnotation = idx;
+                    setTool('select');
+                    showToast('Free corner mode enabled - drag corners independently', 'success');
+                } else {
+                    saveUndoState();
+                    delete ann.freeCorners;
+                    showToast('Free corner mode disabled', 'success');
+                }
+                redrawAnnotations();
+                return;
+            }
+
+            if (ann.type !== 'text' || ann.x1 === undefined) return;
+
+            // Switch to select tool and select the text annotation
+            setTool('select');
+            selectedAnnotation = idx;
+
+            // Open it for editing in the text overlay
+            const canvasRect = annotationCanvas.getBoundingClientRect();
+            const containerRect = document.getElementById('videoContainer').getBoundingClientRect();
+            const scaleDispX = canvasRect.width / annotationCanvas.width;
+            const scaleDispY = canvasRect.height / annotationCanvas.height;
+
+            const left = ann.x1 * scaleDispX + canvasRect.left - containerRect.left;
+            const top = ann.y1 * scaleDispY + canvasRect.top - containerRect.top;
+            const w = (ann.x2 - ann.x1) * scaleDispX;
+            const h = (ann.y2 - ann.y1) * scaleDispY;
+
+            const container = document.getElementById('textOverlayContainer');
+            const overlay = document.getElementById('textOverlay');
+            const sizeSelect = document.getElementById('textOverlaySize');
+            const colorInput = document.getElementById('textOverlayColor');
+
+            container.style.left = left + 'px';
+            container.style.top = Math.max(0, top - 28) + 'px';
+            container.style.width = Math.max(w, 120) + 'px';
+            container.style.display = 'block';
+            overlay.style.height = h + 'px';
+            overlay.style.fontSize = ann.fontSize + 'px';
+            overlay.style.color = ann.color;
+            overlay.value = ann.text;
+
+            const opts = [...sizeSelect.options].map(o => +o.value);
+            const nearest = opts.reduce((a, b) => Math.abs(b - ann.fontSize) < Math.abs(a - ann.fontSize) ? b : a);
+            sizeSelect.value = nearest;
+            colorInput.value = ann.color;
+
+            // Remove the existing annotation - it will be re-added on commit
+            saveUndoState();
+            currentAnnotations.splice(idx, 1);
+            selectedAnnotation = null;
+
+            pendingTextBox = {
+                x1: ann.x1, y1: ann.y1,
+                x2: ann.x2, y2: ann.y2,
+                color: ann.color, fontSize: nearest
+            };
+
+            redrawAnnotations();
+            overlay.focus();
+        }
+
+        function pointInPolygon(px, py, polygon) {
+            let inside = false;
+            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i].x, yi = polygon[i].y;
+                const xj = polygon[j].x, yj = polygon[j].y;
+                if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi)) {
+                    inside = !inside;
+                }
+            }
+            return inside;
+        }
+
+        function findAnnotationAt(x, y) {
+            for (let i = currentAnnotations.length - 1; i >= 0; i--) {
+                const ann = currentAnnotations[i];
+                if (ann.type === 'circle' && Math.pow((x - ann.x) / (ann.radius * 1.4), 2) + Math.pow((y - ann.y) / (ann.radius * 0.5), 2) <= 1) return i;
+                if (ann.type === 'circle-zone') {
+                    const rx = ann.radiusX || ann.radius;
+                    const ry = ann.radiusY || ann.radius;
+                    if (Math.pow((x - ann.x) / rx, 2) + Math.pow((y - ann.y) / ry, 2) <= 1) return i;
+                }
+                if (ann.type === 'rectangle') {
+                    if (ann.freeCorners) {
+                        if (pointInPolygon(x, y, ann.freeCorners)) return i;
+                    } else if (x >= Math.min(ann.x1, ann.x2) && x <= Math.max(ann.x1, ann.x2) && y >= Math.min(ann.y1, ann.y2) && y <= Math.max(ann.y1, ann.y2)) return i;
+                }
+                if (ann.type === 'text') {
+                    if (ann.x1 !== undefined) {
+                        if (x >= Math.min(ann.x1, ann.x2) && x <= Math.max(ann.x1, ann.x2) && y >= Math.min(ann.y1, ann.y2) && y <= Math.max(ann.y1, ann.y2)) return i;
+                    } else {
+                        ctx.font = `bold ${ann.fontSize}px sans-serif`;
+                        const w = ctx.measureText(ann.text).width;
+                        if (x >= ann.x - w / 2 && x <= ann.x + w / 2 && y >= ann.y - ann.fontSize / 2 && y <= ann.y + ann.fontSize / 2) return i;
+                    }
+                }
+                if (ann.type === 'arrow') {
+                    // Check for both curved and straight arrows
+                    let dist;
+                    if (ann.cx !== undefined && ann.cy !== undefined) {
+                        dist = distanceToCurve(x, y, ann.x1, ann.y1, ann.cx, ann.cy, ann.x2, ann.y2);
+                    } else {
+                        dist = distToSegment(x, y, ann.x1, ann.y1, ann.x2, ann.y2);
+                    }
+                    if (dist < 15) return i;
+                }
+            }
+            return null;
+        }
+
+        function distToSegment(px, py, x1, y1, x2, y2) {
+            const dx = x2 - x1, dy = y2 - y1;
+            const t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy || 1)));
+            return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+        }
+
+        // Helper function to calculate distance from point to quadratic bezier curve
+        function distanceToCurve(px, py, x1, y1, cx, cy, x2, y2) {
+            let minDist = Infinity;
+            for (let t = 0; t <= 1; t += 0.05) {
+                const x = (1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * cx + t * t * x2;
+                const y = (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * cy + t * t * y2;
+                const dist = Math.hypot(px - x, py - y);
+                minDist = Math.min(minDist, dist);
+            }
+            return minDist;
+        }
+
+        // ===== UNDO & HELPERS =====
+        function saveUndoState() { undoStack.push(JSON.parse(JSON.stringify(currentAnnotations))); if (undoStack.length > 50) undoStack.shift(); }
+        function undo() { if (undoStack.length === 0) { showToast('Nothing to undo', 'warning'); return; } currentAnnotations = undoStack.pop(); selectedAnnotation = null; redrawAnnotations(); }
+        function clearCurrentAnnotations() { if (currentAnnotations.length === 0) { showToast('Nothing to clear', 'warning'); return; } saveUndoState(); currentAnnotations = []; selectedAnnotation = null; currentChainGroup = 1; redrawAnnotations(); showToast('Cleared', 'success'); }
+
+        function handleKeyboard(e) {
+            if (e.code === 'Space' && !isFreezeMode && videoPlayer.src) { e.preventDefault(); togglePlayPause(); }
+            if (e.code === 'KeyF' && !isFreezeMode && videoPlayer.src) { e.preventDefault(); freezeFrame(); }
+            if ((e.key === 'Delete' || e.key === 'Backspace') && isFreezeMode && selectedAnnotation !== null) { e.preventDefault(); saveUndoState(); currentAnnotations.splice(selectedAnnotation, 1); selectedAnnotation = null; redrawAnnotations(); }
+            if (e.key === 'Escape' && isFreezeMode) saveAndResume();
+            if (e.ctrlKey && e.key === 'z' && isFreezeMode) { e.preventDefault(); undo(); }
+        }
+
+        // ===== FREEZE FRAMES LIST =====
+        function updateFreezeFramesList() {
+            const list = document.getElementById('freezeFramesList');
+            if (freezeFrames.length === 0) { list.innerHTML = '<div class="empty-state">No annotations yet.</div>'; return; }
+            list.innerHTML = freezeFrames.map((ff, i) => `
+                <div class="freeze-frame-item ${i === currentFreezeFrameIndex ? 'active' : ''}" onclick="jumpToFreezeFrame(${i})">
+                    <div>
+                        <div class="freeze-frame-time">${formatTime(ff.timestamp)}</div>
+                        <div class="freeze-frame-duration">${ff.duration}s</div>
+                        <div class="freeze-frame-annotations">${ff.annotations.length} annotation${ff.annotations.length !== 1 ? 's' : ''}</div>
+                    </div>
+                    <div class="freeze-frame-actions">
+                        <button class="edit-btn" onclick="event.stopPropagation(); editFreezeFrame(${i})">Edit</button>
+                        <button class="delete-btn" onclick="event.stopPropagation(); deleteFreezeFrame(${i})">Delete</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        function updateTimelineMarkers() {
+            document.querySelectorAll('.timeline-marker').forEach(m => m.remove());
+            freezeFrames.forEach(ff => {
+                const marker = document.createElement('div');
+                marker.className = 'timeline-marker';
+                marker.style.left = (ff.timestamp / videoDuration * 100) + '%';
+                marker.onclick = (e) => { e.stopPropagation(); videoPlayer.currentTime = ff.timestamp; };
+                timeline.appendChild(marker);
+            });
+        }
+
+        function jumpToFreezeFrame(i) { if (isFreezeMode) saveAndResume(); videoPlayer.currentTime = freezeFrames[i].timestamp; }
+        function editFreezeFrame(i) {
+            if (isPreviewMode || isInPreviewFreeze || previewFreezeTimer) {
+                // Prevent preview timers from resuming playback while editing.
+                exitPreviewMode({ hideCanvas: false, clearIndicator: false });
+            }
+            videoPlayer.currentTime = freezeFrames[i].timestamp;
+            videoPlayer.pause();
+            isPlaying = false;
+            playPauseBtn.innerHTML = 'Play';
+            currentFreezeFrameIndex = i;
+            currentAnnotations = JSON.parse(JSON.stringify(freezeFrames[i].annotations));
+            document.getElementById('durationSlider').value = freezeFrames[i].duration;
+            document.getElementById('durationValue').textContent = freezeFrames[i].duration;
+            enterFreezeMode();
+            redrawAnnotations();
+            updateFreezeFramesList();
+        }
+        function deleteFreezeFrame(i) { freezeFrames.splice(i, 1); updateFreezeFramesList(); updateTimelineMarkers(); showToast('Deleted', 'success'); }
+
+        // ===== PREVIEW =====
+        let previewFreezeTimer = null;
+        let currentPreviewFreezeIndex = -1;
+        let isInPreviewFreeze = false;
+        let previewSessionId = 0;
+
+        function previewVideo() {
+            if (freezeFrames.length === 0) { showToast('Add annotations first', 'warning'); return; }
+            if (isFreezeMode) saveAndResume();
+            // Reset any prior preview session state before starting a fresh run.
+            exitPreviewMode({ hideCanvas: false });
+            isPreviewMode = true;
+            previewSessionId++;
+            isInPreviewFreeze = false;
+            currentPreviewFreezeIndex = -1;
+            annotationCanvas.style.display = 'block';
+            videoPlayer.currentTime = 0;
+            videoPlayer.play();
+            isPlaying = true;
+            playPauseBtn.innerHTML = 'Pause';
+            showToast('Preview mode - video will pause at annotations', 'success');
+        }
+
+        function exitPreviewMode(options = {}) {
+            const { hideCanvas = true, clearIndicator = true } = options;
+            previewSessionId++;
+            isPreviewMode = false;
+            isInPreviewFreeze = false;
+            currentPreviewFreezeIndex = -1;
+            if (previewFreezeTimer) {
+                clearTimeout(previewFreezeTimer);
+                previewFreezeTimer = null;
+            }
+            ctx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+            if (hideCanvas) annotationCanvas.style.display = 'none';
+            if (clearIndicator) freezeIndicator.classList.remove('show');
+            playPauseBtn.innerHTML = videoPlayer.paused ? 'Play' : 'Pause';
+        }
+
+        function renderPreviewAnnotations() {
+            if (!isInPreviewFreeze) {
+                // Check if we just entered a freeze frame
+                const t = videoPlayer.currentTime;
+                for (let i = 0; i < freezeFrames.length; i++) {
+                    const ff = freezeFrames[i];
+                    if (Math.abs(t - ff.timestamp) < 0.1 && currentPreviewFreezeIndex !== i) {
+                        videoPlayer.pause();
+                        isPlaying = false;
+                        isInPreviewFreeze = true;
+                        playPauseBtn.innerHTML = 'Play';
+                        currentPreviewFreezeIndex = i;
+
+                        freezeIndicator.textContent = `Annotation (${ff.duration}s)`;
+                        freezeIndicator.classList.add('show');
+
+                        // Draw annotations immediately without animation
+                        ctx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+                        drawMarkerChainLines(ctx, ff.annotations, 1, 1);
+                        ff.annotations.forEach(ann => drawAnnotationFromList(ann, ff.annotations));
+
+                        const activeSessionId = previewSessionId;
+                        previewFreezeTimer = setTimeout(() => {
+                            // Ignore stale timers after mode transitions.
+                            if (!isPreviewMode || activeSessionId !== previewSessionId || isFreezeMode) return;
+                            freezeIndicator.classList.remove('show');
+                            ctx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+                            isInPreviewFreeze = false;
+                            previewFreezeTimer = null;
+
+                            if (isPreviewMode) {
+                                videoPlayer.play();
+                                isPlaying = true;
+                                playPauseBtn.innerHTML = 'Pause';
+                            }
+                        }, ff.duration * 1000);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // ===== EXPORT =====
+        async function exportVideoMediaRecorder() {
+            const resolution = document.querySelector('input[name="exportResolution"]:checked')?.value || '720';
+            const exportWidth = resolution === '1080' ? 1920 : 1280;
+            const exportHeight = resolution === '1080' ? 1080 : 720;
+            const fps = 30;
+            console.log('[MediaRecorder] Export resolution:', exportWidth + 'x' + exportHeight);
+
+            // Detect best available codec — prefer MP4 on Safari, WebM on Chrome/Firefox
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            const mimeType = isSafari
+                ? (MediaRecorder.isTypeSupported('video/mp4;codecs=avc1') ? 'video/mp4;codecs=avc1' :
+                    MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' :
+                        MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : '')
+                : (MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' :
+                    MediaRecorder.isTypeSupported('video/webm;codecs=vp8') ? 'video/webm;codecs=vp8' :
+                        MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' :
+                            MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : '');
+
+            if (!mimeType) {
+                throw new Error('Your browser does not support video recording. Try Chrome or Firefox.');
+            }
+
+            const fileExt = mimeType.includes('mp4') ? 'mp4' : 'webm';
+
+            // Create offscreen canvas with performance hints
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = exportWidth;
+            exportCanvas.height = exportHeight;
+
+            // Optimize context for video rendering (no alpha, desynchronized for lower latency)
+            const exportCtx = exportCanvas.getContext('2d', {
+                alpha: false,
+                desynchronized: true,
+                willReadFrequently: false
+            });
+
+            // Disable image smoothing for faster draws (video doesn't need it)
+            exportCtx.imageSmoothingEnabled = false;
+
+            // Set up MediaRecorder on the canvas stream
+            // Higher bitrate for better quality (20Mbps for 1080p)
+            const stream = exportCanvas.captureStream(fps);
+            const recorder = new MediaRecorder(stream, {
+                mimeType,
+                videoBitsPerSecond: 25_000_000  // Even higher for quality headroom
+            });
+            const chunks = [];
+            recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+
+            // Sort freeze frames by timestamp
+            const sortedFrames = [...freezeFrames].sort((a, b) => a.timestamp - b.timestamp);
+
+            // Scale factors from display canvas to export resolution
+            const scaleX = exportWidth / annotationCanvas.width;
+            const scaleY = exportHeight / annotationCanvas.height;
+
+            // Total duration for progress tracking
+            const totalFreezeTime = sortedFrames.reduce((sum, ff) => sum + ff.duration, 0);
+            const totalDuration = videoDuration + totalFreezeTime;
+
+            // Save current state and mute during export
+            const savedTime = videoPlayer.currentTime;
+            const savedPaused = videoPlayer.paused;
+            const savedMuted = videoPlayer.muted;
+            videoPlayer.muted = true;
+
+            updateProgress(10, 'Recording video (plays in real time)...');
+            recorder.start(100);
+
+            videoPlayer.currentTime = 0;
+            console.log('[MediaRecorder] Starting, video duration:', videoDuration, 'freeze frames:', freezeFrames.length);
+
+            await new Promise((resolve, reject) => {
+                let nextFreezeIdx = 0;
+                let inFreeze = false;
+                let freezeStartedAt = 0;
+                let currentFF = null;
+                let elapsedFreezeTime = 0;
+                let animId = null;
+                let lastVideoTime = -1;
+                let stuckFrameCount = 0;
+
+                // Simplified annotation drawing for export
+                function drawAnnotationsSimple(annotations) {
+                    drawMarkerChainLines(exportCtx, annotations, scaleX, scaleY);
+                    for (const ann of annotations) {
+                        switch (ann.type) {
+                            case 'circle': drawCircleScaled(exportCtx, ann, scaleX, scaleY); break;
+                            case 'arrow': drawArrowScaled(exportCtx, ann, scaleX, scaleY); break;
+                            case 'rectangle': drawRectangleScaled(exportCtx, ann, scaleX, scaleY); break;
+                            case 'circle-zone': drawCircleZoneScaled(exportCtx, ann, scaleX, scaleY); break;
+                            case 'text': drawTextScaled(exportCtx, ann, scaleX, scaleY); break;
+                        }
+                    }
+                }
+
+                // Cache for frozen frame to avoid re-drawing video
+                let frozenFrameBitmap = null;
+
+                function tick() {
+                    try {
+                        // Check if video is progressing
+                        if (videoPlayer.currentTime === lastVideoTime && !inFreeze && !videoPlayer.paused && !videoPlayer.ended) {
+                            stuckFrameCount++;
+                            if (stuckFrameCount > 60) { // ~1 second at 60fps
+                                console.warn('[MediaRecorder] Video appears stuck at time:', lastVideoTime);
+                                stuckFrameCount = 0;
+                            }
+                        } else {
+                            stuckFrameCount = 0;
+                            lastVideoTime = videoPlayer.currentTime;
+                        }
+
+                        if (inFreeze) {
+                            const elapsed = (performance.now() - freezeStartedAt) / 1000;
+
+                            // Use cached frame or draw video once
+                            if (frozenFrameBitmap) {
+                                exportCtx.drawImage(frozenFrameBitmap, 0, 0);
+                            } else {
+                                exportCtx.drawImage(videoPlayer, 0, 0, exportWidth, exportHeight);
+                                // Cache for next frame
+                                frozenFrameBitmap = exportCanvas.transferToImageBitmap?.() || null;
+                            }
+                            drawAnnotationsSimple(currentFF.annotations);
+
+                            const progress = videoPlayer.currentTime + elapsedFreezeTime + elapsed;
+                            updateProgress(Math.min(90, 10 + (progress / totalDuration) * 80),
+                                `Freeze frame ${nextFreezeIdx}/${sortedFrames.length}...`);
+
+                            if (elapsed >= currentFF.duration) {
+                                inFreeze = false;
+                                elapsedFreezeTime += currentFF.duration;
+                                nextFreezeIdx++;
+                                frozenFrameBitmap = null; // Clear cache
+                                videoPlayer.play();
+                            }
+
+                            animId = requestAnimationFrame(tick);
+                        } else {
+                            exportCtx.drawImage(videoPlayer, 0, 0, exportWidth, exportHeight);
+
+                            const progress = videoPlayer.currentTime + elapsedFreezeTime;
+                            updateProgress(Math.min(90, 10 + (progress / totalDuration) * 80),
+                                'Recording video...');
+
+                            if (nextFreezeIdx < sortedFrames.length) {
+                                const ff = sortedFrames[nextFreezeIdx];
+                                if (videoPlayer.currentTime >= ff.timestamp - 0.05) {
+                                    videoPlayer.pause();
+                                    inFreeze = true;
+                                    currentFF = ff;
+                                    freezeStartedAt = performance.now();
+                                    frozenFrameBitmap = null; // Will be cached on first draw
+                                    animId = requestAnimationFrame(tick);
+                                    return;
+                                }
+                            }
+
+                            if (videoPlayer.ended || videoPlayer.currentTime >= videoDuration - 0.1) {
+                                console.log('[MediaRecorder] Recording complete');
+                                resolve();
+                                return;
+                            }
+
+                            animId = requestAnimationFrame(tick);
+                        }
+                    } catch (err) {
+                        if (animId) cancelAnimationFrame(animId);
+                        reject(err);
+                    }
+                }
+
+                // Start playback and begin the render loop
+                videoPlayer.play().then(() => {
+                    console.log('[MediaRecorder] Video playback started');
+                    animId = requestAnimationFrame(tick);
+                }).catch(err => {
+                    console.error('[MediaRecorder] Failed to start playback:', err);
+                    reject(err);
+                });
+            });
+
+            updateProgress(92, 'Finalizing video...');
+
+            // Stop recorder and collect the blob
+            const blob = await new Promise((resolve) => {
+                recorder.onstop = () => resolve(new Blob(chunks, { type: mimeType }));
+                recorder.stop();
+            });
+
+            // Restore video state
+            videoPlayer.muted = savedMuted;
+            videoPlayer.currentTime = savedTime;
+            if (!savedPaused) videoPlayer.play();
+
+            // Trigger download
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `annotated-video-${Date.now()}.${fileExt}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Show success
+            updateProgress(100, 'Complete!');
+            document.getElementById('modalIcon').textContent = '✅';
+            document.getElementById('modalTitle').textContent = 'Export Complete!';
+            document.getElementById('modalText').textContent = 'Your annotated video has been downloaded.';
+            document.getElementById('progressBarContainer').style.display = 'none';
+            document.getElementById('progressText').style.display = 'none';
+            document.getElementById('progressStep').style.display = 'none';
+            document.getElementById('modalCloseBtn').style.display = 'block';
+        }
+
+        async function exportVideo() {
+            if (freezeFrames.length === 0) {
+                showToast('Add annotations first', 'warning');
+                return;
+            }
+            if (isFreezeMode) saveAndResume();
+
+            showExportModal();
+            updateProgress(5, 'Initializing...');
+
+            try {
+                await exportVideoMediaRecorder();
+            } catch (error) {
+                console.error('Export error:', error);
+                document.getElementById('modalIcon').textContent = '❌';
+                document.getElementById('modalTitle').textContent = 'Export Failed';
+                document.getElementById('modalText').innerHTML = `
+                    <p>An error occurred during export:</p>
+                    <p style="color: #DC2626; margin-top: 8px; font-size: 12px;">${error.message}</p>
+                    <p style="margin-top: 12px; font-size: 12px; color: #94A3B8;">
+                        Try using a shorter video or fewer annotations. You can also use the Preview feature and screen record.
+                    </p>
+                `;
+                document.getElementById('progressBarContainer').style.display = 'none';
+                document.getElementById('progressText').style.display = 'none';
+                document.getElementById('progressStep').style.display = 'none';
+                document.getElementById('modalCloseBtn').style.display = 'block';
+            }
+        }
+
+        function drawCircleScaled(ctx, ann, scaleX, scaleY) {
+            const x = ann.x * scaleX;
+            const y = ann.y * scaleY;
+            const radiusX = ann.radius * 1.4 * scaleX;
+            const radiusY = ann.radius * 0.5 * scaleY;
+            const rgb = hexToRgb(ann.color);
+
+            // Fill gradient (top to bottom)
+            const fillGradient = ctx.createLinearGradient(x, y - radiusY, x, y + radiusY);
+            fillGradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${ann.opacity * 0.5 / 100})`);
+            fillGradient.addColorStop(1, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${ann.opacity / 100})`);
+            ctx.fillStyle = fillGradient;
+            ctx.beginPath();
+            ctx.ellipse(x, y, radiusX, radiusY, 0, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Outline with gradient (matches fill gradient)
+            if (showOutlines) {
+                ctx.save();
+                // Stronger gradient on outline - no outline at top, fades in middle, full at bottom
+                // Opacity does NOT affect outline - always uses full opacity
+                const outlineGradient = ctx.createLinearGradient(x, y - radiusY, x, y + radiusY);
+                outlineGradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)`);
+                outlineGradient.addColorStop(0.5, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0)`);
+                outlineGradient.addColorStop(0.7, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.4)`);
+                outlineGradient.addColorStop(1, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1.0)`);
+                ctx.strokeStyle = outlineGradient;
+                ctx.lineWidth = 2 * Math.min(scaleX, scaleY);
+                ctx.beginPath();
+                ctx.ellipse(x, y, radiusX, radiusY, 0, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        function drawArrowScaled(ctx, ann, scaleX, scaleY) {
+            const x1 = ann.x1 * scaleX, y1 = ann.y1 * scaleY;
+            const x2 = ann.x2 * scaleX, y2 = ann.y2 * scaleY;
+            const cx = ann.cx ? ann.cx * scaleX : undefined;
+            const cy = ann.cy ? ann.cy * scaleY : undefined;
+            const rgb = hexToRgb(ann.color);
+            const minScale = Math.min(scaleX, scaleY);
+
+            ctx.lineWidth = 3 * minScale;
+            ctx.setLineDash(ann.style === 'dashed' ? [10, 5] : ann.style === 'dotted' ? [2, 5] : []);
+
+            const headLength = 15 * minScale;
+            let angle = cx !== undefined ? Math.atan2(y2 - cy, x2 - cx) : Math.atan2(y2 - y1, x2 - x1);
+            let endX = x2 - headLength * 0.7 * Math.cos(angle);
+            let endY = y2 - headLength * 0.7 * Math.sin(angle);
+
+            // Draw gradient fade at the start (first 25% of arrow)
+            const gradStartLength = Math.hypot(endX - x1, endY - y1) * 0.25;
+
+            if (cx !== undefined) {
+                // Curved arrow - approximate gradient along curve
+                const dx = endX - x1, dy = endY - y1;
+                const len = Math.hypot(dx, dy);
+                const gradLen = len * 0.25;
+                const gradEndX = x1 + (dx / len) * gradLen;
+                const gradEndY = y1 + (dy / len) * gradLen;
+                const gradient = ctx.createLinearGradient(x1, y1, gradEndX, gradEndY);
+                gradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`);
+                gradient.addColorStop(1, ann.color);
+                ctx.strokeStyle = gradient;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.quadraticCurveTo(cx, cy, endX, endY);
+                ctx.stroke();
+            } else {
+                // Straight arrow - gradient section then solid
+                const dx = endX - x1, dy = endY - y1;
+                const len = Math.hypot(dx, dy);
+                const gradLen = Math.min(gradStartLength, len * 0.25);
+                const gradEndX = x1 + (dx / len) * gradLen;
+                const gradEndY = y1 + (dy / len) * gradLen;
+
+                // Gradient fade section
+                const gradient = ctx.createLinearGradient(x1, y1, gradEndX, gradEndY);
+                gradient.addColorStop(0, `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)`);
+                gradient.addColorStop(1, ann.color);
+                ctx.strokeStyle = gradient;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(gradEndX, gradEndY);
+                ctx.stroke();
+
+                // Solid section
+                ctx.strokeStyle = ann.color;
+                ctx.beginPath();
+                ctx.moveTo(gradEndX, gradEndY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+
+            ctx.setLineDash([]);
+
+            // Draw arrowhead
+            ctx.fillStyle = ann.color;
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headLength * Math.cos(angle - Math.PI / 6), y2 - headLength * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headLength * Math.cos(angle + Math.PI / 6), y2 - headLength * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawRectangleScaled(ctx, ann, scaleX, scaleY) {
+            ctx.globalAlpha = ann.opacity / 100;
+            ctx.fillStyle = ann.color;
+
+            // Get rectangle bounds
+            let left, top, right, bottom;
+            if (ann.freeCorners) {
+                left = Math.min(...ann.freeCorners.map(c => c.x)) * scaleX;
+                top = Math.min(...ann.freeCorners.map(c => c.y)) * scaleY;
+                right = Math.max(...ann.freeCorners.map(c => c.x)) * scaleX;
+                bottom = Math.max(...ann.freeCorners.map(c => c.y)) * scaleY;
+            } else {
+                left = Math.min(ann.x1, ann.x2) * scaleX;
+                top = Math.min(ann.y1, ann.y2) * scaleY;
+                right = Math.max(ann.x1, ann.x2) * scaleX;
+                bottom = Math.max(ann.y1, ann.y2) * scaleY;
+            }
+
+            const width = right - left;
+            const height = bottom - top;
+
+            // Draw the shape (no outline for shapes)
+            if (ann.freeCorners) {
+                ctx.beginPath();
+                ctx.moveTo(ann.freeCorners[0].x * scaleX, ann.freeCorners[0].y * scaleY);
+                for (let i = 1; i < ann.freeCorners.length; i++) {
+                    ctx.lineTo(ann.freeCorners[i].x * scaleX, ann.freeCorners[i].y * scaleY);
+                }
+                ctx.closePath();
+                ctx.fill();
+            } else {
+                ctx.fillRect(left, top, width, height);
+            }
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawCircleZoneScaled(ctx, ann, scaleX, scaleY) {
+            const x = ann.x * scaleX;
+            const y = ann.y * scaleY;
+            const rx = (ann.radiusX || ann.radius) * scaleX;
+            const ry = (ann.radiusY || ann.radius) * scaleY;
+
+            // Fill (no outline for shapes)
+            ctx.globalAlpha = ann.opacity / 100;
+            ctx.fillStyle = ann.color;
+            ctx.beginPath();
+            ctx.ellipse(x, y, rx, ry, 0, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawTextScaled(ctx, ann, scaleX, scaleY) {
+            const scaledFontSize = ann.fontSize * Math.min(scaleX, scaleY);
+            ctx.save();
+            ctx.globalAlpha = 1.0;
+            ctx.fillStyle = ann.color;
+            ctx.font = `bold ${scaledFontSize}px sans-serif`;
+            if (ann.x1 !== undefined) {
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+                const left = Math.min(ann.x1, ann.x2) * scaleX;
+                const top = Math.min(ann.y1, ann.y2) * scaleY;
+                const w = Math.abs(ann.x2 - ann.x1) * scaleX;
+                const h = Math.abs(ann.y2 - ann.y1) * scaleY;
+                const lineHeight = scaledFontSize * 1.3;
+                const lines = wrapText(ctx, ann.text, w - 8 * scaleX);
+                const padding = 4 * Math.min(scaleX, scaleY);
+                lines.forEach((line, i) => {
+                    const ly = top + padding + i * lineHeight;
+                    if (ly + lineHeight <= top + h + lineHeight) {
+                        ctx.fillText(line, left + padding, ly);
+                    }
+                });
+            } else {
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(ann.text, ann.x * scaleX, ann.y * scaleY);
+            }
+            ctx.restore();
+        }
+
+        // ===== UI HELPERS =====
+        function showExportModal() {
+            document.getElementById('exportModal').classList.add('show');
+            document.getElementById('modalIcon').textContent = '⏳';
+            document.getElementById('modalTitle').textContent = 'Processing Video';
+            document.getElementById('modalText').textContent = 'Please wait...';
+            document.getElementById('progressBarContainer').style.display = 'block';
+            document.getElementById('progressText').style.display = 'block';
+            document.getElementById('progressStep').style.display = 'block';
+            document.getElementById('modalCloseBtn').style.display = 'none';
+        }
+
+        function updateProgress(percent, step) {
+            document.getElementById('progressBarFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = percent + '%';
+            document.getElementById('progressStep').textContent = step;
+        }
+
+        function closeModal() { document.getElementById('exportModal').classList.remove('show'); }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : { r: 255, g: 255, b: 255 };
+        }
+
+        // ===== TEXT OVERLAY =====
+        let pendingTextBox = null;
+
+        function showTextOverlay(cx1, cy1, cx2, cy2, color) {
+            const canvasRect = annotationCanvas.getBoundingClientRect();
+            const containerRect = document.getElementById('videoContainer').getBoundingClientRect();
+            const scaleDispX = canvasRect.width / annotationCanvas.width;
+            const scaleDispY = canvasRect.height / annotationCanvas.height;
+
+            const left = Math.min(cx1, cx2) * scaleDispX + canvasRect.left - containerRect.left;
+            const top = Math.min(cy1, cy2) * scaleDispY + canvasRect.top - containerRect.top;
+            const w = Math.abs(cx2 - cx1) * scaleDispX;
+            const h = Math.abs(cy2 - cy1) * scaleDispY;
+
+            if (w < 20 || h < 15) { redrawAnnotations(); return; }
+
+            const fontSize = Math.max(12, Math.min(24, h * 0.3));
+            const container = document.getElementById('textOverlayContainer');
+            const overlay = document.getElementById('textOverlay');
+            const sizeSelect = document.getElementById('textOverlaySize');
+            const colorInput = document.getElementById('textOverlayColor');
+
+            container.style.left = left + 'px';
+            container.style.top = Math.max(0, top - 28) + 'px';
+            container.style.width = Math.max(w, 120) + 'px';
+            container.style.display = 'block';
+            overlay.style.height = h + 'px';
+            overlay.style.fontSize = fontSize + 'px';
+            overlay.style.color = color;
+            overlay.value = '';
+
+            // Set toolbar controls
+            sizeSelect.value = Math.round(fontSize);
+            // Snap to nearest option
+            const opts = [...sizeSelect.options].map(o => +o.value);
+            const nearest = opts.reduce((a, b) => Math.abs(b - fontSize) < Math.abs(a - fontSize) ? b : a);
+            sizeSelect.value = nearest;
+            colorInput.value = color;
+
+            overlay.focus();
+
+            pendingTextBox = {
+                x1: Math.min(cx1, cx2), y1: Math.min(cy1, cy2),
+                x2: Math.max(cx1, cx2), y2: Math.max(cy1, cy2),
+                color, fontSize: nearest
+            };
+
+            redrawAnnotations();
+        }
+
+        function commitTextOverlay() {
+            const container = document.getElementById('textOverlayContainer');
+            if (container.style.display === 'none' || !pendingTextBox) return;
+            const overlay = document.getElementById('textOverlay');
+            const text = overlay.value.trim();
+            if (text) {
+                saveUndoState();
+                currentAnnotations.push({
+                    type: 'text',
+                    x1: pendingTextBox.x1, y1: pendingTextBox.y1,
+                    x2: pendingTextBox.x2, y2: pendingTextBox.y2,
+                    text, color: pendingTextBox.color,
+                    fontSize: pendingTextBox.fontSize
+                });
+            }
+            container.style.display = 'none';
+            overlay.value = '';
+            pendingTextBox = null;
+            redrawAnnotations();
+
+            // Auto-switch back to select tool after committing text
+            setTool('select');
+        }
+
+        // ===== SAVE / LOAD PROJECT =====
+        async function saveProject() {
+            // Save current freeze frame annotations before exporting project
+            if (isFreezeMode && currentFreezeFrameIndex >= 0) {
+                commitTextOverlay();
+                freezeFrames[currentFreezeFrameIndex].annotations = JSON.parse(JSON.stringify(currentAnnotations));
+            }
+
+            const projectData = {
+                version: 1,
+                videoName: videoFile ? videoFile.name : null,
+                videoWidth,
+                videoHeight,
+                videoDuration,
+                freezeFrames: JSON.parse(JSON.stringify(freezeFrames))
+            };
+
+            const blob = new Blob([JSON.stringify(projectData)], { type: 'application/json' });
+            downloadBlob(blob, `project-${Date.now()}.dtproj`);
+            showToast('Project saved! Remember to keep your video file.', 'success');
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadProject() {
+            const file = document.getElementById('projectInput').files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async () => {
+                try {
+                    const project = JSON.parse(reader.result);
+                    if (!project.version || !project.freezeFrames) {
+                        showToast('Invalid project file.', 'error');
+                        return;
+                    }
+
+                    if (project.videoData) {
+                        // Full project — restore video from embedded data
+                        const resp = await fetch(project.videoData);
+                        const videoBlob = await resp.blob();
+                        videoFile = new File([videoBlob], project.videoName || 'video.mp4', { type: videoBlob.type });
+                        videoPlayer.src = URL.createObjectURL(videoFile);
+
+                        videoPlayer.addEventListener('loadedmetadata', function onLoad() {
+                            videoPlayer.removeEventListener('loadedmetadata', onLoad);
+                            restoreProjectState(project);
+                        });
+                    } else {
+                        // Lightweight project — prompt user for video file
+                        showToast(`Select the original video: ${project.videoName || 'your video file'}`, 'info');
+                        const tempInput = document.createElement('input');
+                        tempInput.type = 'file';
+                        tempInput.accept = 'video/mp4,video/quicktime,video/avi,video/x-msvideo,.mp4,.mov,.avi';
+                        tempInput.onchange = () => {
+                            if (!tempInput.files[0]) return;
+                            videoFile = tempInput.files[0];
+                            videoPlayer.src = URL.createObjectURL(videoFile);
+
+                            videoPlayer.addEventListener('loadedmetadata', function onLoad() {
+                                videoPlayer.removeEventListener('loadedmetadata', onLoad);
+                                restoreProjectState(project);
+                            });
+                        };
+                        tempInput.click();
+                    }
+                } catch (e) {
+                    showToast('Failed to read project file.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            document.getElementById('projectInput').value = '';
+        }
+
+        function restoreProjectState(project) {
+            freezeFrames = project.freezeFrames || [];
+            currentAnnotations = [];
+            currentFreezeFrameIndex = -1;
+            exitFreezeMode();
+            updateFreezeFramesList();
+            updateTimelineMarkers();
+            showToast(`Project loaded — ${freezeFrames.length} annotation(s) restored.`, 'success');
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function () {
+            init()
+        })
+    </script>
+</body>
+
+</html>

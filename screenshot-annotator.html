@@ -1,0 +1,2610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KS3K11NY77"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KS3K11NY77');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DrawTactics - Screenshot Annotator</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310B981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='4' width='20' height='16' rx='2' ry='2'></rect><line x1='12' y1='4' x2='12' y2='20'></line><circle cx='12' cy='12' r='3'></circle></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E8F5E9 100%);
+            color: #1E293B;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .header-tagline {
+            font-size: 12px;
+            color: #64748B;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .version-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Main content wrapper */
+        .main-wrapper {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        footer a {
+            color: #10B981;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Sidebar with glass morphism */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .sidebar h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #0F172A;
+            letter-spacing: -0.5px;
+        }
+
+        /* Glass morphism sections */
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .section h2 {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #10B981;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* Upload button - primary green */
+        .upload-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .upload-btn:active {
+            transform: translateY(0);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Sidebar styles matching video-analysis */
+        .section-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+            margin-top: 2px;
+        }
+
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .color-row label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #334155;
+            min-width: 60px;
+        }
+
+        .color-row input[type="color"] {
+            width: 32px;
+            height: 24px;
+            border: 2px solid #E8ECEF;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .color-row input[type="color"]:hover {
+            border-color: #10B981;
+        }
+
+        .color-row input[type="range"] {
+            flex: 1;
+            min-width: 0;
+            height: 6px;
+        }
+
+        .color-row select {
+            flex: 1;
+            min-width: 0;
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.2) 50%, transparent 100%);
+            margin: 6px 0;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .button-row .btn {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 4px;
+            font-size: 12px;
+            height: 32px;
+            margin-bottom: 0;
+        }
+
+        .tool-btn {
+            width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .tool-btn.active {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-text {
+            font-size: 11px;
+            color: #94A3B8;
+            font-style: italic;
+            margin-top: -2px;
+            line-height: 1.4;
+        }
+
+        .mode-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid transparent;
+        }
+
+        .mode-option:hover {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .mode-option input[type="radio"] {
+            cursor: pointer;
+            accent-color: #10B981;
+            width: 16px;
+            height: 16px;
+        }
+
+        .mode-option label {
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #334155;
+            flex: 1;
+        }
+
+        .mode-option:has(input:checked) {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10B981;
+        }
+
+        .mode-option:has(input:checked) label {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        /* Style controls */
+        .control-group {
+            margin-bottom: 10px;
+        }
+
+        .control-label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 34px;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="color"]:hover {
+            border-color: #10B981;
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #10B981;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.2), #10B981);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #10B981;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #10B981;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+        }
+
+        select {
+            width: 100%;
+            padding: 7px 10px;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            background: white;
+            color: #334155;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        select:hover {
+            border-color: #10B981;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .slider-value {
+            font-size: 11px;
+            color: #64748B;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Action buttons */
+        .btn {
+            width: 100%;
+            padding: 7px;
+            margin-bottom: 6px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: rgba(100, 116, 139, 0.1);
+            color: #475569;
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(100, 116, 139, 0.15);
+            border-color: #64748B;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #DC2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #EF4444;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Canvas area */
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E8F5E9 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        #canvas {
+            max-width: 100%;
+            max-height: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            touch-action: none;
+        }
+
+        #canvas.cursor-default {
+            cursor: default;
+        }
+
+        #canvas.cursor-crosshair {
+            cursor: crosshair;
+        }
+
+        .placeholder {
+            text-align: center;
+            color: #94A3B8;
+        }
+
+        .placeholder-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .placeholder-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #64748B;
+        }
+
+        /* Scrollbar styling */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.5);
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        .toast-error {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 100%; height: 100%; color: #10B981;"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line><circle cx="12" cy="12" r="3"></circle></svg>
+            </div>
+            <div>
+                <h1 class="header-title">DrawTactics</h1>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <div
+                style="display: flex; gap: 8px; background: rgba(16, 185, 129, 0.1); padding: 4px; border-radius: 8px;">
+
+                <a href='index.html'
+                    style='padding: 8px 16px; border-radius: 6px; text-decoration: none; color: #64748B; font-size: 14px; font-weight: 600; transition: all 0.2s;'>Tactics
+                    Board</a>
+                <a href='screenshot-annotator.html'
+                    style='padding: 8px 16px; border-radius: 6px; text-decoration: none; background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white; font-size: 14px; font-weight: 600; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);'>Screenshot
+                    Annotator</a>
+                <a href='video-analysis.html'
+                    style='padding: 8px 16px; border-radius: 6px; text-decoration: none; color: #64748B; font-size: 14px; font-weight: 600; transition: all 0.2s;'>Video
+                    Analysis</a>
+            </div>
+
+            <div class="version-badge">v1.5</div>
+        </div>
+    </header>
+
+    <!-- Main content wrapper -->
+    <div class="main-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+
+            <!-- Upload section -->
+            <div class="section">
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                    Upload Screenshot
+                </button>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <!-- Player Marker -->
+            <div class="section" id="circleSection">
+                <div class="section-title">Player Marker</div>
+                <div class="color-row">
+                    <label>Color:</label>
+                    <input type="color" id="colorPicker" value="#ffffff">
+                </div>
+                <div class="color-row">
+                    <label>Opacity:</label>
+                    <input type="range" id="opacitySlider" min="0" max="100" value="30">
+                    <div class="slider-value"><span id="opacityValue">30</span>%</div>
+                </div>
+                <div class="color-row">
+                    <label>Size:</label>
+                    <input type="range" id="sizeSlider" min="1" max="30" value="15">
+                    <div class="slider-value"><span id="sizeValue">15</span>px</div>
+                </div>
+                <div class="color-row">
+                    <label>Connect:</label>
+                    <select id="connectionMode">
+                        <option value="chain">Chain (1-2-3)</option>
+                        <option value="mesh">Mesh (all-to-all)</option>
+                        <option value="none">Circles only</option>
+                    </select>
+                </div>
+                <button class="btn btn-success tool-btn" id="btn-circle" onclick="toggleTool('circle')">+
+                    Markers</button>
+                <button class="btn btn-secondary" onclick="breakChain()">Break Chain</button>
+                <div class="info-text">Break Chain: stop connecting to previous markers</div>
+            </div>
+
+            <!-- Text Box -->
+            <div class="section">
+                <div class="section-title">Text Box</div>
+                <button class="btn btn-success tool-btn" id="btn-text" onclick="setTool('text')">+ Text Box</button>
+                <div class="info-text">Drag to create text box</div>
+            </div>
+
+            <!-- Arrows -->
+            <div class="section">
+                <div class="section-title">Arrows</div>
+                <div class="color-row">
+                    <input type="color" id="arrowColorPicker" value="#ffffff"
+                        style="width: 32px; height: 24px; flex-shrink: 0;">
+                    <select id="arrowStyle" style="flex: 1; min-width: 0;">
+                        <option value="solid">Solid</option>
+                        <option value="dashed">Dashed</option>
+                        <option value="dotted">Dotted</option>
+                    </select>
+                </div>
+                <button class="btn btn-success tool-btn" id="btn-arrow" onclick="setTool('arrow')">+ Arrow</button>
+                <div class="info-text">Drag to draw - Double-click to curve</div>
+            </div>
+
+            <!-- Shapes -->
+            <div class="section">
+                <div class="section-title">Shapes</div>
+                <div class="color-row">
+                    <label>Color:</label>
+                    <input type="color" id="shapeColorPicker" value="#ffffff">
+                </div>
+                <div class="color-row">
+                    <label>Opacity:</label>
+                    <input type="range" id="shapeOpacitySlider" min="0" max="100" value="20">
+                    <div class="slider-value"><span id="shapeOpacityValue">20</span>%</div>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-success" id="btn-rectangle" onclick="setTool('rectangle')">+
+                        Rectangle</button>
+                    <button class="btn btn-success" id="btn-circle-zone" onclick="setTool('circle-zone')">+
+                        Circle</button>
+                </div>
+                <div class="info-text">Drag to create shape</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Actions -->
+            <div class="section">
+                <div class="section-title">Actions</div>
+                <button class="btn btn-secondary" onclick="undo()">Undo Last</button>
+                <div class="button-row">
+                    <button class="btn btn-danger" onclick="deleteSelected()">Delete</button>
+                    <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+                </div>
+                <button class="btn btn-success" onclick="exportImage()">Save as PNG</button>
+            </div>
+
+            <!-- Keyboard Shortcuts -->
+            <div
+                style="font-size: 11px; color: #94A3B8; padding: 6px; background: rgba(16, 185, 129, 0.05); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.1);">
+                <div style="font-weight: 600; color: #059669; margin-bottom: 6px;">Shortcuts</div>
+                <div style="line-height: 1.6;">
+                    <div><kbd
+                            style="background: #E8ECEF; padding: 2px 4px; border-radius: 3px; font-family: monospace;">Ctrl+Z</kbd>
+                        Undo</div>
+                    <div><kbd
+                            style="background: #E8ECEF; padding: 2px 4px; border-radius: 3px; font-family: monospace;">Ctrl+C</kbd>
+                        Copy</div>
+                    <div><kbd
+                            style="background: #E8ECEF; padding: 2px 4px; border-radius: 3px; font-family: monospace;">Ctrl+V</kbd>
+                        Paste</div>
+                    <div><kbd
+                            style="background: #E8ECEF; padding: 2px 4px; border-radius: 3px; font-family: monospace;">Delete</kbd>
+                        Delete</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas area -->
+        <div class="canvas-container" id="canvasContainer">
+            <div class="placeholder" id="placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 120px; height: 120px; opacity: 0.6; margin-bottom: 20px; color: #10B981;"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line><circle cx="12" cy="12" r="3"></circle></svg>
+                <div class="placeholder-text">Upload a screenshot to get started</div>
+            </div>
+            <canvas id="canvas" style="display: none;"></canvas>
+
+            <!-- Text Box Overlay -->
+            <div id="textOverlayContainer" style="display:none; position:absolute; z-index:200;">
+                <div id="textOverlayToolbar"
+                    style="display:flex; align-items:center; gap:6px; padding:3px 6px; background:#1E293B; border:1px solid #10B981; border-bottom:none; border-radius:4px 4px 0 0; font-size:11px; color:#CBD5E1;">
+                    <select id="textOverlaySize"
+                        style="background:#0F172A; color:#CBD5E1; border:1px solid #334155; border-radius:3px; padding:1px 2px; font-size:11px; cursor:pointer; pointer-events:auto; position:relative; z-index:201;">
+                        <option value="10">10px</option>
+                        <option value="12">12px</option>
+                        <option value="14">14px</option>
+                        <option value="16">16px</option>
+                        <option value="18">18px</option>
+                        <option value="20">20px</option>
+                        <option value="24">24px</option>
+                        <option value="28">28px</option>
+                        <option value="32">32px</option>
+                        <option value="36">36px</option>
+                    </select>
+                    <input type="color" id="textOverlayColor" value="#ffffff"
+                        style="width:22px; height:22px; border:1px solid #334155; border-radius:3px; padding:0; cursor:pointer; background:none;">
+                    <button id="textOverlayConfirm"
+                        style="background:#10B981; color:white; border:none; border-radius:3px; padding:2px 8px; font-size:11px; font-weight:600; cursor:pointer; margin-left:auto;">OK</button>
+                </div>
+                <textarea id="textOverlay"
+                    style="display:block; background:rgba(0,0,0,0.5); color:#fff; border:2px solid #10B981; border-top:1px solid #10B981; border-radius:0 0 4px 4px; padding:4px 6px; font-family:sans-serif; font-weight:bold; resize:none; outline:none; overflow:hidden; line-height:1.3; box-sizing:border-box; width:100%;"></textarea>
+            </div>
+        </div>
+
+        <script>
+            // ===== SCREENSHOT ANNOTATOR LOGIC =====
+            const canvas = document.getElementById('canvas');
+            let ctx = canvas.getContext('2d');
+            const fileInput = document.getElementById('fileInput');
+            const placeholder = document.getElementById('placeholder');
+            const opacitySlider = document.getElementById('opacitySlider');
+            const opacityValue = document.getElementById('opacityValue');
+            const sizeSlider = document.getElementById('sizeSlider');
+            const sizeValue = document.getElementById('sizeValue');
+
+            let uploadedImage = null;
+            let annotations = [];
+            let currentChain = [];
+            let isDrawing = false;
+            let drawStartX = 0;
+            let drawStartY = 0;
+            let selectedAnnotation = null;
+            let isDragging = false;
+            let dragOffsetX = 0;
+            let dragOffsetY = 0;
+            let draggingPoint = null; // 'start', 'end', 'control', or 'whole'
+
+            // Update slider values
+            opacitySlider.addEventListener('input', (e) => {
+                opacityValue.textContent = e.target.value;
+            });
+
+            sizeSlider.addEventListener('input', (e) => {
+                sizeValue.textContent = e.target.value;
+            });
+
+            // Shape opacity slider
+            const shapeOpacitySlider = document.getElementById('shapeOpacitySlider');
+            const shapeOpacityValue = document.getElementById('shapeOpacityValue');
+            shapeOpacitySlider.addEventListener('input', (e) => {
+                shapeOpacityValue.textContent = e.target.value + '%';
+            });
+
+            // Current tool tracking
+            let currentTool = 'select';
+
+            // Tool selection functions
+            function setTool(tool) {
+                currentTool = tool;
+
+                // Update button states
+                document.querySelectorAll('.tool-btn, .button-row .btn').forEach(btn => btn.classList.remove('active'));
+                const btn = document.getElementById('btn-' + tool);
+                if (btn) btn.classList.add('active');
+
+                // Update cursor
+                const canvas = document.getElementById('canvas');
+                canvas.classList.remove('cursor-default', 'cursor-crosshair');
+
+                if (tool === 'select') {
+                    canvas.classList.add('cursor-default');
+                } else {
+                    canvas.classList.add('cursor-crosshair');
+                }
+
+                // Deselect any selected annotation when switching tools
+                if (tool !== 'select') {
+                    selectedAnnotation = null;
+                    redraw();
+                }
+            }
+
+            function toggleTool(tool) {
+                // If already using this tool, switch back to select
+                if (currentTool === tool) {
+                    setTool('select');
+                } else {
+                    setTool(tool);
+                }
+            }
+
+            // Set initial cursor and tool
+            document.getElementById('canvas').className = 'cursor-default';
+
+            // File upload
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            uploadedImage = img;
+                            setupCanvas(img);
+                            placeholder.style.display = 'none';
+                            canvas.style.display = 'block';
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Setup canvas
+            function setupCanvas(img) {
+                // Set canvas size to match image
+                const maxWidth = window.innerWidth - 260; // Subtract sidebar width
+                const maxHeight = window.innerHeight - 40;
+
+                let width = img.width;
+                let height = img.height;
+
+                // Scale down if too large
+                if (width > maxWidth || height > maxHeight) {
+                    const scale = Math.min(maxWidth / width, maxHeight / height);
+                    width *= scale;
+                    height *= scale;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                // Store scale for coordinate conversion
+                canvas.scale = width / img.width;
+
+                redraw();
+            }
+
+            // Redraw canvas
+            function redraw() {
+                if (!uploadedImage) return;
+
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw image
+                ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+
+                // Draw all annotations
+                annotations.forEach((annotation, index) => {
+                    if (annotation.type === 'circle') {
+                        drawCircle(annotation.x, annotation.y, annotation.radius, annotation.color, annotation.opacity);
+                    } else if (annotation.type === 'line') {
+                        drawLine(annotation.x1, annotation.y1, annotation.x2, annotation.y2, annotation.color);
+                    } else if (annotation.type === 'arrow') {
+                        drawArrow(annotation.x1, annotation.y1, annotation.x2, annotation.y2, annotation.color, annotation.cx, annotation.cy, annotation.style);
+                    } else if (annotation.type === 'rectangle') {
+                        drawRectangle(annotation.x1, annotation.y1, annotation.x2, annotation.y2, annotation.color, annotation.opacity);
+                    } else if (annotation.type === 'polygon') {
+                        drawPolygon(annotation.points, annotation.color, annotation.opacity);
+                    } else if (annotation.type === 'circle-zone') {
+                        drawCircleZone(annotation.x, annotation.y, annotation.radius, annotation.color, annotation.opacity, annotation.radiusX, annotation.radiusY);
+                    } else if (annotation.type === 'text') {
+                        drawText(annotation);
+                    }
+                });
+
+                // Draw control point for selected curved arrow (blue)
+                if (selectedAnnotation !== null && annotations[selectedAnnotation] && annotations[selectedAnnotation].type === 'arrow') {
+                    const arrow = annotations[selectedAnnotation];
+
+                    // Curve control point (blue)
+                    if (arrow.cx !== undefined && arrow.cy !== undefined) {
+                        ctx.fillStyle = '#0099ff';
+                        ctx.beginPath();
+                        ctx.arc(arrow.cx, arrow.cy, 7, 0, 2 * Math.PI);
+                        ctx.fill();
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+
+                    // Start/end point controls (orange)
+                    ctx.fillStyle = '#ff6600';
+                    ctx.beginPath();
+                    ctx.arc(arrow.x1, arrow.y1, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(arrow.x2, arrow.y2, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+
+                // Draw selection highlight
+                if (selectedAnnotation !== null && annotations[selectedAnnotation]) {
+                    drawSelectionHighlight(annotations[selectedAnnotation]);
+                }
+            }
+
+            // ===== TEXT BOX OVERLAY =====
+            let pendingTextBox = null;
+
+            function showTextOverlay(x1, y1, x2, y2) {
+                // Mark overlay as active
+                textOverlayActive = true;
+
+                const canvasRect = canvas.getBoundingClientRect();
+                const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
+
+                const left = canvasRect.left - containerRect.left + Math.min(x1, x2) * (canvasRect.width / canvas.width);
+                const top = canvasRect.top - containerRect.top + Math.min(y1, y2) * (canvasRect.height / canvas.height);
+                const width = Math.abs(x2 - x1) * (canvasRect.width / canvas.width);
+                const height = Math.abs(y2 - y1) * (canvasRect.height / canvas.height);
+
+                // Default font size is 16px (not dependent on box height)
+                const fontSize = 16;
+                const container = document.getElementById('textOverlayContainer');
+                const overlay = document.getElementById('textOverlay');
+                const sizeSelect = document.getElementById('textOverlaySize');
+                const colorInput = document.getElementById('textOverlayColor');
+
+                container.style.left = left + 'px';
+                container.style.top = Math.max(0, top - 28) + 'px';
+                container.style.width = Math.max(width, 120) + 'px';
+                container.style.display = 'block';
+
+                overlay.style.height = (height + 28) + 'px';
+                overlay.style.fontSize = fontSize + 'px';
+                overlay.value = '';
+                overlay.style.color = '#ffffff';
+
+                sizeSelect.value = fontSize;
+                colorInput.value = '#ffffff';
+
+                overlay.focus();
+
+                pendingTextBox = {
+                    x1: Math.min(x1, x2),
+                    y1: Math.min(y1, y2),
+                    x2: Math.max(x1, x2),
+                    y2: Math.max(y1, y2),
+                    color: '#ffffff',
+                    fontSize: fontSize
+                };
+            }
+
+            function commitTextOverlay() {
+                // Mark overlay as inactive
+                textOverlayActive = false;
+                // Set flag to prevent immediate new text box creation on touch devices
+                textOverlayJustCommitted = true;
+                setTimeout(() => {
+                    textOverlayJustCommitted = false;
+                }, 300);
+
+                const container = document.getElementById('textOverlayContainer');
+                if (container.style.display === 'none' || !pendingTextBox) return;
+                const overlay = document.getElementById('textOverlay');
+                const text = overlay.value.trim();
+                if (text) {
+                    annotations.push({
+                        type: 'text',
+                        x1: pendingTextBox.x1,
+                        y1: pendingTextBox.y1,
+                        x2: pendingTextBox.x2,
+                        y2: pendingTextBox.y2,
+                        text: text,
+                        color: pendingTextBox.color,
+                        fontSize: pendingTextBox.fontSize
+                    });
+                }
+                container.style.display = 'none';
+                overlay.value = '';
+                pendingTextBox = null;
+                redraw();
+
+                // Auto-switch back to select tool after committing text
+                if (currentTool !== 'select') {
+                    setTool('select');
+                }
+            }
+
+            // Flag to prevent immediate text box creation after commit
+            let textOverlayJustCommitted = false;
+            let textOverlayActive = false;  // Track if overlay is currently showing
+
+            // Helper function to calculate distance from point to line segment
+            function distanceToLineSegment(px, py, x1, y1, x2, y2) {
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                const lengthSquared = dx * dx + dy * dy;
+
+                if (lengthSquared === 0) return Math.sqrt((px - x1) * (px - x1) + (py - y1) * (py - y1));
+
+                let t = ((px - x1) * dx + (py - y1) * dy) / lengthSquared;
+                t = Math.max(0, Math.min(1, t));
+
+                const projX = x1 + t * dx;
+                const projY = y1 + t * dy;
+
+                return Math.sqrt((px - projX) * (px - projX) + (py - projY) * (py - projY));
+            }
+
+            // Helper function to calculate distance from point to quadratic bezier curve
+            function distanceToCurve(px, py, x1, y1, cx, cy, x2, y2) {
+                let minDist = Infinity;
+                // Sample points along the curve
+                for (let t = 0; t <= 1; t += 0.05) {
+                    const x = (1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * cx + t * t * x2;
+                    const y = (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * cy + t * t * y2;
+                    const dist = Math.sqrt((px - x) ** 2 + (py - y) ** 2);
+                    minDist = Math.min(minDist, dist);
+                }
+                return minDist;
+            }
+
+            // Draw selection highlight
+            function drawSelectionHighlight(annotation) {
+                ctx.strokeStyle = '#00ff00';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([5, 5]);
+
+                if (annotation.type === 'circle') {
+                    const radiusX = annotation.radius * 1.4;
+                    const radiusY = annotation.radius * 0.5;
+                    ctx.beginPath();
+                    ctx.ellipse(annotation.x, annotation.y, radiusX + 5, radiusY + 5, 0, 0, 2 * Math.PI);
+                    ctx.stroke();
+                } else if (annotation.type === 'arrow') {
+                    // Draw endpoint controls (small circles at start and end)
+                    ctx.fillStyle = '#ff6600';
+                    ctx.beginPath();
+                    ctx.arc(annotation.x1, annotation.y1, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(annotation.x2, annotation.y2, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                } else if (annotation.type === 'rectangle') {
+                    const width = annotation.x2 - annotation.x1;
+                    const height = annotation.y2 - annotation.y1;
+                    ctx.strokeRect(annotation.x1 - 3, annotation.y1 - 3, width + 6, height + 6);
+
+                    // Draw corner handles for resizing
+                    ctx.fillStyle = '#ff6600';
+                    const corners = [
+                        { x: annotation.x1, y: annotation.y1 },
+                        { x: annotation.x2, y: annotation.y1 },
+                        { x: annotation.x1, y: annotation.y2 },
+                        { x: annotation.x2, y: annotation.y2 }
+                    ];
+                    corners.forEach(corner => {
+                        ctx.fillRect(corner.x - 5, corner.y - 5, 10, 10);
+                    });
+                } else if (annotation.type === 'polygon') {
+                    // Draw outline
+                    ctx.beginPath();
+                    ctx.moveTo(annotation.points[0].x, annotation.points[0].y);
+                    for (let i = 1; i < annotation.points.length; i++) {
+                        ctx.lineTo(annotation.points[i].x, annotation.points[i].y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+
+                    // Draw corner handles
+                    ctx.fillStyle = '#ff6600';
+                    annotation.points.forEach(pt => {
+                        ctx.beginPath();
+                        ctx.arc(pt.x, pt.y, 6, 0, 2 * Math.PI);
+                        ctx.fill();
+                    });
+                } else if (annotation.type === 'circle-zone') {
+                    const rx = annotation.radiusX || annotation.radius;
+                    const ry = annotation.radiusY || annotation.radius;
+                    ctx.beginPath();
+                    ctx.ellipse(annotation.x, annotation.y, rx + 3, ry + 3, 0, 0, 2 * Math.PI);
+                    ctx.stroke();
+
+                    // Draw 4 control handles (right, left, top, bottom)
+                    ctx.fillStyle = '#ff6600';
+                    const handles = [
+                        { x: annotation.x + rx, y: annotation.y },
+                        { x: annotation.x - rx, y: annotation.y },
+                        { x: annotation.x, y: annotation.y - ry },
+                        { x: annotation.x, y: annotation.y + ry }
+                    ];
+                    handles.forEach(h => {
+                        ctx.beginPath();
+                        ctx.arc(h.x, h.y, 6, 0, 2 * Math.PI);
+                        ctx.fill();
+                    });
+                } else if (annotation.type === 'text') {
+                    if (annotation.x1 !== undefined) {
+                        // Text box format - show resize handles at corners
+                        const width = annotation.x2 - annotation.x1;
+                        const height = annotation.y2 - annotation.y1;
+                        ctx.strokeRect(annotation.x1 - 3, annotation.y1 - 3, width + 6, height + 6);
+                        ctx.setLineDash([]);
+                        // Draw corner handles for resizing
+                        ctx.fillStyle = '#ff6600';
+                        const corners = [
+                            { x: annotation.x1, y: annotation.y1, name: 'topLeft' },
+                            { x: annotation.x2, y: annotation.y1, name: 'topRight' },
+                            { x: annotation.x1, y: annotation.y2, name: 'bottomLeft' },
+                            { x: annotation.x2, y: annotation.y2, name: 'bottomRight' }
+                        ];
+                        corners.forEach(corner => {
+                            ctx.fillRect(corner.x - 5, corner.y - 5, 10, 10);
+                        });
+                    } else {
+                        // Legacy format - centered text at point
+                        ctx.font = `bold ${annotation.fontSize}px sans-serif`;
+                        const textWidth = ctx.measureText(annotation.text).width;
+                        const textHeight = annotation.fontSize;
+                        ctx.strokeRect(
+                            annotation.x - textWidth / 2 - 5,
+                            annotation.y - textHeight / 2 - 5,
+                            textWidth + 10,
+                            textHeight + 10
+                        );
+                    }
+                }
+
+                ctx.setLineDash([]);
+            }
+
+            // Draw arrow with gradient fade at start (matches video-analysis style)
+            function drawArrow(x1, y1, x2, y2, color, cx, cy, style) {
+                ctx.globalAlpha = 1.0;
+                ctx.lineWidth = 3;
+
+                // Set line dash based on style
+                if (style === 'dashed') {
+                    ctx.setLineDash([10, 5]);
+                } else if (style === 'dotted') {
+                    ctx.setLineDash([2, 5]);
+                } else {
+                    ctx.setLineDash([]);
+                }
+
+                const headLength = 15;
+
+                // Calculate where arrow should end (before the arrowhead)
+                let endX, endY, angle;
+
+                if (cx !== undefined && cy !== undefined) {
+                    // Curved arrow
+                    angle = Math.atan2(y2 - cy, x2 - cx);
+                    endX = x2 - headLength * 0.7 * Math.cos(angle);
+                    endY = y2 - headLength * 0.7 * Math.sin(angle);
+
+                    // Parse color to get RGB values
+                    const tempDiv = document.createElement('div');
+                    tempDiv.style.color = color;
+                    document.body.appendChild(tempDiv);
+                    const computedColor = window.getComputedStyle(tempDiv).color;
+                    document.body.removeChild(tempDiv);
+                    const rgbMatch = computedColor.match(/\d+/g);
+                    const r = parseInt(rgbMatch[0]);
+                    const g = parseInt(rgbMatch[1]);
+                    const b = parseInt(rgbMatch[2]);
+
+                    // Split quadratic bezier at t=0.25 using de Casteljau algorithm
+                    // Original curve: P0=(x1,y1), P1=(cx,cy), P2=(endX,endY)
+                    const t = 0.25;
+                    const oneMinusT = 1 - t;
+
+                    // Level 1: Q0 = lerp(P0, P1, t), Q1 = lerp(P1, P2, t)
+                    const q0x = oneMinusT * x1 + t * cx;
+                    const q0y = oneMinusT * y1 + t * cy;
+                    const q1x = oneMinusT * cx + t * endX;
+                    const q1y = oneMinusT * cy + t * endY;
+
+                    // Level 2: R0 = lerp(Q0, Q1, t) - this is the split point on the curve
+                    const splitX = oneMinusT * q0x + t * q1x;
+                    const splitY = oneMinusT * q0y + t * q1y;
+
+                    // First segment: P0 -> R0 with control point Q0
+                    const gradient = ctx.createLinearGradient(x1, y1, splitX, splitY);
+                    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.3)`);
+                    gradient.addColorStop(1, color);
+                    ctx.strokeStyle = gradient;
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.quadraticCurveTo(q0x, q0y, splitX, splitY);
+                    ctx.stroke();
+
+                    // Second segment: R0 -> P2 with control point Q1
+                    ctx.strokeStyle = color;
+                    ctx.beginPath();
+                    ctx.moveTo(splitX, splitY);
+                    ctx.quadraticCurveTo(q1x, q1y, endX, endY);
+                    ctx.stroke();
+                } else {
+                    // Straight arrow
+                    angle = Math.atan2(y2 - y1, x2 - x1);
+                    endX = x2 - headLength * 0.7 * Math.cos(angle);
+                    endY = y2 - headLength * 0.7 * Math.sin(angle);
+
+                    // Draw gradient fade at start (first 25% of arrow)
+                    const dx = endX - x1, dy = endY - y1;
+                    const len = Math.hypot(dx, dy);
+                    const gradLen = len * 0.25;
+                    const gradEndX = x1 + (dx / len) * gradLen;
+                    const gradEndY = y1 + (dy / len) * gradLen;
+
+                    // Parse color to get RGB values
+                    const tempDiv = document.createElement('div');
+                    tempDiv.style.color = color;
+                    document.body.appendChild(tempDiv);
+                    const computedColor = window.getComputedStyle(tempDiv).color;
+                    document.body.removeChild(tempDiv);
+                    const rgbMatch = computedColor.match(/\d+/g);
+                    const r = parseInt(rgbMatch[0]);
+                    const g = parseInt(rgbMatch[1]);
+                    const b = parseInt(rgbMatch[2]);
+
+                    // Gradient fade section
+                    const gradient = ctx.createLinearGradient(x1, y1, gradEndX, gradEndY);
+                    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.3)`);
+                    gradient.addColorStop(1, color);
+                    ctx.strokeStyle = gradient;
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(gradEndX, gradEndY);
+                    ctx.stroke();
+
+                    // Solid section
+                    ctx.strokeStyle = color;
+                    ctx.beginPath();
+                    ctx.moveTo(gradEndX, gradEndY);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
+                }
+
+                // Reset line dash
+                ctx.setLineDash([]);
+
+                // Draw arrowhead at the actual endpoint (always solid)
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(x2, y2);
+                ctx.lineTo(
+                    x2 - headLength * Math.cos(angle - Math.PI / 6),
+                    y2 - headLength * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.lineTo(
+                    x2 - headLength * Math.cos(angle + Math.PI / 6),
+                    y2 - headLength * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            // Draw polygon (free-form quadrilateral)
+            function drawPolygon(points, color, opacity) {
+                ctx.globalAlpha = opacity / 100;
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    ctx.lineTo(points[i].x, points[i].y);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+
+            // Draw rectangle zone (no border, just fill)
+            function drawRectangle(x1, y1, x2, y2, color, opacity) {
+                const width = x2 - x1;
+                const height = y2 - y1;
+
+                // Semi-transparent fill only
+                ctx.globalAlpha = opacity / 100;
+                ctx.fillStyle = color;
+                ctx.fillRect(x1, y1, width, height);
+                ctx.globalAlpha = 1.0;
+            }
+
+            // Draw circle zone (shaded area - supports ellipse via radiusX/radiusY)
+            function drawCircleZone(x, y, radius, color, opacity, radiusX, radiusY) {
+                const rx = radiusX || radius;
+                const ry = radiusY || radius;
+                // Semi-transparent fill only
+                ctx.globalAlpha = opacity / 100;
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.ellipse(x, y, rx, ry, 0, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+
+            // Draw text - supports both legacy (x,y) and text box (x1,y1,x2,y2) formats
+            function drawText(annotation) {
+                ctx.globalAlpha = 1.0;
+                ctx.fillStyle = annotation.color;
+                ctx.font = `bold ${annotation.fontSize}px sans-serif`;
+
+                if (annotation.x1 !== undefined) {
+                    // Text box format - draw text wrapped in box
+                    const left = Math.min(annotation.x1, annotation.x2);
+                    const top = Math.min(annotation.y1, annotation.y2);
+                    const width = Math.abs(annotation.x2 - annotation.x1);
+                    const height = Math.abs(annotation.y2 - annotation.y1);
+
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+
+                    const lineHeight = annotation.fontSize * 1.3;
+                    const lines = wrapText(ctx, annotation.text, width - 8);
+                    const padding = 4;
+
+                    lines.forEach((line, i) => {
+                        const ly = top + padding + i * lineHeight;
+                        if (ly + lineHeight <= top + height + lineHeight) {
+                            ctx.fillText(line, left + padding, ly);
+                        }
+                    });
+                } else {
+                    // Legacy format - centered text at point
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(annotation.text, annotation.x, annotation.y);
+                }
+            }
+
+            // Helper function to wrap text for text boxes
+            function wrapText(context, text, maxWidth) {
+                const result = [];
+                const paragraphs = text.split('\n');
+                for (const para of paragraphs) {
+                    if (para === '') {
+                        result.push('');
+                        continue;
+                    }
+                    const words = para.split(' ');
+                    let line = '';
+                    for (const word of words) {
+                        const test = line ? line + ' ' + word : word;
+                        if (context.measureText(test).width > maxWidth && line) {
+                            result.push(line);
+                            line = word;
+                        } else {
+                            line = test;
+                        }
+                    }
+                    result.push(line);
+                }
+                return result;
+            }
+
+            // Draw circle (ellipse) with gradient fill and outline - matches video-analysis style
+            function drawCircle(x, y, radius, color, opacity) {
+                const radiusX = radius * 1.4; // 40% wider horizontally
+                const radiusY = radius * 0.5; // 50% of original height (much flatter)
+
+                // Parse color to get RGB values
+                const tempDiv = document.createElement('div');
+                tempDiv.style.color = color;
+                document.body.appendChild(tempDiv);
+                const computedColor = window.getComputedStyle(tempDiv).color;
+                document.body.removeChild(tempDiv);
+
+                // Extract RGB values
+                const rgbMatch = computedColor.match(/\d+/g);
+                const r = parseInt(rgbMatch[0]);
+                const g = parseInt(rgbMatch[1]);
+                const b = parseInt(rgbMatch[2]);
+
+                // Fill gradient (top to bottom)
+                const fillGradient = ctx.createLinearGradient(x, y - radiusY, x, y + radiusY);
+                fillGradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${opacity * 0.5 / 100})`);
+                fillGradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, ${opacity / 100})`);
+                ctx.fillStyle = fillGradient;
+                ctx.beginPath();
+                ctx.ellipse(x, y, radiusX, radiusY, 0, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Outline with gradient (matches video-analysis style)
+                // Stronger gradient on outline - no outline at top, fades in middle, full at bottom
+                const outlineGradient = ctx.createLinearGradient(x, y - radiusY, x, y + radiusY);
+                outlineGradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0)`);
+                outlineGradient.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0)`);
+                outlineGradient.addColorStop(0.7, `rgba(${r}, ${g}, ${b}, 0.4)`);
+                outlineGradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 1.0)`);
+                ctx.strokeStyle = outlineGradient;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.ellipse(x, y, radiusX, radiusY, 0, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+
+            // Draw line between ellipse edges (translucent by default)
+            function drawLine(x1, y1, x2, y2, color) {
+                const radius = parseInt(sizeSlider.value);
+                const radiusX = radius * 1.4; // Match ellipse width
+                const radiusY = radius * 0.5; // Match ellipse height (flatter)
+
+                // Calculate edge points
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                const angle = Math.atan2(dy, dx);
+
+                // Use radiusX for horizontal component, radiusY for vertical
+                const startX = x1 + radiusX * Math.cos(angle);
+                const startY = y1 + radiusY * Math.sin(angle);
+                const endX = x2 - radiusX * Math.cos(angle);
+                const endY = y2 - radiusY * Math.sin(angle);
+
+                ctx.globalAlpha = 0.6; // 60% opacity for connecting lines
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+                ctx.globalAlpha = 1.0; // Reset opacity
+            }
+
+            // Double-click to convert rectangle to free-form polygon or edit text box
+            canvas.addEventListener('dblclick', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+
+                // Check if double-clicked on a rectangle, polygon, or text box
+                for (let i = annotations.length - 1; i >= 0; i--) {
+                    const ann = annotations[i];
+                    if (ann.type === 'rectangle') {
+                        const minX = Math.min(ann.x1, ann.x2);
+                        const maxX = Math.max(ann.x1, ann.x2);
+                        const minY = Math.min(ann.y1, ann.y2);
+                        const maxY = Math.max(ann.y1, ann.y2);
+                        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+                            // Convert to polygon with 4 independent corners
+                            annotations[i] = {
+                                type: 'polygon',
+                                points: [
+                                    { x: ann.x1, y: ann.y1 },
+                                    { x: ann.x2, y: ann.y1 },
+                                    { x: ann.x2, y: ann.y2 },
+                                    { x: ann.x1, y: ann.y2 }
+                                ],
+                                color: ann.color,
+                                opacity: ann.opacity
+                            };
+                            selectedAnnotation = i;
+                            redraw();
+                            return;
+                        }
+                    } else if (ann.type === 'polygon') {
+                        if (pointInPolygon(x, y, ann.points)) {
+                            selectedAnnotation = i;
+                            redraw();
+                            return;
+                        }
+                    } else if (ann.type === 'text' && ann.x1 !== undefined) {
+                        // Double-clicked on text box - enter edit mode
+                        const minX = Math.min(ann.x1, ann.x2);
+                        const maxX = Math.max(ann.x1, ann.x2);
+                        const minY = Math.min(ann.y1, ann.y2);
+                        const maxY = Math.max(ann.y1, ann.y2);
+                        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+                            editTextBox(i);
+                            return;
+                        }
+                    }
+                }
+            });
+
+            // Edit existing text box
+            function editTextBox(index) {
+                const ann = annotations[index];
+                const canvasRect = canvas.getBoundingClientRect();
+                const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
+
+                const left = canvasRect.left - containerRect.left + Math.min(ann.x1, ann.x2) * (canvasRect.width / canvas.width);
+                const top = canvasRect.top - containerRect.top + Math.min(ann.y1, ann.y2) * (canvasRect.height / canvas.height);
+                const width = Math.abs(ann.x2 - ann.x1) * (canvasRect.width / canvas.width);
+                const height = Math.abs(ann.y2 - ann.y1) * (canvasRect.height / canvas.height);
+
+                const container = document.getElementById('textOverlayContainer');
+                const overlay = document.getElementById('textOverlay');
+                const sizeSelect = document.getElementById('textOverlaySize');
+                const colorInput = document.getElementById('textOverlayColor');
+
+                container.style.left = left + 'px';
+                container.style.top = Math.max(0, top - 28) + 'px';
+                container.style.width = Math.max(width, 120) + 'px';
+                container.style.display = 'block';
+
+                overlay.style.height = (height + 28) + 'px';
+                // Use saved font size or default to 16
+                const fontSize = ann.fontSize || 16;
+                overlay.style.fontSize = fontSize + 'px';
+                overlay.value = ann.text;
+                overlay.style.color = ann.color;
+
+                sizeSelect.value = fontSize;
+                colorInput.value = ann.color;
+
+                overlay.focus();
+
+                // Store reference to annotation being edited
+                pendingTextBox = {
+                    x1: ann.x1,
+                    y1: ann.y1,
+                    x2: ann.x2,
+                    y2: ann.y2,
+                    color: ann.color,
+                    fontSize: fontSize,
+                    editIndex: index  // Track which annotation we're editing
+                };
+
+                // Remove the old annotation (will be replaced on commit)
+                annotations.splice(index, 1);
+                selectedAnnotation = null;
+                redraw();
+            }
+
+            // Helper: point-in-polygon test (ray casting)
+            function pointInPolygon(px, py, points) {
+                let inside = false;
+                for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+                    const xi = points[i].x, yi = points[i].y;
+                    const xj = points[j].x, yj = points[j].y;
+                    if (((yi > py) !== (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi)) {
+                        inside = !inside;
+                    }
+                }
+                return inside;
+            }
+
+            // Canvas mouse handlers
+            canvas.addEventListener('mousedown', (e) => {
+                // If we just committed a text overlay, ignore this click
+                // This prevents touch devices from immediately creating a new text box
+                if (textOverlayJustCommitted) {
+                    textOverlayJustCommitted = false;
+                    return;
+                }
+
+                const tool = currentTool;
+
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+
+                // Select mode - click to select annotations or drag to move them
+                if (tool === 'select') {
+                    // Check if clicking on control points of selected arrow
+                    if (selectedAnnotation !== null && annotations[selectedAnnotation] && annotations[selectedAnnotation].type === 'arrow') {
+                        const arrow = annotations[selectedAnnotation];
+
+                        // Check start point
+                        let dist = Math.sqrt((x - arrow.x1) ** 2 + (y - arrow.y1) ** 2);
+                        if (dist < 12) {
+                            isDragging = true;
+                            draggingPoint = 'start';
+                            dragOffsetX = x - arrow.x1;
+                            dragOffsetY = y - arrow.y1;
+                            canvas.style.cursor = 'grabbing';
+                            return;
+                        }
+
+                        // Check end point
+                        dist = Math.sqrt((x - arrow.x2) ** 2 + (y - arrow.y2) ** 2);
+                        if (dist < 12) {
+                            isDragging = true;
+                            draggingPoint = 'end';
+                            dragOffsetX = x - arrow.x2;
+                            dragOffsetY = y - arrow.y2;
+                            canvas.style.cursor = 'grabbing';
+                            return;
+                        }
+
+                        // Check curve control point
+                        if (arrow.cx !== undefined && arrow.cy !== undefined) {
+                            dist = Math.sqrt((x - arrow.cx) ** 2 + (y - arrow.cy) ** 2);
+                            if (dist < 12) {
+                                isDragging = true;
+                                draggingPoint = 'control';
+                                dragOffsetX = x - arrow.cx;
+                                dragOffsetY = y - arrow.cy;
+                                canvas.style.cursor = 'grabbing';
+                                return;
+                            }
+                        }
+                    }
+
+                    // Check if clicking on selected annotation to drag it
+                    if (selectedAnnotation !== null && annotations[selectedAnnotation]) {
+                        const ann = annotations[selectedAnnotation];
+                        let clickedOnSelected = false;
+
+                        if (ann.type === 'circle') {
+                            const radiusX = ann.radius * 1.4;
+                            const radiusY = ann.radius * 0.5;
+                            const dx = (x - ann.x) / radiusX;
+                            const dy = (y - ann.y) / radiusY;
+                            if (dx * dx + dy * dy <= 1) {
+                                clickedOnSelected = true;
+                                dragOffsetX = x - ann.x;
+                                dragOffsetY = y - ann.y;
+                            }
+                        } else if (ann.type === 'arrow') {
+                            let dist;
+                            if (ann.cx !== undefined && ann.cy !== undefined) {
+                                dist = distanceToCurve(x, y, ann.x1, ann.y1, ann.cx, ann.cy, ann.x2, ann.y2);
+                            } else {
+                                dist = distanceToLineSegment(x, y, ann.x1, ann.y1, ann.x2, ann.y2);
+                            }
+                            if (dist < 10) {
+                                clickedOnSelected = true;
+                                draggingPoint = 'whole';
+                                dragOffsetX = x - ann.x1;
+                                dragOffsetY = y - ann.y1;
+                            }
+                        } else if (ann.type === 'rectangle') {
+                            // Check for corner handles first (for resizing)
+                            const corners = [
+                                { x: ann.x1, y: ann.y1, name: 'topLeft' },
+                                { x: ann.x2, y: ann.y1, name: 'topRight' },
+                                { x: ann.x1, y: ann.y2, name: 'bottomLeft' },
+                                { x: ann.x2, y: ann.y2, name: 'bottomRight' }
+                            ];
+
+                            for (const corner of corners) {
+                                const dist = Math.sqrt((x - corner.x) ** 2 + (y - corner.y) ** 2);
+                                if (dist < 10) {
+                                    clickedOnSelected = true;
+                                    draggingPoint = corner.name;
+                                    dragOffsetX = x - corner.x;
+                                    dragOffsetY = y - corner.y;
+                                    break;
+                                }
+                            }
+
+                            // If not on corner, check if inside rectangle for moving
+                            if (!clickedOnSelected) {
+                                const minX = Math.min(ann.x1, ann.x2);
+                                const maxX = Math.max(ann.x1, ann.x2);
+                                const minY = Math.min(ann.y1, ann.y2);
+                                const maxY = Math.max(ann.y1, ann.y2);
+                                if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+                                    clickedOnSelected = true;
+                                    draggingPoint = 'whole';
+                                    dragOffsetX = x - ann.x1;
+                                    dragOffsetY = y - ann.y1;
+                                }
+                            }
+                        } else if (ann.type === 'circle-zone') {
+                            const rx = ann.radiusX || ann.radius;
+                            const ry = ann.radiusY || ann.radius;
+                            // Check if clicking on one of the 4 control handles
+                            const handles = [
+                                { name: 'right', x: ann.x + rx, y: ann.y },
+                                { name: 'left', x: ann.x - rx, y: ann.y },
+                                { name: 'top', x: ann.x, y: ann.y - ry },
+                                { name: 'bottom', x: ann.x, y: ann.y + ry }
+                            ];
+                            for (const handle of handles) {
+                                if (Math.sqrt((x - handle.x) ** 2 + (y - handle.y) ** 2) < 10) {
+                                    clickedOnSelected = true;
+                                    draggingPoint = handle.name;
+                                    dragOffsetX = 0;
+                                    dragOffsetY = 0;
+                                    break;
+                                }
+                            }
+                            // If not on a handle, check if inside ellipse for moving
+                            if (!clickedOnSelected) {
+                                const dx = (x - ann.x) / rx;
+                                const dy = (y - ann.y) / ry;
+                                if (dx * dx + dy * dy <= 1) {
+                                    clickedOnSelected = true;
+                                    draggingPoint = 'whole';
+                                    dragOffsetX = x - ann.x;
+                                    dragOffsetY = y - ann.y;
+                                }
+                            }
+                        } else if (ann.type === 'polygon') {
+                            // Check corner handles first
+                            for (let pi = 0; pi < ann.points.length; pi++) {
+                                const pt = ann.points[pi];
+                                if (Math.sqrt((x - pt.x) ** 2 + (y - pt.y) ** 2) < 10) {
+                                    clickedOnSelected = true;
+                                    draggingPoint = 'corner' + pi;
+                                    dragOffsetX = x - pt.x;
+                                    dragOffsetY = y - pt.y;
+                                    break;
+                                }
+                            }
+                            // If not on corner, check if inside polygon for moving
+                            if (!clickedOnSelected && pointInPolygon(x, y, ann.points)) {
+                                clickedOnSelected = true;
+                                draggingPoint = 'whole';
+                                dragOffsetX = x - ann.points[0].x;
+                                dragOffsetY = y - ann.points[0].y;
+                            }
+                        } else if (ann.type === 'text') {
+                            // Check if clicking on text box
+                            if (ann.x1 !== undefined) {
+                                // Check for corner handles first (for resizing)
+                                const corners = [
+                                    { x: ann.x1, y: ann.y1, name: 'topLeft' },
+                                    { x: ann.x2, y: ann.y1, name: 'topRight' },
+                                    { x: ann.x1, y: ann.y2, name: 'bottomLeft' },
+                                    { x: ann.x2, y: ann.y2, name: 'bottomRight' }
+                                ];
+
+                                for (const corner of corners) {
+                                    const dist = Math.sqrt((x - corner.x) ** 2 + (y - corner.y) ** 2);
+                                    if (dist < 10) {
+                                        clickedOnSelected = true;
+                                        draggingPoint = corner.name;
+                                        dragOffsetX = x - corner.x;
+                                        dragOffsetY = y - corner.y;
+                                        break;
+                                    }
+                                }
+
+                                // If not on corner, check if inside text box for moving
+                                if (!clickedOnSelected) {
+                                    const minX = Math.min(ann.x1, ann.x2);
+                                    const maxX = Math.max(ann.x1, ann.x2);
+                                    const minY = Math.min(ann.y1, ann.y2);
+                                    const maxY = Math.max(ann.y1, ann.y2);
+                                    if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+                                        clickedOnSelected = true;
+                                        draggingPoint = 'whole';
+                                        dragOffsetX = x - ann.x1;
+                                        dragOffsetY = y - ann.y1;
+                                    }
+                                }
+                            } else {
+                                // Legacy format
+                                ctx.font = `bold ${ann.fontSize}px sans-serif`;
+                                const textWidth = ctx.measureText(ann.text).width;
+                                const textHeight = ann.fontSize;
+                                if (x >= ann.x - textWidth / 2 && x <= ann.x + textWidth / 2 &&
+                                    y >= ann.y - textHeight / 2 && y <= ann.y + textHeight / 2) {
+                                    clickedOnSelected = true;
+                                    dragOffsetX = x - ann.x;
+                                    dragOffsetY = y - ann.y;
+                                }
+                            }
+                        }
+
+                        if (clickedOnSelected) {
+                            isDragging = true;
+                            canvas.style.cursor = 'grabbing';
+                            return;
+                        }
+                    }
+
+                    // Not dragging - check for new selection
+                    selectedAnnotation = null;
+
+                    // Check if clicked on any annotation (reverse order to select topmost)
+                    for (let i = annotations.length - 1; i >= 0; i--) {
+                        const ann = annotations[i];
+
+                        if (ann.type === 'circle') {
+                            const radiusX = ann.radius * 1.4;
+                            const radiusY = ann.radius * 0.5;
+                            const dx = (x - ann.x) / radiusX;
+                            const dy = (y - ann.y) / radiusY;
+                            if (dx * dx + dy * dy <= 1) {
+                                selectedAnnotation = i;
+                                break;
+                            }
+                        } else if (ann.type === 'arrow') {
+                            // Check if clicked on arrow - works for both straight and curved
+                            let dist;
+                            if (ann.cx !== undefined && ann.cy !== undefined) {
+                                // Curved arrow - check distance to curve
+                                dist = distanceToCurve(x, y, ann.x1, ann.y1, ann.cx, ann.cy, ann.x2, ann.y2);
+                            } else {
+                                // Straight arrow
+                                dist = distanceToLineSegment(x, y, ann.x1, ann.y1, ann.x2, ann.y2);
+                            }
+
+                            if (dist < 10) {
+                                selectedAnnotation = i;
+                                // Add control point at midpoint if it doesn't exist
+                                if (ann.cx === undefined) {
+                                    ann.cx = (ann.x1 + ann.x2) / 2;
+                                    ann.cy = (ann.y1 + ann.y2) / 2;
+                                }
+                                break;
+                            }
+                        } else if (ann.type === 'rectangle') {
+                            const minX = Math.min(ann.x1, ann.x2);
+                            const maxX = Math.max(ann.x1, ann.x2);
+                            const minY = Math.min(ann.y1, ann.y2);
+                            const maxY = Math.max(ann.y1, ann.y2);
+                            if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+                                selectedAnnotation = i;
+                                break;
+                            }
+                        } else if (ann.type === 'polygon') {
+                            if (pointInPolygon(x, y, ann.points)) {
+                                selectedAnnotation = i;
+                                break;
+                            }
+                        } else if (ann.type === 'circle-zone') {
+                            const rx = ann.radiusX || ann.radius;
+                            const ry = ann.radiusY || ann.radius;
+                            const dx = (x - ann.x) / rx;
+                            const dy = (y - ann.y) / ry;
+                            if (dx * dx + dy * dy <= 1) {
+                                selectedAnnotation = i;
+                                break;
+                            }
+                        } else if (ann.type === 'text') {
+                            // Check for text box selection
+                            if (ann.x1 !== undefined) {
+                                const minX = Math.min(ann.x1, ann.x2);
+                                const maxX = Math.max(ann.x1, ann.x2);
+                                const minY = Math.min(ann.y1, ann.y2);
+                                const maxY = Math.max(ann.y1, ann.y2);
+                                if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+                                    selectedAnnotation = i;
+                                    break;
+                                }
+                            } else {
+                                // Legacy format
+                                const textWidth = ctx.measureText(ann.text).width;
+                                const textHeight = ann.fontSize;
+                                if (x >= ann.x - textWidth / 2 && x <= ann.x + textWidth / 2 &&
+                                    y >= ann.y - textHeight / 2 && y <= ann.y + textHeight / 2) {
+                                    selectedAnnotation = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    redraw();
+                    return;
+                }
+
+                // Use tool-specific color/opacity
+                let color, opacity;
+                if (tool === 'arrow') {
+                    color = document.getElementById('arrowColorPicker').value;
+                    opacity = 100;
+                } else if (tool === 'rectangle' || tool === 'circle-zone') {
+                    color = document.getElementById('shapeColorPicker').value;
+                    opacity = parseInt(document.getElementById('shapeOpacitySlider').value);
+                } else {
+                    color = document.getElementById('colorPicker').value;
+                    opacity = parseInt(opacitySlider.value);
+                }
+                const radius = parseInt(sizeSlider.value);
+
+                if (tool === 'circle') {
+                    // Click to place circles
+                    const circle = {
+                        type: 'circle',
+                        x: x,
+                        y: y,
+                        radius: radius,
+                        color: color,
+                        opacity: opacity
+                    };
+                    annotations.push(circle);
+                    currentChain.push({ x, y });
+
+                    const mode = document.getElementById('connectionMode').value;
+
+                    // Add line if needed
+                    if (mode === 'chain' && currentChain.length > 1) {
+                        const prev = currentChain[currentChain.length - 2];
+                        const curr = currentChain[currentChain.length - 1];
+
+                        annotations.push({
+                            type: 'line',
+                            x1: prev.x,
+                            y1: prev.y,
+                            x2: curr.x,
+                            y2: curr.y,
+                            color: color
+                        });
+                    }
+
+                    redraw();
+
+                    // If mesh mode, connect to all previous
+                    if (mode === 'mesh' && currentChain.length > 1) {
+                        for (let i = 0; i < currentChain.length - 1; i++) {
+                            const other = currentChain[i];
+                            annotations.push({
+                                type: 'line',
+                                x1: other.x,
+                                y1: other.y,
+                                x2: x,
+                                y2: y,
+                                color: color
+                            });
+                        }
+                        redraw();
+                    }
+                } else if (tool === 'arrow' || tool === 'rectangle' || tool === 'circle-zone' || tool === 'text') {
+                    // Start dragging for arrows/rectangles/circle-zones/text
+                    isDrawing = true;
+                    drawStartX = x;
+                    drawStartY = y;
+                }
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                const tool = currentTool;
+
+                // Handle dragging in select mode
+                if (tool === 'select' && isDragging && selectedAnnotation !== null && annotations[selectedAnnotation]) {
+                    const ann = annotations[selectedAnnotation];
+
+                    // Dragging arrow control points
+                    if (ann.type === 'arrow') {
+                        if (draggingPoint === 'start') {
+                            ann.x1 = x - dragOffsetX;
+                            ann.y1 = y - dragOffsetY;
+                        } else if (draggingPoint === 'end') {
+                            ann.x2 = x - dragOffsetX;
+                            ann.y2 = y - dragOffsetY;
+                        } else if (draggingPoint === 'control') {
+                            ann.cx = x - dragOffsetX;
+                            ann.cy = y - dragOffsetY;
+                        } else {
+                            // Dragging whole arrow
+                            const dx = x - dragOffsetX - ann.x1;
+                            const dy = y - dragOffsetY - ann.y1;
+                            ann.x1 += dx;
+                            ann.y1 += dy;
+                            ann.x2 += dx;
+                            ann.y2 += dy;
+                            if (ann.cx !== undefined) {
+                                ann.cx += dx;
+                                ann.cy += dy;
+                            }
+                        }
+                        redraw();
+                        return;
+                    }
+
+                    // Dragging circle - update connected lines
+                    if (ann.type === 'circle') {
+                        const oldX = ann.x;
+                        const oldY = ann.y;
+                        ann.x = x - dragOffsetX;
+                        ann.y = y - dragOffsetY;
+
+                        // Update any lines connected to this circle
+                        const deltaX = ann.x - oldX;
+                        const deltaY = ann.y - oldY;
+
+                        annotations.forEach(other => {
+                            if (other.type === 'line') {
+                                // Check if this line is connected to the moved circle
+                                if (Math.abs(other.x1 - oldX) < 5 && Math.abs(other.y1 - oldY) < 5) {
+                                    other.x1 += deltaX;
+                                    other.y1 += deltaY;
+                                }
+                                if (Math.abs(other.x2 - oldX) < 5 && Math.abs(other.y2 - oldY) < 5) {
+                                    other.x2 += deltaX;
+                                    other.y2 += deltaY;
+                                }
+                            }
+                        });
+
+                        redraw();
+                        return;
+                    }
+
+                    // Dragging rectangle
+                    if (ann.type === 'rectangle') {
+                        if (draggingPoint === 'topLeft') {
+                            ann.x1 = x - dragOffsetX;
+                            ann.y1 = y - dragOffsetY;
+                        } else if (draggingPoint === 'topRight') {
+                            ann.x2 = x - dragOffsetX;
+                            ann.y1 = y - dragOffsetY;
+                        } else if (draggingPoint === 'bottomLeft') {
+                            ann.x1 = x - dragOffsetX;
+                            ann.y2 = y - dragOffsetY;
+                        } else if (draggingPoint === 'bottomRight') {
+                            ann.x2 = x - dragOffsetX;
+                            ann.y2 = y - dragOffsetY;
+                        } else {
+                            // Moving whole rectangle
+                            const dx = x - dragOffsetX - ann.x1;
+                            const dy = y - dragOffsetY - ann.y1;
+                            ann.x1 += dx;
+                            ann.y1 += dy;
+                            ann.x2 += dx;
+                            ann.y2 += dy;
+                        }
+                        redraw();
+                        return;
+                    }
+
+                    // Dragging polygon
+                    if (ann.type === 'polygon') {
+                        const cornerMatch = draggingPoint && draggingPoint.match(/^corner(\d+)$/);
+                        if (cornerMatch) {
+                            const idx = parseInt(cornerMatch[1]);
+                            ann.points[idx].x = x - dragOffsetX;
+                            ann.points[idx].y = y - dragOffsetY;
+                        } else {
+                            // Moving whole polygon
+                            const dx = x - dragOffsetX - ann.points[0].x;
+                            const dy = y - dragOffsetY - ann.points[0].y;
+                            ann.points.forEach(pt => {
+                                pt.x += dx;
+                                pt.y += dy;
+                            });
+                        }
+                        redraw();
+                        return;
+                    }
+
+                    // Dragging circle-zone
+                    if (ann.type === 'circle-zone') {
+                        if (draggingPoint === 'right') {
+                            ann.radiusX = Math.max(10, x - ann.x);
+                        } else if (draggingPoint === 'left') {
+                            ann.radiusX = Math.max(10, ann.x - x);
+                        } else if (draggingPoint === 'top') {
+                            ann.radiusY = Math.max(10, ann.y - y);
+                        } else if (draggingPoint === 'bottom') {
+                            ann.radiusY = Math.max(10, y - ann.y);
+                        } else {
+                            // Move whole circle
+                            ann.x = x - dragOffsetX;
+                            ann.y = y - dragOffsetY;
+                        }
+                        redraw();
+                        return;
+                    }
+
+                    // Dragging text
+                    if (ann.type === 'text') {
+                        if (ann.x1 !== undefined) {
+                            // Text box format - support resizing via corner handles
+                            if (draggingPoint === 'topLeft') {
+                                ann.x1 = x - dragOffsetX;
+                                ann.y1 = y - dragOffsetY;
+                            } else if (draggingPoint === 'topRight') {
+                                ann.x2 = x - dragOffsetX;
+                                ann.y1 = y - dragOffsetY;
+                            } else if (draggingPoint === 'bottomLeft') {
+                                ann.x1 = x - dragOffsetX;
+                                ann.y2 = y - dragOffsetY;
+                            } else if (draggingPoint === 'bottomRight') {
+                                ann.x2 = x - dragOffsetX;
+                                ann.y2 = y - dragOffsetY;
+                            } else {
+                                // Moving whole text box
+                                const dx = x - dragOffsetX - ann.x1;
+                                const dy = y - dragOffsetY - ann.y1;
+                                ann.x1 += dx;
+                                ann.y1 += dy;
+                                ann.x2 += dx;
+                                ann.y2 += dy;
+                            }
+                        } else {
+                            // Legacy format
+                            ann.x = x - dragOffsetX;
+                            ann.y = y - dragOffsetY;
+                        }
+                        redraw();
+                        return;
+                    }
+                }
+
+                // Original drawing behavior
+                if (!isDrawing) return;
+
+                // Use tool-specific color/opacity for preview
+                let color, opacity;
+                if (tool === 'arrow') {
+                    color = document.getElementById('arrowColorPicker').value;
+                    opacity = 100;
+                } else if (tool === 'rectangle' || tool === 'circle-zone') {
+                    color = document.getElementById('shapeColorPicker').value;
+                    opacity = parseInt(document.getElementById('shapeOpacitySlider').value);
+                } else {
+                    color = document.getElementById('colorPicker').value;
+                    opacity = parseInt(opacitySlider.value);
+                }
+
+                // Redraw everything plus preview
+                redraw();
+
+                if (tool === 'arrow') {
+                    const arrowStyle = document.getElementById('arrowStyle').value;
+                    drawArrow(drawStartX, drawStartY, x, y, color, undefined, undefined, arrowStyle);
+                } else if (tool === 'rectangle') {
+                    drawRectangle(drawStartX, drawStartY, x, y, color, opacity);
+                } else if (tool === 'circle-zone') {
+                    const radius = Math.sqrt((x - drawStartX) ** 2 + (y - drawStartY) ** 2);
+                    drawCircleZone(drawStartX, drawStartY, radius, color, opacity);
+                } else if (tool === 'text') {
+                    // Draw text box outline
+                    ctx.strokeStyle = '#10B981';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.strokeRect(drawStartX, drawStartY, x - drawStartX, y - drawStartY);
+                    ctx.setLineDash([]);
+                }
+            });
+
+            canvas.addEventListener('mouseup', (e) => {
+                // If text overlay is active, clicking canvas commits it
+                if (textOverlayActive) {
+                    commitTextOverlay();
+                    return;
+                }
+
+                // Stop dragging
+                if (isDragging) {
+                    isDragging = false;
+                    draggingPoint = null;
+                    dragOffsetX = 0;
+                    dragOffsetY = 0;
+                    canvas.style.cursor = 'default';
+                    return;
+                }
+
+                if (!isDrawing) return;
+
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
+                const tool = currentTool;
+
+                // Use shape-specific color/opacity for shapes
+                let color, opacity;
+                if (tool === 'arrow') {
+                    color = document.getElementById('arrowColorPicker').value;
+                    opacity = 100;
+                } else if (tool === 'rectangle' || tool === 'circle-zone') {
+                    color = document.getElementById('shapeColorPicker').value;
+                    opacity = parseInt(document.getElementById('shapeOpacitySlider').value);
+                } else {
+                    color = document.getElementById('colorPicker').value;
+                    opacity = parseInt(opacitySlider.value);
+                }
+
+                // Save the annotation
+                if (tool === 'arrow') {
+                    const arrowStyle = document.getElementById('arrowStyle').value;
+                    annotations.push({
+                        type: 'arrow',
+                        x1: drawStartX,
+                        y1: drawStartY,
+                        x2: x,
+                        y2: y,
+                        color: color,
+                        style: arrowStyle
+                        // No cx/cy - straight by default
+                    });
+                    // Auto-switch back to select
+                    setTool('select');
+                } else if (tool === 'rectangle') {
+                    annotations.push({
+                        type: 'rectangle',
+                        x1: drawStartX,
+                        y1: drawStartY,
+                        x2: x,
+                        y2: y,
+                        color: color,
+                        opacity: opacity
+                    });
+                    // Auto-switch back to select
+                    setTool('select');
+                } else if (tool === 'circle-zone') {
+                    const radius = Math.sqrt((x - drawStartX) ** 2 + (y - drawStartY) ** 2);
+                    annotations.push({
+                        type: 'circle-zone',
+                        x: drawStartX,
+                        y: drawStartY,
+                        radius: radius,
+                        radiusX: radius,
+                        radiusY: radius,
+                        color: color,
+                        opacity: opacity
+                    });
+                    // Auto-switch back to select
+                    setTool('select');
+                } else if (tool === 'text') {
+                    // Don't create a new text box if one is already active
+                    if (textOverlayActive) {
+                        return;
+                    }
+                    // Show text overlay for user to type
+                    showTextOverlay(drawStartX, drawStartY, x, y);
+                }
+
+                isDrawing = false;
+                redraw();
+            });
+
+            // Touch support - translate touch events to mouse events
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                canvas.dispatchEvent(new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    bubbles: true
+                }));
+            }, { passive: false });
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                canvas.dispatchEvent(new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    bubbles: true
+                }));
+            }, { passive: false });
+
+            canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const touch = e.changedTouches[0];
+                canvas.dispatchEvent(new MouseEvent('mouseup', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    bubbles: true
+                }));
+            }, { passive: false });
+
+            canvas.addEventListener('touchcancel', (e) => {
+                e.preventDefault();
+                const touch = e.changedTouches[0];
+                canvas.dispatchEvent(new MouseEvent('mouseup', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    bubbles: true
+                }));
+            }, { passive: false });
+
+            // Keyboard shortcuts
+            let clipboardAnnotation = null;
+
+            document.addEventListener('keydown', (e) => {
+                // Don't intercept if user is typing in an input field
+                const activeElement = document.activeElement;
+                if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
+                    return;
+                }
+
+                const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+
+                // Ctrl/Cmd + Z - Undo
+                if (isCtrlOrCmd && e.key === 'z' && !e.shiftKey) {
+                    e.preventDefault();
+                    undo();
+                    return;
+                }
+
+                // Ctrl/Cmd + C - Copy selected annotation
+                if (isCtrlOrCmd && e.key === 'c' && selectedAnnotation !== null) {
+                    e.preventDefault();
+                    clipboardAnnotation = JSON.parse(JSON.stringify(annotations[selectedAnnotation]));
+                    showToast('Copied to clipboard', 'success');
+                    return;
+                }
+
+                // Ctrl/Cmd + V - Paste annotation
+                if (isCtrlOrCmd && e.key === 'v' && clipboardAnnotation !== null) {
+                    e.preventDefault();
+                    const pasted = JSON.parse(JSON.stringify(clipboardAnnotation));
+
+                    // Offset the pasted annotation slightly so it's not exactly on top
+                    const offset = 20;
+                    if (pasted.x !== undefined) pasted.x += offset;
+                    if (pasted.y !== undefined) pasted.y += offset;
+                    if (pasted.x1 !== undefined) {
+                        pasted.x1 += offset;
+                        pasted.x2 += offset;
+                    }
+                    if (pasted.y1 !== undefined) {
+                        pasted.y1 += offset;
+                        pasted.y2 += offset;
+                    }
+
+                    annotations.push(pasted);
+                    selectedAnnotation = annotations.length - 1;
+                    redraw();
+                    showToast('Pasted from clipboard', 'success');
+                    return;
+                }
+
+                // Delete or Backspace - delete selected annotation
+                if ((e.key === 'Delete' || e.key === 'Backspace') && selectedAnnotation !== null) {
+                    e.preventDefault();
+                    annotations.splice(selectedAnnotation, 1);
+                    selectedAnnotation = null;
+                    redraw();
+                }
+            });
+
+            // Text overlay event listeners
+            const textOverlay = document.getElementById('textOverlay');
+            const textOverlayContainer = document.getElementById('textOverlayContainer');
+            const textOverlayToolbar = document.getElementById('textOverlayToolbar');
+
+            // Handle font size change with multiple events for cross-browser/touch compatibility
+            const textOverlaySize = document.getElementById('textOverlaySize');
+            const handleSizeChange = (e) => {
+                if (!pendingTextBox) return;
+                const sz = parseInt(e.target.value);
+                pendingTextBox.fontSize = sz;
+                textOverlay.style.fontSize = sz + 'px';
+                // Focus back to textarea after selection
+                textOverlay.focus();
+            };
+
+            textOverlaySize.addEventListener('change', handleSizeChange);
+
+            // Handle clicking on select - just stop propagation, don't prevent default
+            textOverlaySize.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            document.getElementById('textOverlayColor').addEventListener('input', (e) => {
+                if (!pendingTextBox) return;
+                pendingTextBox.color = e.target.value;
+                textOverlay.style.color = e.target.value;
+                textOverlay.focus();
+            });
+
+            // Confirm button handler - use click and touchend for better touch support
+            const confirmBtn = document.getElementById('textOverlayConfirm');
+            confirmBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                commitTextOverlay();
+            });
+            confirmBtn.addEventListener('touchend', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                commitTextOverlay();
+            }, { passive: false });
+
+            // Blur no longer auto-commits - user must click OK
+            // This prevents touch issues where tapping away accidentally commits/deletes
+            textOverlay.addEventListener('keydown', (e) => {
+                e.stopPropagation();
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    // Enter confirms the text box
+                    e.preventDefault();
+                    commitTextOverlay();
+                } else if (e.key === 'Escape') {
+                    // Escape cancels
+                    pendingTextBox = null;
+                    textOverlayContainer.style.display = 'none';
+                    textOverlay.value = '';
+                    redraw();
+                    setTool('select');
+                }
+            });
+
+            // Break chain
+            function breakChain() {
+                currentChain = [];
+            }
+
+            // Toast notification
+            function showToast(message, type = 'success') {
+                // Remove existing toast if any
+                const existing = document.querySelector('.toast');
+                if (existing) existing.remove();
+
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                // Trigger animation
+                setTimeout(() => toast.classList.add('show'), 10);
+
+                // Auto hide after 2 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
+
+            // Undo last
+            function undo() {
+                if (annotations.length === 0) return;
+
+                // Remove last annotation
+                const last = annotations.pop();
+
+                // If it was a circle, remove it from current chain too
+                if (last.type === 'circle') {
+                    currentChain.pop();
+                }
+
+                // If in chain mode and we removed a circle, also remove the line before it
+                const mode = document.querySelector('input[name="mode"]:checked').value;
+                if (mode === 'chain' && last.type === 'circle' && annotations.length > 0) {
+                    const maybeLineBefore = annotations[annotations.length - 1];
+                    if (maybeLineBefore.type === 'line') {
+                        annotations.pop();
+                    }
+                }
+
+                // Clear selection if we deleted it
+                if (selectedAnnotation !== null && selectedAnnotation >= annotations.length) {
+                    selectedAnnotation = null;
+                }
+
+                redraw();
+            }
+
+            // Clear all - TESTING WITHOUT CONFIRM
+            // Delete selected annotation
+            function deleteSelected() {
+                if (selectedAnnotation === null) {
+                    showToast('No object selected', 'error');
+                    return;
+                }
+
+                annotations.splice(selectedAnnotation, 1);
+                selectedAnnotation = null;
+                redraw();
+                showToast('Object deleted', 'success');
+            }
+
+            function clearAll() {
+                console.log('clearAll called');
+                console.log('annotations before:', annotations.length);
+                console.log('uploadedImage:', uploadedImage ? 'exists' : 'null');
+
+                if (!uploadedImage) {
+                    alert('No image loaded!');
+                    return;
+                }
+
+                if (annotations.length === 0) {
+                    alert('Nothing to clear!');
+                    return;
+                }
+
+                // TEMPORARILY SKIP CONFIRM FOR TESTING
+                console.log('Clearing annotations WITHOUT confirm...');
+
+                // Reset everything
+                annotations = [];
+                currentChain = [];
+                selectedAnnotation = null;
+                isDragging = false;
+                isDrawing = false;
+                draggingPoint = null;
+
+                console.log('annotations after clear:', annotations.length);
+                console.log('Calling redraw()...');
+
+                // Call redraw
+                redraw();
+
+                console.log('Clear complete!');
+            }
+
+            // Export image at full original resolution
+            function exportImage() {
+                if (!uploadedImage) {
+                    alert('No image to export!');
+                    return;
+                }
+
+                try {
+                    // Export at the original image dimensions, not the display size
+                    const exportScale = uploadedImage.width / canvas.width;
+
+                    const exportCanvas = document.createElement('canvas');
+                    exportCanvas.width = uploadedImage.width;
+                    exportCanvas.height = uploadedImage.height;
+                    const exportCtx = exportCanvas.getContext('2d');
+
+                    // Draw the original image at full resolution
+                    exportCtx.drawImage(uploadedImage, 0, 0, uploadedImage.width, uploadedImage.height);
+
+                    // Scale the context so annotation coordinates (stored in display-canvas space)
+                    // map correctly to the full-resolution export canvas
+                    exportCtx.scale(exportScale, exportScale);
+
+                    // Temporarily swap ctx so all drawing functions render onto the export canvas
+                    const originalCtx = ctx;
+                    ctx = exportCtx;
+
+                    // Replay all annotations at full resolution
+                    annotations.forEach((annotation) => {
+                        if (annotation.type === 'circle') {
+                            drawCircle(annotation.x, annotation.y, annotation.radius, annotation.color, annotation.opacity);
+                        } else if (annotation.type === 'line') {
+                            drawLine(annotation.x1, annotation.y1, annotation.x2, annotation.y2, annotation.color);
+                        } else if (annotation.type === 'arrow') {
+                            drawArrow(annotation.x1, annotation.y1, annotation.x2, annotation.y2, annotation.color, annotation.cx, annotation.cy, annotation.style);
+                        } else if (annotation.type === 'rectangle') {
+                            drawRectangle(annotation.x1, annotation.y1, annotation.x2, annotation.y2, annotation.color, annotation.opacity);
+                        } else if (annotation.type === 'polygon') {
+                            drawPolygon(annotation.points, annotation.color, annotation.opacity);
+                        } else if (annotation.type === 'circle-zone') {
+                            drawCircleZone(annotation.x, annotation.y, annotation.radius, annotation.color, annotation.opacity, annotation.radiusX, annotation.radiusY);
+                        } else if (annotation.type === 'text') {
+                            drawText(annotation);
+                        }
+                    });
+
+                    // Restore the original display context
+                    ctx = originalCtx;
+
+                    // Convert to blob and download
+                    exportCanvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                        link.download = `drawtactics-screenshot-${timestamp}.png`;
+                        link.href = url;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    }, 'image/png');
+                } catch (error) {
+                    console.error('Export error:', error);
+                    // Fallback: export at display resolution
+                    const link = document.createElement('a');
+                    link.download = 'drawtactics-screenshot.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                }
+            }
+        </script>
+    </div> <!-- Close main-wrapper -->
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 DrawTactics by JMftbl · <a href='how-to-use.html'>How to Use</a> · <a href='contact.html'>Contact</a></p>
+    </footer>
+</body>
+
+</html>
