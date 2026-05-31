@@ -945,6 +945,16 @@
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
 
+        button.btn-secondary {
+            background: linear-gradient(135deg, #64748B 0%, #475569 100%);
+            box-shadow: 0 2px 8px rgba(100, 116, 139, 0.2);
+        }
+
+        button.btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+        }
+
         .inline-add-btn {
             flex-shrink: 0;
             width: 28px;
@@ -1062,6 +1072,11 @@
                         <input type="color" id="number-color" value="#ffffff">
                     </div>
                 </div>
+                <div class="color-row" style="margin-bottom: 8px;">
+                    <label>Size:</label>
+                    <input type="range" id="token-size" min="50" max="150" value="100" oninput="updateTokenSizes()">
+                    <span class="opacity-value" id="token-size-value">100%</span>
+                </div>
                 <div class="button-row">
                     <button onclick="addPlayer()">+ Player</button>
                     <button onclick="addBall()">+ Ball</button>
@@ -1104,88 +1119,47 @@
                 </div>
                 <div class="info-text">Drag to create shape</div>
 
-            </div>
+                <div class="divider"></div>
 
-            <!-- Training Sidebar -->
-            <div class="training-sidebar collapsed" id="training-sidebar">
-                <div class="training-header" onclick="toggleTrainingSidebar()">
-                    <div class="section-title">Training</div>
-                    <span class="training-toggle-icon" id="training-toggle-icon">▼</span>
+                <div class="section-title">Player Marker</div>
+                <div class="color-row">
+                    <label>Color:</label>
+                    <input type="color" id="marker-color" value="#ffffff">
                 </div>
-                <div class="training-content" id="training-content">
-                    <div class="divider"></div>
-
-                    <div class="section-title">Cones</div>
-                    <select id="cone-color" class="cone-color-select">
-                        <option value="blue">Blue Cone</option>
-                        <option value="orange">Orange Cone</option>
-                        <option value="red">Red Cone</option>
-                        <option value="white">White Cone</option>
-                        <option value="yellow">Yellow Cone</option>
+                <div class="color-row">
+                    <label>Opacity:</label>
+                    <input type="range" id="marker-opacity" min="0" max="100" value="30" oninput="document.getElementById('marker-opacity-value').textContent = this.value + '%'">
+                    <span class="opacity-value" id="marker-opacity-value">30%</span>
+                </div>
+                <div class="color-row">
+                    <label>Size:</label>
+                    <input type="range" id="marker-size" min="1" max="50" value="15" oninput="document.getElementById('marker-size-value').textContent = this.value + 'px'">
+                    <span class="opacity-value" id="marker-size-value">15px</span>
+                </div>
+                <div class="color-row">
+                    <label>Connect:</label>
+                    <select id="marker-connection" style="flex: 1; min-width: 0;">
+                        <option value="chain">Chain (1-2-3)</option>
+                        <option value="mesh">Mesh (all-to-all)</option>
+                        <option value="none">Circles only</option>
                     </select>
-                    <button id="add-cone-btn" onclick="toggleAddCone()">+ Cone</button>
-                    <div class="training-info-text">Click button, then click canvas to place</div>
-
-                    <div class="divider"></div>
-
-                    <div class="section-title">Goalposts</div>
-                    <button id="add-goalposts-btn" onclick="toggleAddGoalposts()" style="width: 100%;">+
-                        Goalposts</button>
-                    <div class="training-info-text">Click button, then click canvas to place</div>
-
-                    <div class="divider"></div>
-
-                    <div class="section-title">Shapes</div>
-                    <div class="color-row">
-                        <input type="color" id="training-shape-color" value="#000000">
-                        <select id="training-shape-style" style="flex: 1; min-width: 0;">
-                            <option value="solid">Solid</option>
-                            <option value="dashed">Dashed</option>
-                            <option value="dotted">Dotted</option>
-                        </select>
-                    </div>
-                    <div class="color-row" style="margin-top: 6px;">
-                        <label>Opacity:</label>
-                        <input type="range" id="training-shape-opacity" min="0" max="100" value="100" style="flex: 1;">
-                        <span class="opacity-value" id="training-opacity-value">100%</span>
-                    </div>
-                    <div class="button-row" style="margin-top: 6px;">
-                        <button id="draw-training-square-btn" onclick="toggleDrawTrainingShape('square')">+
-                            Square</button>
-                        <button id="draw-training-circle-btn" onclick="toggleDrawTrainingShape('circle')">+
-                            Circle</button>
-                    </div>
-                    <div class="training-info-text">Drag to draw shape (outline only)</div>
-
-                    <div class="divider"></div>
-
-                    <div class="section-title">Lines</div>
-                    <div class="color-row">
-                        <input type="color" id="training-line-color" value="#000000">
-                        <select id="training-line-style" style="flex: 1; min-width: 0;">
-                            <option value="solid">Solid</option>
-                            <option value="dashed">Dashed</option>
-                            <option value="dotted">Dotted</option>
-                        </select>
-                    </div>
-                    <div class="color-row" style="margin-top: 6px;">
-                        <label>Opacity:</label>
-                        <input type="range" id="training-line-opacity" min="0" max="100" value="100" style="flex: 1;">
-                        <span class="opacity-value" id="training-line-opacity-value">100%</span>
-                    </div>
-                    <button id="draw-training-line-btn" onclick="toggleDrawTrainingLine()"
-                        style="width: 100%; margin-top: 6px;">+ Line</button>
-                    <div class="training-info-text">Drag to draw line. Double-click to curve.</div>
                 </div>
+                <div class="button-row" style="margin-top: 6px;">
+                    <button id="btn-marker" onclick="toggleMarkerMode()">+ Markers</button>
+                    <button onclick="breakMarkerChain()">Break Chain</button>
+                </div>
+                <div class="info-text">Click canvas to drop markers.</div>
+
             </div>
+
+
         </div> <!-- Close sidebar wrapper -->
 
         <div class="horizontal-tabbed-sidebar" id="horizontal-tabbed-sidebar">
             <div class="horizontal-tab-buttons">
                 <button class="horizontal-tab-btn active" id="horizontal-tab-btn-players"
                     onclick="setHorizontalSidebarTab('players')">Players/Drawing</button>
-                <button class="horizontal-tab-btn" id="horizontal-tab-btn-training"
-                    onclick="setHorizontalSidebarTab('training')">Training</button>
+
                 <button class="horizontal-tab-btn" id="horizontal-tab-btn-names"
                     onclick="setHorizontalSidebarTab('names')">Player Names</button>
                 <button class="horizontal-tab-btn" id="horizontal-tab-btn-actions"
@@ -1195,9 +1169,7 @@
                 <div class="horizontal-tab-panel active" id="horizontal-tab-panel-players">
                     <div class="horizontal-tab-panel-body" id="horizontal-players-slot"></div>
                 </div>
-                <div class="horizontal-tab-panel" id="horizontal-tab-panel-training">
-                    <div class="horizontal-tab-panel-body" id="horizontal-training-slot"></div>
-                </div>
+
                 <div class="horizontal-tab-panel" id="horizontal-tab-panel-names">
                     <div class="horizontal-tab-panel-body" id="horizontal-names-slot"></div>
                 </div>
@@ -1247,35 +1219,22 @@
                         <option value="minimal">Minimal</option>
                         <option value="none">None</option>
                     </select>
-                    <label for="pitch-orientation">Orientation:</label>
-                    <select id="pitch-orientation" onchange="changePitchOrientation()">
-                        <option value="vertical" selected>Vertical</option>
-                        <option value="horizontal">Horizontal</option>
-                    </select>
                 </div>
             </div>
         </div>
 
         <div class="right-sidebars-wrapper" id="right-sidebars-wrapper">
-            <div class="actions-sidebar" id="actions-sidebar">
+            <div class="actions-sidebar section" id="actions-sidebar">
                 <div class="section-title">Actions</div>
-
+                <button class="btn btn-secondary" onclick="undo()">Undo Last</button>
                 <div class="button-row">
-                    <button onclick="groupSelected()">Group</button>
-                    <button onclick="ungroupSelected()">Ungroup</button>
+                    <button class="btn delete-btn" onclick="deleteSelected()">Delete</button>
+                    <button class="btn delete-btn" onclick="clearAll()">Clear All</button>
                 </div>
-
+                <button class="btn" onclick="exportImage()">Save as PNG</button>
+                
                 <div class="divider"></div>
 
-                <div class="button-row">
-                    <button class="delete-btn" onclick="deleteSelected()">Delete</button>
-                    <button class="delete-btn" onclick="clearCanvas()">Clear All</button>
-                </div>
-                <button onclick="flipBoard()">Flip Board</button>
-
-                <div class="divider"></div>
-
-                <button onclick="saveAsPNG()">Save as PNG</button>
                 <div class="button-row">
                     <button onclick="saveTacticsAsJSON()">Save Board</button>
                     <button onclick="document.getElementById('load-tactics-input').click()">Load Board</button>
@@ -1307,7 +1266,7 @@
             let isDrawingArrow = false;
             let isDrawingShape = false;
             let currentShapeType = null;
-            let currentOrientation = 'vertical';
+            let currentOrientation = 'horizontal';
             let currentPitchTemplate = 'original';
 
             const PITCH_TEMPLATE_URLS = {
@@ -1624,6 +1583,7 @@
                     setupColorPickers();
                     setupArrowDrawing();
                     setupShapeDrawing();
+                    setupMarkerDrawing();
                     setupTrainingShapeDrawing();
                     setupTextBoxDrawing();
                     setupKeyboardShortcuts();
@@ -3264,6 +3224,121 @@
                 canvas.renderAll();
             }
 
+            let isMarkerMode = false;
+            let currentMarkerChain = [];
+
+            function toggleMarkerMode() {
+                isMarkerMode = !isMarkerMode;
+                const btn = document.getElementById('btn-marker');
+
+                if (isMarkerMode) {
+                    if (isDrawingArrow) toggleDrawArrow();
+                    if (isDrawingShape) toggleDrawShape(currentShapeType);
+                    if (isTextBoxMode) toggleTextBoxMode();
+
+                    isDrawingArrow = false;
+                    isDrawingShape = false;
+                    isTextBoxMode = false;
+                    currentShapeType = null;
+                    canvas.defaultCursor = 'crosshair';
+                    canvas.selection = false;
+                    if (btn) btn.classList.add('active');
+                    
+                    document.getElementById('draw-arrow-btn')?.classList.remove('active');
+                    document.getElementById('draw-circle-btn')?.classList.remove('active');
+                    document.getElementById('draw-rectangle-btn')?.classList.remove('active');
+                    document.getElementById('add-text-btn')?.classList.remove('active');
+                    
+                    breakMarkerChain();
+                } else {
+                    canvas.defaultCursor = 'default';
+                    canvas.selection = true;
+                    if (btn) btn.classList.remove('active');
+                }
+                canvas.renderAll();
+            }
+
+            function breakMarkerChain() {
+                currentMarkerChain = [];
+            }
+
+            function setupMarkerDrawing() {
+                canvas.on('mouse:down', function (options) {
+                    if (!isMarkerMode) return;
+                    const pointer = canvas.getPointer(options.e);
+                    addPlayerMarker(pointer.x, pointer.y);
+                });
+            }
+
+            function addPlayerMarker(x, y) {
+                const color = document.getElementById('marker-color').value;
+                const opacity = parseInt(document.getElementById('marker-opacity').value) / 100;
+                const size = parseInt(document.getElementById('marker-size').value);
+                const mode = document.getElementById('marker-connection').value;
+                
+                const radiusX = size * 1.4;
+                const radiusY = size * 0.5;
+
+                const r = parseInt(color.slice(1, 3), 16);
+                const g = parseInt(color.slice(3, 5), 16);
+                const b = parseInt(color.slice(5, 7), 16);
+
+                const ellipse = new fabric.Ellipse({
+                    left: x,
+                    top: y,
+                    rx: radiusX,
+                    ry: radiusY,
+                    fill: `rgba(${r}, ${g}, ${b}, ${opacity})`,
+                    stroke: color,
+                    strokeWidth: 2,
+                    originX: 'center',
+                    originY: 'center',
+                    customType: 'player-marker',
+                    selectable: false,
+                    evented: false
+                });
+
+                canvas.add(ellipse);
+                ellipse.sendToBack();
+                if (canvas.backgroundImage) {
+                    canvas.backgroundImage.sendToBack();
+                }
+
+                const newMarker = { x: x, y: y, obj: ellipse };
+                
+                if (mode === 'chain' && currentMarkerChain.length > 0) {
+                    const prev = currentMarkerChain[currentMarkerChain.length - 1];
+                    drawMarkerConnection(prev.x, prev.y, x, y, color);
+                } else if (mode === 'mesh' && currentMarkerChain.length > 0) {
+                    currentMarkerChain.forEach(prev => {
+                        drawMarkerConnection(prev.x, prev.y, x, y, color);
+                    });
+                }
+                
+                currentMarkerChain.push(newMarker);
+                canvas.renderAll();
+            }
+
+            function drawMarkerConnection(x1, y1, x2, y2, color) {
+                const r = parseInt(color.slice(1, 3), 16);
+                const g = parseInt(color.slice(3, 5), 16);
+                const b = parseInt(color.slice(5, 7), 16);
+                
+                const line = new fabric.Line([x1, y1, x2, y2], {
+                    stroke: `rgba(${r}, ${g}, ${b}, 0.6)`,
+                    strokeWidth: 2,
+                    selectable: false,
+                    evented: false,
+                    customType: 'marker-connection'
+                });
+                canvas.add(line);
+                line.sendToBack(); 
+                if (canvas.backgroundImage) {
+                    canvas.backgroundImage.sendToBack();
+                }
+            }
+
+
             function toggleDrawShape(shapeType) {
                 const circleBtn = document.getElementById('draw-circle-btn');
                 const rectangleBtn = document.getElementById('draw-rectangle-btn');
@@ -3336,8 +3411,9 @@
                 const strokeColor = document.getElementById('stroke-color').value;
                 const nameColor = document.getElementById('name-color').value;
                 const numberColor = document.getElementById('number-color').value;
-                const playerRadius = getRefSize() * 0.02;
-                const playerStrokeWidth = Math.max(2, getRefSize() * 0.004);
+                const sizeScale = document.getElementById('token-size') ? parseInt(document.getElementById('token-size').value) / 100 : 1;
+                const playerRadius = getRefSize() * 0.02 * sizeScale;
+                const playerStrokeWidth = Math.max(2, getRefSize() * 0.004 * sizeScale);
 
                 const circle = new fabric.Circle({
                     radius: playerRadius,
@@ -3365,7 +3441,8 @@
             }
 
             function addBall() {
-                const ballSize = getRefSize() * 0.025; // Slightly bigger than player radius
+                const sizeScale = document.getElementById('token-size') ? parseInt(document.getElementById('token-size').value) / 100 : 1;
+                const ballSize = getRefSize() * 0.025 * sizeScale; // Slightly bigger than player radius
 
                 fabric.loadSVGFromString(BALL_SVG, function (objects, options) {
                     const ball = fabric.util.groupSVGElements(objects, options);
@@ -3388,6 +3465,34 @@
                     canvas.setActiveObject(ball);
                     canvas.renderAll();
                 });
+            }
+
+            function updateTokenSizes() {
+                const sizeSlider = document.getElementById('token-size');
+                if (!sizeSlider) return;
+                const sizeScale = parseInt(sizeSlider.value) / 100;
+                const valueDisplay = document.getElementById('token-size-value');
+                if (valueDisplay) valueDisplay.textContent = sizeSlider.value + '%';
+                
+                canvas.getObjects().forEach(obj => {
+                    if (obj.customType === 'player') {
+                        const newRadius = getRefSize() * 0.02 * sizeScale;
+                        const newStrokeWidth = Math.max(2, getRefSize() * 0.004 * sizeScale);
+                        obj.set({ radius: newRadius, strokeWidth: newStrokeWidth });
+                        obj.setCoords();
+                    } else if (obj.customType === 'ball') {
+                        const newSize = getRefSize() * 0.025 * sizeScale;
+                        obj.set({
+                            scaleX: newSize / (obj.width || 1),
+                            scaleY: newSize / (obj.height || 1)
+                        });
+                        obj.setCoords();
+                    }
+                });
+                
+                if (typeof renderPlayerNameLabels === 'function') renderPlayerNameLabels();
+                if (typeof renderShirtNumberLabels === 'function') renderShirtNumberLabels();
+                canvas.renderAll();
             }
 
             // Text Box Mode Toggle
@@ -3954,6 +4059,32 @@
                 // Convert the group back into an active selection
                 const items = activeObject.toActiveSelection();
                 canvas.requestRenderAll();
+            }
+
+            function undo() {
+                const objects = canvas.getObjects();
+                if (objects.length > 0) {
+                    // Iterate backwards to find the last removable object
+                    for (let i = objects.length - 1; i >= 0; i--) {
+                        const obj = objects[i];
+                        if (obj.customType !== 'pitch' && obj !== canvas.backgroundImage && obj.customType !== 'pitch-line' && obj.customType !== 'pitch-element') {
+                            canvas.remove(obj);
+                            if (obj.customType === 'player-marker' && currentMarkerChain.length > 0) {
+                                currentMarkerChain.pop();
+                            }
+                            canvas.renderAll();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            function clearAll() {
+                clearCanvas();
+            }
+
+            function exportImage() {
+                saveAsPNG();
             }
 
             function deleteSelected() {

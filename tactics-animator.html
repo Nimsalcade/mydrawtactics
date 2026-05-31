@@ -1653,6 +1653,11 @@
                         <input type="color" id="number-color" value="#ffffff">
                     </div>
                 </div>
+                <div class="color-row" style="margin-bottom: 8px;">
+                    <label>Size:</label>
+                    <input type="range" id="token-size" min="50" max="150" value="100" oninput="updateTokenSizes()">
+                    <span class="opacity-value" id="token-size-value">100%</span>
+                </div>
                 <div class="button-row">
                     <button onclick="addPlayer()">+ Player</button>
                     <button onclick="addBall()">+ Ball</button>
@@ -1706,78 +1711,7 @@
 
             </div>
 
-            <!-- Training Sidebar -->
-            <div class="training-sidebar collapsed" id="training-sidebar">
-                <div class="training-header" onclick="toggleTrainingSidebar()">
-                    <div class="section-title">Training</div>
-                    <span class="training-toggle-icon" id="training-toggle-icon">▼</span>
-                </div>
-                <div class="training-content" id="training-content">
-                    <div class="divider"></div>
 
-                    <div class="section-title">Cones</div>
-                    <select id="cone-color" class="cone-color-select">
-                        <option value="blue">Blue Cone</option>
-                        <option value="orange">Orange Cone</option>
-                        <option value="red">Red Cone</option>
-                        <option value="white">White Cone</option>
-                        <option value="yellow">Yellow Cone</option>
-                    </select>
-                    <button id="add-cone-btn" onclick="toggleAddCone()">+ Cone</button>
-                    <div class="training-info-text">Click button, then click canvas to place</div>
-
-                    <div class="divider"></div>
-
-                    <div class="section-title">Goalposts</div>
-                    <button id="add-goalposts-btn" onclick="toggleAddGoalposts()" style="width: 100%;">+
-                        Goalposts</button>
-                    <div class="training-info-text">Click button, then click canvas to place</div>
-
-                    <div class="divider"></div>
-
-                    <div class="section-title">Shapes</div>
-                    <div class="color-row">
-                        <input type="color" id="training-shape-color" value="#000000">
-                        <select id="training-shape-style" style="flex: 1; min-width: 0;">
-                            <option value="solid">Solid</option>
-                            <option value="dashed">Dashed</option>
-                            <option value="dotted">Dotted</option>
-                        </select>
-                    </div>
-                    <div class="color-row" style="margin-top: 6px;">
-                        <label>Opacity:</label>
-                        <input type="range" id="training-shape-opacity" min="0" max="100" value="100" style="flex: 1;">
-                        <span class="opacity-value" id="training-opacity-value">100%</span>
-                    </div>
-                    <div class="button-row" style="margin-top: 6px;">
-                        <button id="draw-training-square-btn" onclick="toggleDrawTrainingShape('square')">+
-                            Square</button>
-                        <button id="draw-training-circle-btn" onclick="toggleDrawTrainingShape('circle')">+
-                            Circle</button>
-                    </div>
-                    <div class="training-info-text">Drag to draw shape (outline only)</div>
-
-                    <div class="divider"></div>
-
-                    <div class="section-title">Lines</div>
-                    <div class="color-row">
-                        <input type="color" id="training-line-color" value="#000000">
-                        <select id="training-line-style" style="flex: 1; min-width: 0;">
-                            <option value="solid">Solid</option>
-                            <option value="dashed">Dashed</option>
-                            <option value="dotted">Dotted</option>
-                        </select>
-                    </div>
-                    <div class="color-row" style="margin-top: 6px;">
-                        <label>Opacity:</label>
-                        <input type="range" id="training-line-opacity" min="0" max="100" value="100" style="flex: 1;">
-                        <span class="opacity-value" id="training-line-opacity-value">100%</span>
-                    </div>
-                    <button id="draw-training-line-btn" onclick="toggleDrawTrainingLine()"
-                        style="width: 100%; margin-top: 6px;">+ Line</button>
-                    <div class="training-info-text">Drag to draw line. Double-click to curve.</div>
-                </div>
-            </div>
         </div>
 
         <!-- Canvas Area -->
@@ -1820,11 +1754,6 @@
                     <option value="setpiece">Set Piece</option>
                     <option value="minimal">Minimal</option>
                     <option value="none">No Markings</option>
-                </select>
-                <label for="pitch-orientation">Orientation:</label>
-                <select id="pitch-orientation" onchange="changePitchOrientation()">
-                    <option value="vertical" selected>Vertical</option>
-                    <option value="horizontal">Horizontal</option>
                 </select>
             </div>
         </div>
@@ -2079,7 +2008,7 @@
         let isDrawingArrow = false;
         let isDrawingShape = false;
         let currentShapeType = null;
-        let currentOrientation = 'vertical';
+        let currentOrientation = 'horizontal';
         let currentPitchTemplate = 'original';
         let animationData = { duration: 30000, keyframes: [] };
 
@@ -4298,8 +4227,9 @@
             const strokeColor = document.getElementById('stroke-color').value;
             const nameColor = document.getElementById('name-color').value;
             const numberColor = document.getElementById('number-color').value;
-            const playerRadius = getRefSize() * 0.02;
-            const playerStrokeWidth = Math.max(2, getRefSize() * 0.004);
+            const sizeScale = document.getElementById('token-size') ? parseInt(document.getElementById('token-size').value) / 100 : 1;
+            const playerRadius = getRefSize() * 0.02 * sizeScale;
+            const playerStrokeWidth = Math.max(2, getRefSize() * 0.004 * sizeScale);
 
             const circle = new fabric.Circle({
                 radius: playerRadius,
