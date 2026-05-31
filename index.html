@@ -1782,6 +1782,41 @@
                 };
             }
 
+            const shirtNumberMeasureCtx = (function () {
+                const measureCanvas = document.createElement('canvas');
+                return measureCanvas.getContext('2d');
+            })();
+
+            function getPlayerTokenRadius(player) {
+                if (!player) return 0;
+                const scale = Math.max(Math.abs(player.scaleX || 1), Math.abs(player.scaleY || 1));
+                return (player.radius || 0) * scale;
+            }
+
+            function getShirtNumberFontSize(player, text) {
+                const displayText = String(text || '').trim();
+                if (!displayText) return 8;
+
+                const diameter = getPlayerTokenRadius(player) * 2;
+                if (diameter <= 0) return 8;
+
+                const maxWidth = diameter * 0.76;
+                const fontFamily = 'sans-serif';
+                const charCount = displayText.length;
+                let fontSize = Math.round(diameter * (charCount >= 2 ? 0.36 : 0.46));
+
+                shirtNumberMeasureCtx.font = 'bold ' + fontSize + 'px ' + fontFamily;
+                let width = shirtNumberMeasureCtx.measureText(displayText).width;
+
+                while (width > maxWidth && fontSize > 6) {
+                    fontSize -= 1;
+                    shirtNumberMeasureCtx.font = 'bold ' + fontSize + 'px ' + fontFamily;
+                    width = shirtNumberMeasureCtx.measureText(displayText).width;
+                }
+
+                return Math.max(6, fontSize);
+            }
+
             function renderPlayerNamesList() {
                 const container = document.getElementById('playerNamesList');
                 if (!container) return;
@@ -1807,7 +1842,7 @@
                     numberInput.className = 'player-number-input';
                     numberInput.value = obj.shirtNumber || '';
                     numberInput.placeholder = '#';
-                    numberInput.maxLength = 3;
+                    numberInput.maxLength = 2;
                     numberInput.addEventListener('input', function (e) {
                         obj.shirtNumber = e.target.value;
                         renderShirtNumberLabels();
@@ -1904,12 +1939,11 @@
 
                 // Add number labels inside player circles
                 const players = getPlayersForUI();
-                const refSize = getRefSize();
-                const fontSize = Math.max(8, Math.round(refSize * 0.018));
 
                 players.forEach(player => {
                     if (player.shirtNumber) {
                         const center = getPlayerCanvasCenter(player);
+                        const fontSize = getShirtNumberFontSize(player, player.shirtNumber);
                         const label = new fabric.Text(player.shirtNumber, {
                             left: center.x,
                             top: center.y,
@@ -1957,7 +1991,8 @@
                         const center = getPlayerCanvasCenter(player);
                         label.set({
                             left: center.x,
-                            top: center.y
+                            top: center.y,
+                            fontSize: getShirtNumberFontSize(player, player.shirtNumber)
                         });
                         label.setCoords();
                     }
