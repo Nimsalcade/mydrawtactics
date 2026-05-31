@@ -1536,6 +1536,12 @@
             // Clipboard for copy/paste
             let clipboard = null;
 
+            // Undo history (full canvas snapshots)
+            let undoStack = [];
+            let isRestoringUndo = false;
+            let preTransformUndoState = null;
+            const UNDO_STACK_LIMIT = 50;
+
             // Text Box functionality
             let isTextBoxMode = false;
             let textBoxStartPoint = null;
@@ -1588,6 +1594,7 @@
                     setupTextBoxDrawing();
                     setupKeyboardShortcuts();
                     setupOpacitySlider();
+                    setupUndoTracking();
 
                     canvas.on('object:moving', function (e) {
                         if (e.target && e.target.customType === 'player') {
@@ -2009,7 +2016,101 @@
                         e.preventDefault();
                         pasteFromClipboard();
                     }
+
+                    // Undo (Ctrl+Z / Cmd+Z)
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+                        e.preventDefault();
+                        undo();
+                    }
                 });
+            }
+
+            function setupUndoTracking() {
+                canvas.on('mouse:down', function (options) {
+                    if (isRestoringUndo) return;
+                    const target = options.target;
+                    if (!target || target === canvas.backgroundImage || isTemporaryObject(target)) {
+                        preTransformUndoState = null;
+                        return;
+                    }
+                    preTransformUndoState = captureCanvasState();
+                });
+
+                canvas.on('object:modified', function () {
+                    if (isRestoringUndo || !preTransformUndoState) return;
+                    undoStack.push(preTransformUndoState);
+                    if (undoStack.length > UNDO_STACK_LIMIT) undoStack.shift();
+                    preTransformUndoState = null;
+                });
+            }
+
+            function captureCanvasState() {
+                const objects = [];
+                canvas.getObjects().forEach(function (obj) {
+                    if (obj === canvas.backgroundImage) return;
+                    if (isTemporaryObject(obj)) return;
+                    objects.push(serializeCanvasObject(obj));
+                });
+                return {
+                    objects: JSON.parse(JSON.stringify(objects)),
+                    markerChain: currentMarkerChain.map(function (m) {
+                        return { x: m.x, y: m.y };
+                    })
+                };
+            }
+
+            function saveUndoState() {
+                if (isRestoringUndo || !canvas) return;
+                undoStack.push(captureCanvasState());
+                if (undoStack.length > UNDO_STACK_LIMIT) undoStack.shift();
+            }
+
+            function rebuildMarkerChain(chainPoints) {
+                currentMarkerChain = [];
+                if (!chainPoints || !chainPoints.length) return;
+
+                const markers = canvas.getObjects().filter(function (obj) {
+                    return obj.customType === 'player-marker';
+                });
+                const used = new Set();
+
+                chainPoints.forEach(function (pt) {
+                    let obj = markers.find(function (m) {
+                        return !used.has(m) && Math.hypot(m.left - pt.x, m.top - pt.y) < 2;
+                    });
+                    if (obj) used.add(obj);
+                    if (obj) {
+                        currentMarkerChain.push({ x: pt.x, y: pt.y, obj: obj });
+                    }
+                });
+            }
+
+            function restoreCanvasFromState(state) {
+                if (!state || !canvas) return;
+
+                isRestoringUndo = true;
+                preTransformUndoState = null;
+                exitArrowEditMode();
+                exitShapeEditMode();
+                if (typeof exitTrainingLineEditMode === 'function') {
+                    exitTrainingLineEditMode();
+                }
+                canvas.discardActiveObject();
+
+                canvas.getObjects().slice().forEach(function (obj) {
+                    if (obj !== canvas.backgroundImage) {
+                        canvas.remove(obj);
+                    }
+                });
+
+                restoreObjects(state.objects);
+                rebuildMarkerChain(state.markerChain);
+
+                renderPlayerNamesList();
+                renderPlayerNameLabels();
+                renderShirtNumberLabels();
+                canvas.renderAll();
+                isRestoringUndo = false;
             }
 
             function copySelected() {
@@ -2023,6 +2124,8 @@
 
             function pasteFromClipboard() {
                 if (!clipboard) return;
+
+                saveUndoState();
 
                 clipboard.clone(function (clonedObj) {
                     canvas.discardActiveObject();
@@ -2273,15 +2376,15 @@
                             selectable: true,
                             customType: 'shape',
 
-                            hasControls: true,           // Show corner/edge controls
-                            hasBorders: true,            // Show selection border
-                            cornerStyle: 'circle',       // Make handles circular
-                            cornerSize: 12,              // Size of corner handles
-                            cornerColor: '#10B981',      // Green color for handles
-                            cornerStrokeColor: '#FFFFFF', // White outline
-                            borderColor: '#10B981',      // Green border when selected
-                            borderScaleFactor: 2,        // Border thickness
-                            transparentCorners: false,   // Solid colored handles
+                            hasControls: true,
+                            hasBorders: true,
+                            cornerStyle: 'circle',
+                            cornerSize: 12,
+                            cornerColor: '#10B981',
+                            cornerStrokeColor: '#FFFFFF',
+                            borderColor: '#10B981',
+                            borderScaleFactor: 2,
+                            transparentCorners: false,
                         });
                     } else if (currentShapeType === 'circle') {
                         const radius = Math.sqrt(width * width + height * height) / 2;
@@ -2308,14 +2411,15 @@
                             borderScaleFactor: 2,
                             transparentCorners: false,
                             lockRotation: false,
-                            lockUniScaling: false  // Allow stretching into oval
+                            lockUniScaling: false
                         });
                     }
 
-                    canvas.add(finalShape);
-                    // Send shape to back (behind players and arrows)
-                    finalShape.sendToBack();
-                    // Make sure pitch stays at the very back
+                    if (finalShape && (width > 2 || height > 2)) {
+                        saveUndoState();
+                        canvas.add(finalShape);
+                        finalShape.sendToBack();
+                    }
 
                     shapeStartPoint = null;
                     tempShape = null;
@@ -2485,9 +2589,12 @@
                         });
                     }
 
-                    canvas.add(finalShape);
-                    finalShape.sendToBack();
-                    canvas.setActiveObject(finalShape);
+                    if (finalShape && (width > 2 || height > 2)) {
+                        saveUndoState();
+                        canvas.add(finalShape);
+                        finalShape.sendToBack();
+                        canvas.setActiveObject(finalShape);
+                    }
 
                     trainingShapeStartPoint = null;
                     tempTrainingShape = null;
@@ -2703,6 +2810,7 @@
                             };
 
                             const lineGroup = buildTrainingLineGroup(lineData);
+                            saveUndoState();
                             canvas.add(lineGroup);
                             canvas.setActiveObject(lineGroup);
 
@@ -2848,6 +2956,8 @@
             }
 
             function createArrow(x1, y1, x2, y2) {
+                saveUndoState();
+
                 const arrowColor = document.getElementById('arrow-color').value;
                 const arrowStyle = document.getElementById('arrow-style').value;
 
@@ -3271,6 +3381,8 @@
             }
 
             function addPlayerMarker(x, y) {
+                saveUndoState();
+
                 const color = document.getElementById('marker-color').value;
                 const opacity = parseInt(document.getElementById('marker-opacity').value) / 100;
                 const size = parseInt(document.getElementById('marker-size').value);
@@ -3407,6 +3519,8 @@
             }
 
             function addPlayer() {
+                saveUndoState();
+
                 const fillColor = document.getElementById('fill-color').value;
                 const strokeColor = document.getElementById('stroke-color').value;
                 const nameColor = document.getElementById('name-color').value;
@@ -3441,6 +3555,8 @@
             }
 
             function addBall() {
+                saveUndoState();
+
                 const sizeScale = document.getElementById('token-size') ? parseInt(document.getElementById('token-size').value) / 100 : 1;
                 const ballSize = getRefSize() * 0.025 * sizeScale; // Slightly bigger than player radius
 
@@ -3580,6 +3696,8 @@
 
             // Add cone to canvas at position
             function addConeAtPosition(x, y) {
+                saveUndoState();
+
                 const color = document.getElementById('cone-color').value;
                 const coneUrl = `assets/training/${color}-cone.svg`;
 
@@ -3623,6 +3741,8 @@
 
             // Add goalposts to canvas at position
             function addGoalpostsAtPosition(x, y) {
+                saveUndoState();
+
                 fabric.Image.fromURL('assets/training/goalposts.png', function (img) {
                     // Goalposts width: 1.5x player width (player diameter = refSize * 0.04)
                     const refSize = getRefSize();
@@ -3982,6 +4102,10 @@
                 const overlay = document.getElementById('textOverlay');
                 const text = overlay.value.trim();
 
+                if (text || pendingTextBox.existingObject) {
+                    saveUndoState();
+                }
+
                 // Remove existing object if editing
                 if (pendingTextBox.existingObject) {
                     canvas.remove(pendingTextBox.existingObject);
@@ -4042,6 +4166,8 @@
                 const activeObject = canvas.getActiveObject();
                 if (!activeObject || activeObject.type !== 'activeSelection') return;
 
+                saveUndoState();
+
                 // Convert the active selection into a group
                 const group = activeObject.toGroup();
                 group.set({
@@ -4056,27 +4182,17 @@
                 const activeObject = canvas.getActiveObject();
                 if (!activeObject || activeObject.type !== 'group') return;
 
+                saveUndoState();
+
                 // Convert the group back into an active selection
                 const items = activeObject.toActiveSelection();
                 canvas.requestRenderAll();
             }
 
             function undo() {
-                const objects = canvas.getObjects();
-                if (objects.length > 0) {
-                    // Iterate backwards to find the last removable object
-                    for (let i = objects.length - 1; i >= 0; i--) {
-                        const obj = objects[i];
-                        if (obj.customType !== 'pitch' && obj !== canvas.backgroundImage && obj.customType !== 'pitch-line' && obj.customType !== 'pitch-element') {
-                            canvas.remove(obj);
-                            if (obj.customType === 'player-marker' && currentMarkerChain.length > 0) {
-                                currentMarkerChain.pop();
-                            }
-                            canvas.renderAll();
-                            break;
-                        }
-                    }
-                }
+                if (undoStack.length === 0) return;
+
+                restoreCanvasFromState(undoStack.pop());
             }
 
             function clearAll() {
@@ -4092,6 +4208,8 @@
                 exitShapeEditMode();
                 const activeObjects = canvas.getActiveObjects();
                 if (activeObjects.length > 0) {
+                    saveUndoState();
+
                     activeObjects.forEach(obj => {
                         if (obj.customType !== 'arrowHandle' && obj.customType !== 'shapeHandle') {
                             // Also remove linked name and number labels
@@ -4109,6 +4227,13 @@
             }
 
             function clearCanvas() {
+                const hasObjects = canvas.getObjects().some(function (obj) {
+                    return obj !== canvas.backgroundImage && !isTemporaryObject(obj);
+                });
+                if (hasObjects) {
+                    saveUndoState();
+                }
+
                 exitArrowEditMode();
                 exitShapeEditMode();
                 canvas.getObjects().forEach(function (obj) {
@@ -4121,6 +4246,8 @@
             }
 
             function flipBoard() {
+                saveUndoState();
+
                 exitArrowEditMode();
                 exitShapeEditMode();
                 canvas.discardActiveObject();
@@ -4274,6 +4401,29 @@
                         if (obj.trainingLineData) {
                             objData.trainingLineData = obj.trainingLineData;
                         }
+                        break;
+                    case 'player-marker':
+                        objData.rx = obj.rx;
+                        objData.ry = obj.ry;
+                        objData.fill = obj.fill;
+                        objData.stroke = obj.stroke;
+                        objData.strokeWidth = obj.strokeWidth;
+                        break;
+                    case 'marker-connection':
+                        objData.x1 = obj.x1;
+                        objData.y1 = obj.y1;
+                        objData.x2 = obj.x2;
+                        objData.y2 = obj.y2;
+                        objData.stroke = obj.stroke;
+                        objData.strokeWidth = obj.strokeWidth;
+                        break;
+                    case 'textbox':
+                        objData.text = obj.text;
+                        objData.fill = obj.fill;
+                        objData.fontSize = obj.fontSize;
+                        objData.fontFamily = obj.fontFamily;
+                        objData.fontWeight = obj.fontWeight;
+                        objData.width = obj.width;
                         break;
                     case 'group':
                         objData.children = obj.getObjects().map(child => serializeCanvasObject(child));
@@ -4442,6 +4592,7 @@
                             restoreObjectsData: saveData.objects,
                             forceBackgroundReload: pitchTemplateChanged || targetOrientation !== currentOrientation
                         });
+                        undoStack = [];
                     } catch (err) {
                         alert('Error loading tactics file: ' + err.message);
                     }
@@ -4996,6 +5147,67 @@
                                 });
                                 canvas.add(lineGroup);
                             }
+                            break;
+
+                        case 'player-marker':
+                            const marker = new fabric.Ellipse({
+                                left: objData.left,
+                                top: objData.top,
+                                rx: objData.rx,
+                                ry: objData.ry,
+                                fill: objData.fill,
+                                stroke: objData.stroke,
+                                strokeWidth: objData.strokeWidth || 2,
+                                originX: 'center',
+                                originY: 'center',
+                                selectable: false,
+                                evented: false,
+                                customType: 'player-marker'
+                            });
+                            canvas.add(marker);
+                            marker.sendToBack();
+                            if (canvas.backgroundImage) {
+                                canvas.backgroundImage.sendToBack();
+                            }
+                            break;
+
+                        case 'marker-connection':
+                            const markerLine = new fabric.Line(
+                                [objData.x1, objData.y1, objData.x2, objData.y2],
+                                {
+                                    stroke: objData.stroke,
+                                    strokeWidth: objData.strokeWidth || 2,
+                                    selectable: false,
+                                    evented: false,
+                                    customType: 'marker-connection'
+                                }
+                            );
+                            canvas.add(markerLine);
+                            markerLine.sendToBack();
+                            if (canvas.backgroundImage) {
+                                canvas.backgroundImage.sendToBack();
+                            }
+                            break;
+
+                        case 'textbox':
+                            const textBox = new fabric.Textbox(objData.text, {
+                                left: objData.left,
+                                top: objData.top,
+                                width: objData.width,
+                                fontSize: objData.fontSize,
+                                fill: objData.fill,
+                                fontFamily: objData.fontFamily || 'sans-serif',
+                                fontWeight: objData.fontWeight || 'bold',
+                                textAlign: 'left',
+                                scaleX: objData.scaleX || 1,
+                                scaleY: objData.scaleY || 1,
+                                angle: objData.angle || 0,
+                                customType: 'textbox',
+                                editable: false,
+                                lockUniScaling: true,
+                                splitByGrapheme: false
+                            });
+                            canvas.add(textBox);
                             break;
                     }
                 });
